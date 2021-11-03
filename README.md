@@ -69,3 +69,4 @@ When I run low on Merry Smithsness, use 1 Flaskfull of Hollow
 When I run low on The Ballad of Richie Thingfinder, use 1 recording of The Ballad of Richie Thingfinder
 ```
 
+Finally, you will probably need to get a Jokester's Gun. Just for the free kill. And to raise your auto buy limit as sometimes the cheapest batteries are not that cheap.
