@@ -1,6 +1,8 @@
 This is a script for Essential Tofu farming in Kingdom of Loathing.
 
-[code]svn checkout https://github.com/libraryaddict/TofuFarming/branches/release/[/code]
+```text
+svn checkout https://github.com/libraryaddict/TofuFarming/branches/release/
+```
 
 The script has some basic configuration, but expects you to have several things setup. At the very least, you should be in Gel Noob path with all essential perms.
 
@@ -8,7 +10,8 @@ You should be using the familiar Unspeakachu, this gives a chance of more "In yo
 
 You should also be using a combat macro.
 
-[code]pickpocket;
+```text
+pickpocket;
 
 if monstername pygmy orderlies;
    use louder than bomb;
@@ -44,7 +47,8 @@ endif;
 
 attack; repeat;
 
-abort Not a monster I'm handling!;[/code]
+abort Not a monster I'm handling!;
+```
 
 You are also expected to have three outfits created.
 
@@ -57,9 +61,11 @@ Rollover. There's only one outfit that benefits from rollover, the "Gladiatorial
 
 You will also need to setup a mood "acidparade"
 
-[code]When I run low on Heart of Lavender, use 1 lavender candy heart
+```text
+When I run low on Heart of Lavender, use 1 lavender candy heart
 When I run low on Joyful Resolve, use 1 resolution: be happier
 When I run low on Lantern-Charged, use 1 battery (lantern)
 When I run low on Merry Smithsness, use 1 Flaskfull of Hollow
-When I run low on The Ballad of Richie Thingfinder, use 1 recording of The Ballad of Richie Thingfinder[/code]
+When I run low on The Ballad of Richie Thingfinder, use 1 recording of The Ballad of Richie Thingfinder
+```
 
