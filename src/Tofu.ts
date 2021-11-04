@@ -6,6 +6,7 @@ import {
   cliExecute,
   craft,
   equip,
+  getCustomOutfits,
   getInventory,
   getProperty,
   haveEffect,
@@ -23,6 +24,7 @@ import {
   myPrimestat,
   numericModifier,
   outfit,
+  outfitPieces,
   print,
   putCloset,
   putShop,
@@ -42,16 +44,118 @@ import {
   waitq,
 } from "kolmafia";
 
-export class Tofu {
+class Tofu {
   private adventuresValuedAt: number = 4000;
   private doSideStuff: boolean = true;
   private freeFightValue: number = 4000;
+  private sendToMallMulti: boolean = false;
+  private mallMultiName: string = "ASSistant";
+  private pricePerTofu: number = 5000;
+  private mallLimit: number = 3;
+  private breakfastScript: string = "breakfast";
+  private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
+
+  loadProperties() {
+    print("Now loading tofu properties..", "gray");
+    let load = function (propertyName: string, defaultValue: string): string {
+      let prop = getProperty(propertyName);
+
+      if (prop == null || prop == "") {
+        print(
+          `Tofu Setting ${propertyName} hasn't been set. Defaulting to ${defaultValue}`
+        );
+        return defaultValue;
+      }
+
+      return prop;
+    };
+
+    this.adventuresValuedAt = toInt(
+      load("tofuAdventuresValue", this.adventuresValuedAt.toString())
+    );
+    this.doSideStuff = toBoolean(
+      load("tofuSideStuff", this.doSideStuff.toString())
+    );
+    this.freeFightValue = toInt(
+      load("tofuFreeFightValue", this.freeFightValue.toString())
+    );
+
+    this.mallLimit = toInt(load("tofuMallLimit", this.mallLimit.toString()));
+    this.pricePerTofu = toInt(
+      load("tofuMallPrice", this.pricePerTofu.toString())
+    );
+    this.mallMultiName = load("tofuMallMultiName", this.mallMultiName);
+    this.sendToMallMulti = toBoolean(
+      load("tofuMallMultiEnabled", this.sendToMallMulti.toString())
+    );
+    this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
+  }
+
+  doQuickCheck(): boolean {
+    let passed = true;
+
+    if (myClass() != Class.get("Gelatinous Noob")) {
+      print("You are not a gel noob!", "red");
+      passed = false;
+    }
+
+    let rec: string[] = [
+      "The Jokester's gun",
+      "Mafia Thumb Ring",
+      "Garbage Sticker",
+      "Mr. Cheeng's Spectacles",
+      "Xiblaxian holo-wrist-puter",
+    ];
+
+    let rolloverOutfit: Item[] = outfitPieces("Gladiatorial Glad Rags").filter(
+      (i) => availableAmount(i) == 0
+    );
+
+    if (rolloverOutfit.length > 0) {
+      print(
+        "Missing pieces of rollover outfit! Missing: " +
+          rolloverOutfit.map((i) => i.name).join(", "),
+        "red"
+      );
+    }
+
+    let need: Item[] = ["Eldritch hat", "eldritch pants"]
+      .map((i) => Item.get(i))
+      .filter((i) => availableAmount(i) == 0);
+
+    if (need.length > 0) {
+      print(
+        "Missing pieces of farming outfit! Missing: " +
+          need.map((i) => i.name).join(", "),
+        "red"
+      );
+
+      passed = false;
+    }
+
+    if (availableAmount(Item.get("The Jokester's gun")) == 0) {
+      print("You should consider getting a joksters gun", "red");
+    }
+
+    let outfits: string[] = ["rollover", "voter", "farming"].filter(
+      (s) =>
+        getCustomOutfits().find((o) => o.toLowerCase() == s.toLowerCase()) ==
+        null
+    );
+
+    if (outfits.length > 0) {
+      print("Missing outfits! Missing: " + outfits.join(", "));
+      passed = false;
+    }
+
+    return passed;
+  }
 
   doInitialSetup() {
     print("Lets get ready to fight for the right to tofu!", "blue");
     cliExecute("charpane.php");
     cliExecute("familiar unspeakachu");
-    cliExecute(this.isTofunation() ? "breakfaster" : "breakfast");
+    cliExecute(this.breakfastScript);
     print("Tofu script is ready to rumble!", "gray");
   }
 
@@ -410,11 +514,14 @@ export class Tofu {
   }
 
   isFarmingDay() {
-    return numericModifier("Smithsness") > 70;
+    return numericModifier("Smithsness") >= 50;
   }
 
   doJokestersGun() {
-    if (getProperty("_firedJokestersGun") == "true") {
+    if (
+      getProperty("_firedJokestersGun") == "true" ||
+      availableAmount(Item.get("The Jokester's gun")) == 0
+    ) {
       return;
     }
 
@@ -450,6 +557,7 @@ export class Tofu {
   doMood() {
     print("Time to be moody!", "blue");
     let mood = "apathetic";
+
     if (this.isFarmingDay()) {
       mood = "acidparade";
     }
@@ -516,7 +624,7 @@ export class Tofu {
       this.doJokestersGun();
       outfit("Farming");
 
-      const adventuresToKeep = 130;
+      const adventuresToKeep = 200 - this.rolloverAdventures;
 
       print(
         `Charging day! Of ${myAdventures()}, we're spending ${Math.max(
@@ -632,19 +740,23 @@ export class Tofu {
     print("I need to dump this essential tofu somewhere...", "blue");
     let tofu = Item.get("Essential Tofu");
     let to_sell = itemAmount(tofu) - 10;
-    let stockAss = false;
 
     if (to_sell <= 0) {
       print("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
       return;
     }
 
-    if (stockAss) {
-      print("Stocking ASSistant! " + to_sell + " tofu to stock!", "purple");
-      cliExecute("csend " + to_sell + " essential tofu to ASSistant || 5@5000");
+    if (this.sendToMallMulti) {
+      print(
+        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+        "purple"
+      );
+      cliExecute(
+        `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
+      );
     } else {
       print("Stocking my own shop! " + to_sell + " tofu to stock!", "purple");
-      putShop(5000, 3, to_sell, tofu);
+      putShop(this.pricePerTofu, this.mallLimit, to_sell, tofu);
     }
 
     print("Got rid of that tofu!", "gray");
@@ -765,6 +877,12 @@ export function main() {
 
   let tofu = new Tofu();
 
+  if (!tofu.doQuickCheck()) {
+    print("Cannot continue when you can't meet basic requirements!");
+    return;
+  }
+
+  tofu.loadProperties();
   tofu.doInitialSetup();
   tofu.grabRequiredItems();
   tofu.voterSetup();
