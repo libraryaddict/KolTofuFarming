@@ -88,23 +88,124 @@ var __webpack_exports__ = {};
   \******************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tofu": () => (/* binding */ Tofu),
 /* harmony export */   "main": () => (/* binding */ main)
 /* harmony export */ });
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! kolmafia */ "kolmafia");
 /* harmony import */ var kolmafia__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(kolmafia__WEBPACK_IMPORTED_MODULE_0__);
-function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var
 
-var Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_defineProperty(this, "adventuresValuedAt",
+Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_defineProperty(this, "adventuresValuedAt",
     4000);_defineProperty(this, "doSideStuff",
     true);_defineProperty(this, "freeFightValue",
-    4000);}_createClass(Tofu, [{ key: "doInitialSetup", value:
+    4000);_defineProperty(this, "sendToMallMulti",
+    false);_defineProperty(this, "mallMultiName",
+    "ASSistant");_defineProperty(this, "pricePerTofu",
+    5000);_defineProperty(this, "mallLimit",
+    3);_defineProperty(this, "breakfastScript",
+    "breakfast");_defineProperty(this, "rolloverAdventures",
+    70);}_createClass(Tofu, [{ key: "loadProperties", value: // How many adventures we expect to gain from rollover.
+
+    function loadProperties() {
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Now loading tofu properties..", "gray");
+      var load = function load(propertyName, defaultValue) {
+        var prop = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getProperty)(propertyName);
+
+        if (prop == null || prop == "") {
+          (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Tofu Setting ".concat(
+          propertyName, " hasn't been set. Defaulting to ").concat(defaultValue));
+
+          return defaultValue;
+        }
+
+        return prop;
+      };
+
+      this.adventuresValuedAt = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(
+      load("tofuAdventuresValue", this.adventuresValuedAt.toString()));
+
+      this.doSideStuff = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toBoolean)(
+      load("tofuSideStuff", this.doSideStuff.toString()));
+
+      this.freeFightValue = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(
+      load("tofuFreeFightValue", this.freeFightValue.toString()));
+
+
+      this.mallLimit = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(load("tofuMallLimit", this.mallLimit.toString()));
+      this.pricePerTofu = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toInt)(
+      load("tofuMallPrice", this.pricePerTofu.toString()));
+
+      this.mallMultiName = load("tofuMallMultiName", this.mallMultiName);
+      this.sendToMallMulti = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.toBoolean)(
+      load("tofuMallMultiEnabled", this.sendToMallMulti.toString()));
+
+      this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
+    } }, { key: "doQuickCheck", value:
+
+    function doQuickCheck() {
+      var passed = true;
+
+      if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myClass)() != Class.get("Gelatinous Noob")) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("You are not a gel noob!", "red");
+        passed = false;
+      }
+
+      var rec = [
+      "The Jokester's gun",
+      "Mafia Thumb Ring",
+      "Garbage Sticker",
+      "Mr. Cheeng's Spectacles",
+      "Xiblaxian holo-wrist-puter"];
+
+
+      var rolloverOutfit = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.outfitPieces)("Gladiatorial Glad Rags").filter(
+      (i) => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.availableAmount)(i) == 0);
+
+
+      if (rolloverOutfit.length > 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)(
+        "Missing pieces of rollover outfit! Missing: " +
+        rolloverOutfit.map((i) => i.name).join(", "),
+        "red");
+
+      }
+
+      var need = ["Eldritch hat", "eldritch pants"].
+      map((i) => Item.get(i)).
+      filter((i) => (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.availableAmount)(i) == 0);
+
+      if (need.length > 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)(
+        "Missing pieces of farming outfit! Missing: " +
+        need.map((i) => i.name).join(", "),
+        "red");
+
+
+        passed = false;
+      }
+
+      if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.availableAmount)(Item.get("The Jokester's gun")) == 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("You should consider getting a joksters gun", "red");
+      }
+
+      var outfits = ["rollover", "voter", "farming"].filter(
+      (s) =>
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getCustomOutfits)().find((o) => o.toLowerCase() == s.toLowerCase()) ==
+      null);
+
+
+      if (outfits.length > 0) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Missing outfits! Missing: " + outfits.join(", "));
+        passed = false;
+      }
+
+      return passed;
+    } }, { key: "doInitialSetup", value:
 
     function doInitialSetup() {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Lets get ready to fight for the right to tofu!", "blue");
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("charpane.php");
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("familiar unspeakachu");
-      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)(this.isTofunation() ? "breakfaster" : "breakfast");
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)(this.breakfastScript);
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Tofu script is ready to rumble!", "gray");
     } }, { key: "isTofunation", value:
 
@@ -463,11 +564,14 @@ var Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu
     } }, { key: "isFarmingDay", value:
 
     function isFarmingDay() {
-      return (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.numericModifier)("Smithsness") > 70;
+      return (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.numericModifier)("Smithsness") >= 50;
     } }, { key: "doJokestersGun", value:
 
     function doJokestersGun() {
-      if ((0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getProperty)("_firedJokestersGun") == "true") {
+      if (
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.getProperty)("_firedJokestersGun") == "true" ||
+      (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.availableAmount)(Item.get("The Jokester's gun")) == 0)
+      {
         return;
       }
 
@@ -503,6 +607,7 @@ var Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu
     function doMood() {
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Time to be moody!", "blue");
       var mood = "apathetic";
+
       if (this.isFarmingDay()) {
         mood = "acidparade";
       }
@@ -569,7 +674,7 @@ var Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu
         this.doJokestersGun();
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.outfit)("Farming");
 
-        var adventuresToKeep = 130;
+        var adventuresToKeep = 200 - this.rolloverAdventures;
 
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Charging day! Of ".concat(
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.myAdventures)(), ", we're spending ").concat(Math.max(
@@ -685,19 +790,23 @@ var Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("I need to dump this essential tofu somewhere...", "blue");
       var tofu = Item.get("Essential Tofu");
       var to_sell = (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.itemAmount)(tofu) - 10;
-      var stockAss = false;
 
       if (to_sell <= 0) {
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
         return;
       }
 
-      if (stockAss) {
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Stocking ASSistant! " + to_sell + " tofu to stock!", "purple");
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("csend " + to_sell + " essential tofu to ASSistant || 5@5000");
+      if (this.sendToMallMulti) {
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)(
+        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+        "purple");
+
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.cliExecute)("csend ".concat(
+        to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(this.mallLimit, "@").concat(this.pricePerTofu));
+
       } else {
         (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Stocking my own shop! " + to_sell + " tofu to stock!", "purple");
-        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.putShop)(5000, 3, to_sell, tofu);
+        (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.putShop)(this.pricePerTofu, this.mallLimit, to_sell, tofu);
       }
 
       (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Got rid of that tofu!", "gray");
@@ -818,6 +927,12 @@ function main() {
 
   var tofu = new Tofu();
 
+  if (!tofu.doQuickCheck()) {
+    (0,kolmafia__WEBPACK_IMPORTED_MODULE_0__.print)("Cannot continue when you can't meet basic requirements!");
+    return;
+  }
+
+  tofu.loadProperties();
   tofu.doInitialSetup();
   tofu.grabRequiredItems();
   tofu.voterSetup();
