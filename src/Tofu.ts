@@ -403,6 +403,8 @@ class Tofu {
       "blue"
     );
 
+    outfit("Farming");
+
     while (toInt(getProperty("_brickoFights")) < 10) {
       if (availableAmount(Item.get("BRICKO Ooze")) > 0) {
         use(1, Item.get("BRICKO Ooze"));
