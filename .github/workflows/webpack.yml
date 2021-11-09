@@ -32,5 +32,5 @@ jobs:
           git add scripts/
           {
             git commit -m "Build Mafia files for commit $GITHUB_SHA"
-            git push origin releasetest
+            git push origin release
           } || exit 0
