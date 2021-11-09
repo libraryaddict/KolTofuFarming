@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.join(__dirname, "./scripts/"),
+    path: path.join(__dirname, "./built/scripts/"),
     libraryTarget: "commonjs",
   },
   externals: {

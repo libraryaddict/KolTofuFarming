@@ -31,6 +31,8 @@ jobs:
           git config user.email "<>"
           git fetch --all
           git switch release
-          git add scripts
+          rm -r scripts/
+          mv built/scripts scripts
+          git add scripts/
           git commit -m "Build Mafia files for commit $GITHUB_SHA"
           git push origin release
