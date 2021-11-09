@@ -21,7 +21,6 @@ import {
   myClass,
   myMeat,
   myName,
-  myPrimestat,
   numericModifier,
   outfit,
   outfitPieces,
@@ -54,6 +53,33 @@ class Tofu {
   private mallLimit: number = 3;
   private breakfastScript: string = "breakfast";
   private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
+
+  startTofuing() {
+    if (myClass() != Class.get("Gelatinous Noob")) {
+      throw "You're not a Gelatinous Noob!";
+    }
+
+    let tofu = new Tofu();
+
+    if (!tofu.doQuickCheck()) {
+      print("Cannot continue when you can't meet basic requirements!");
+      return;
+    }
+
+    tofu.loadProperties();
+    tofu.doInitialSetup();
+    tofu.grabRequiredItems();
+    tofu.voterSetup();
+    tofu.createLightsThatGoOut();
+    tofu.doAbsorbs();
+    tofu.doMood();
+    //    tofu.doStash();
+    tofu.doFreeFights();
+    tofu.generateAdventures();
+    tofu.doFarming();
+    tofu.doStock();
+    tofu.doFinish();
+  }
 
   loadProperties() {
     print("Now loading tofu properties..", "gray");
@@ -873,28 +899,5 @@ class Tofu {
 }
 
 export function main() {
-  if (myClass() != Class.get("Gelatinous Noob")) {
-    throw "You're not a Gelatinous Noob!";
-  }
-
-  let tofu = new Tofu();
-
-  if (!tofu.doQuickCheck()) {
-    print("Cannot continue when you can't meet basic requirements!");
-    return;
-  }
-
-  tofu.loadProperties();
-  tofu.doInitialSetup();
-  tofu.grabRequiredItems();
-  tofu.voterSetup();
-  tofu.createLightsThatGoOut();
-  tofu.doAbsorbs();
-  tofu.doMood();
-  //    tofu.doStash();
-  tofu.doFreeFights();
-  tofu.generateAdventures();
-  tofu.doFarming();
-  tofu.doStock();
-  tofu.doFinish();
+  new Tofu().startTofuing();
 }
