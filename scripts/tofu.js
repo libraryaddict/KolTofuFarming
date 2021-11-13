@@ -56,7 +56,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     5000);_defineProperty(this, "mallLimit",
     3);_defineProperty(this, "breakfastScript",
     "breakfast");_defineProperty(this, "rolloverAdventures",
-    70);}_createClass(Tofu, [{ key: "startTofuing", value: // How many adventures we expect to gain from rollover.
+    70);_defineProperty(this, "sellbotOverflow",
+    100000000);}_createClass(Tofu, [{ key: "startTofuing", value: // When we have more than this amount of tofu in our store, we send the rest to sellbot
 
     function startTofuing() {
       if ((0,external_kolmafia_namespaceObject.myClass)() != Class.get("Gelatinous Noob")) {
@@ -119,6 +120,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       load("tofuMallMultiEnabled", this.sendToMallMulti.toString()));
 
       this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
+      this.sellbotOverflow = (0,external_kolmafia_namespaceObject.toInt)(
+      load("tofuSellbotOverflow", this.sellbotOverflow.toString()));
+
     } }, { key: "doQuickCheck", value:
 
     function doQuickCheck() {
@@ -134,8 +138,18 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       "Mafia Thumb Ring",
       "Garbage Sticker",
       "Mr. Cheeng's Spectacles",
-      "Xiblaxian holo-wrist-puter"];
+      "Xiblaxian holo-wrist-puter"].
 
+      map((i) => Item.get(i)).
+      filter((i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
+
+      if (rec.length > 0) {
+        (0,external_kolmafia_namespaceObject.print)(
+        "Missing some nice pieces of gear! " +
+        rec.map((i) => i.name).join(", "),
+        "red");
+
+      }
 
       var rolloverOutfit = (0,external_kolmafia_namespaceObject.outfitPieces)("Gladiatorial Glad Rags").filter(
       (i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
@@ -187,10 +201,59 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.cliExecute)("familiar unspeakachu");
       (0,external_kolmafia_namespaceObject.cliExecute)(this.breakfastScript);
       (0,external_kolmafia_namespaceObject.print)("Tofu script is ready to rumble!", "gray");
-    } }, { key: "isTofunation", value:
+    } }, { key: "grabBuffItems", value:
 
-    function isTofunation() {
-      return (0,external_kolmafia_namespaceObject.myName)().toLowerCase() == "tofunation";
+    function grabBuffItems() {
+      (0,external_kolmafia_namespaceObject.cliExecute)("mood acidparade");
+
+      var moodStuff = (0,external_kolmafia_namespaceObject.moodList)();var _iterator = _createForOfIteratorHelper(
+
+      moodStuff),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var mood = _step.value;
+          var spl = mood.split(" | ");
+
+          if (spl.length != 3) {
+            continue;
+          }
+
+          if (spl[0].toLowerCase() != "lose_effect") {
+            continue;
+          }
+
+          var match = spl[spl.length - 1].match(/use [0-9]+ (.*)/);
+
+          if (match == null) {
+            continue;
+          }
+
+          var item = (0,external_kolmafia_namespaceObject.toItem)(match[1]);
+
+          if (item == null || item == Item.get("None")) {
+            (0,external_kolmafia_namespaceObject.print)("Can't find the mood item '" + match[1] + "'", "red");
+            continue;
+          }
+
+          var effect = (0,external_kolmafia_namespaceObject.toEffect)(spl[1]);
+
+          if (effect == null) {
+            continue;
+          }
+
+          var duration = (0,external_kolmafia_namespaceObject.numericModifier)(item, "Effect Duration");
+
+          if (duration <= 0) {
+            continue;
+          }
+
+          var toBuy = void 0;
+
+          if ((0,external_kolmafia_namespaceObject.myMeat)() < 1500000) {
+            toBuy = 500 / duration;
+          } else {
+            toBuy = Math.max(10, 500 / duration);
+          }
+
+          (0,external_kolmafia_namespaceObject.retrieveItem)(Math.max(10, toBuy), item);
+        }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
     } }, { key: "grabItem", value:
 
     function grabItem(item, amount, price) {
@@ -219,17 +282,16 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       this.grabItem(Item.get("human musk"), 10, this.adventuresValuedAt * 6);
       this.grabItem(Item.get("borrowed time"), 2, this.adventuresValuedAt * 20);
-      (0,external_kolmafia_namespaceObject.retrieveItem)(500 / 10, Item.get("lavender candy heart"));
-      (0,external_kolmafia_namespaceObject.retrieveItem)(500 / 20, Item.get("resolution: be happier"));
-      (0,external_kolmafia_namespaceObject.retrieveItem)(500 / 30, Item.get("Battery (lantern)"));
       this.grabItem(Item.get("glark cable"), 10, this.freeFightValue);
       this.grabItem(
       Item.get("Absentee Voter Ballot"),
       3,
       this.freeFightValue * 3);
 
+
       this.grabItem(Item.get("BRICKO Ooze"), 10, this.freeFightValue);
       this.grabItem(Item.get("Lynyrd snare"), 3, this.freeFightValue);
+      this.grabBuffItems();
 
       if (this.doSideStuff) {
         this.grabItem(Item.get("Drum Machine"), 3, this.freeFightValue * 5);
@@ -240,8 +302,6 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       }
 
       (0,external_kolmafia_namespaceObject.retrieveItem)(100, Item.get("Third-Hand Lantern"));
-      (0,external_kolmafia_namespaceObject.retrieveItem)(20, Item.get("recording of The Ballad of Richie Thingfinder"));
-
       (0,external_kolmafia_namespaceObject.retrieveItem)(1000, Item.get("meat paste"));
       this.buyCheapestChocolates(10);
 
@@ -329,9 +389,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       var buyChocolates = function buyChocolates() {
         var cheapest;
-        var price;var _iterator = _createForOfIteratorHelper(
+        var price;var _iterator2 = _createForOfIteratorHelper(
 
-        chocs),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var i = _step.value;
+        chocs),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var i = _step2.value;
             var p = (0,external_kolmafia_namespaceObject.historicalAge)(i) > 31 ? (0,external_kolmafia_namespaceObject.mallPrice)(i) : (0,external_kolmafia_namespaceObject.historicalPrice)(i);
 
             if (cheapest != null || price <= p || p > v) {
@@ -340,7 +400,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
             cheapest = i;
             price = p;
-          }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
+          }} catch (err) {_iterator2.e(err);} finally {_iterator2.f();}
 
         if (cheapest == null) {
           return false;
@@ -766,32 +826,6 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       }
 
       (0,external_kolmafia_namespaceObject.print)("Fought some worms!");
-    } }, { key: "doStock", value:
-
-    function doStock() {
-      (0,external_kolmafia_namespaceObject.print)("I need to dump this essential tofu somewhere...", "blue");
-      var tofu = Item.get("Essential Tofu");
-      var to_sell = (0,external_kolmafia_namespaceObject.itemAmount)(tofu) - 10;
-
-      if (to_sell <= 0) {
-        (0,external_kolmafia_namespaceObject.print)("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
-        return;
-      }
-
-      if (this.sendToMallMulti) {
-        (0,external_kolmafia_namespaceObject.print)(
-        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
-        "purple");
-
-        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(
-        to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(this.mallLimit, "@").concat(this.pricePerTofu));
-
-      } else {
-        (0,external_kolmafia_namespaceObject.print)("Stocking my own shop! " + to_sell + " tofu to stock!", "purple");
-        (0,external_kolmafia_namespaceObject.putShop)(this.pricePerTofu, this.mallLimit, to_sell, tofu);
-      }
-
-      (0,external_kolmafia_namespaceObject.print)("Got rid of that tofu!", "gray");
     } }, { key: "voterSetup", value:
 
     function voterSetup() {
@@ -899,6 +933,45 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       monsterVote, "&local[]=").concat(firstInit, "&local[]=").concat(firstInit));
 
       (0,external_kolmafia_namespaceObject.waitq)(1);
+    } }, { key: "doStock", value:
+
+    function doStock() {
+      (0,external_kolmafia_namespaceObject.print)("I need to dump this essential tofu somewhere...", "blue");
+      var tofu = Item.get("Essential Tofu");
+      var to_sell = (0,external_kolmafia_namespaceObject.itemAmount)(tofu) - 10;
+
+      if (to_sell <= 0) {
+        (0,external_kolmafia_namespaceObject.print)("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
+        return;
+      }
+
+      if (this.sendToMallMulti) {
+        (0,external_kolmafia_namespaceObject.print)(
+        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+        "purple");
+
+        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(
+        to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(this.mallLimit, "@").concat(this.pricePerTofu));
+
+      } else if (
+      this.sellbotOverflow < 100000000 &&
+      (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > this.sellbotOverflow)
+      {
+        (0,external_kolmafia_namespaceObject.print)("We have ".concat(
+        this.getNumber(
+        (0,external_kolmafia_namespaceObject.shopAmount)(tofu)), " tofu in mall, our overflow is ").concat(
+        this.getNumber(
+        this.sellbotOverflow), " so lets send ").concat(
+        this.getNumber(to_sell), " excess tofu to sellbot!"),
+        "purple");
+
+
+        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(to_sell, " essential tofu to sellbot"));
+      } else {
+        (0,external_kolmafia_namespaceObject.putShop)(this.pricePerTofu, this.mallLimit, to_sell, tofu);
+      }
+
+      (0,external_kolmafia_namespaceObject.print)("Got rid of that tofu!", "gray");
     } }]);return Tofu;}();
 
 
