@@ -16,6 +16,7 @@ import {
   isOnline,
   itemAmount,
   mallPrice,
+  moodList,
   myAbsorbs,
   myAdventures,
   myClass,
@@ -33,9 +34,12 @@ import {
   runChoice,
   runCombat,
   setProperty,
+  shopAmount,
   takeStash,
   toBoolean,
+  toEffect,
   toInt,
+  toItem,
   totalTurnsPlayed,
   use,
   useSkill,
@@ -53,6 +57,7 @@ class Tofu {
   private mallLimit: number = 3;
   private breakfastScript: string = "breakfast";
   private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
+  private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
 
   startTofuing() {
     if (myClass() != Class.get("Gelatinous Noob")) {
@@ -115,6 +120,9 @@ class Tofu {
       load("tofuMallMultiEnabled", this.sendToMallMulti.toString())
     );
     this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
+    this.sellbotOverflow = toInt(
+      load("tofuSellbotOverflow", this.sellbotOverflow.toString())
+    );
   }
 
   doQuickCheck(): boolean {
@@ -125,13 +133,23 @@ class Tofu {
       passed = false;
     }
 
-    let rec: string[] = [
+    let rec: Item[] = [
       "The Jokester's gun",
       "Mafia Thumb Ring",
       "Garbage Sticker",
       "Mr. Cheeng's Spectacles",
       "Xiblaxian holo-wrist-puter",
-    ];
+    ]
+      .map((i) => Item.get(i))
+      .filter((i) => availableAmount(i) == 0);
+
+    if (rec.length > 0) {
+      print(
+        "Missing some nice pieces of gear! " +
+          rec.map((i) => i.name).join(", "),
+        "red"
+      );
+    }
 
     let rolloverOutfit: Item[] = outfitPieces("Gladiatorial Glad Rags").filter(
       (i) => availableAmount(i) == 0
@@ -185,8 +203,57 @@ class Tofu {
     print("Tofu script is ready to rumble!", "gray");
   }
 
-  isTofunation(): boolean {
-    return myName().toLowerCase() == "tofunation";
+  grabBuffItems() {
+    cliExecute("mood acidparade");
+
+    let moodStuff = moodList();
+
+    for (let mood of moodStuff) {
+      let spl = mood.split(" | ");
+
+      if (spl.length != 3) {
+        continue;
+      }
+
+      if (spl[0].toLowerCase() != "lose_effect") {
+        continue;
+      }
+
+      let match = spl[spl.length - 1].match(/use [0-9]+ (.*)/);
+
+      if (match == null) {
+        continue;
+      }
+
+      let item = toItem(match[1]);
+
+      if (item == null || item == Item.get("None")) {
+        print("Can't find the mood item '" + match[1] + "'", "red");
+        continue;
+      }
+
+      let effect = toEffect(spl[1]);
+
+      if (effect == null) {
+        continue;
+      }
+
+      let duration = numericModifier(item, "Effect Duration");
+
+      if (duration <= 0) {
+        continue;
+      }
+
+      let toBuy: number;
+
+      if (myMeat() < 1_500_000) {
+        toBuy = 500 / duration;
+      } else {
+        toBuy = Math.max(10, 500 / duration);
+      }
+
+      retrieveItem(Math.max(10, toBuy), item);
+    }
   }
 
   grabItem(item: Item, amount: number, price: number) {
@@ -215,17 +282,16 @@ class Tofu {
     );
     this.grabItem(Item.get("human musk"), 10, this.adventuresValuedAt * 6);
     this.grabItem(Item.get("borrowed time"), 2, this.adventuresValuedAt * 20);
-    retrieveItem(500 / 10, Item.get("lavender candy heart"));
-    retrieveItem(500 / 20, Item.get("resolution: be happier"));
-    retrieveItem(500 / 30, Item.get("Battery (lantern)"));
     this.grabItem(Item.get("glark cable"), 10, this.freeFightValue);
     this.grabItem(
       Item.get("Absentee Voter Ballot"),
       3,
       this.freeFightValue * 3
     );
+
     this.grabItem(Item.get("BRICKO Ooze"), 10, this.freeFightValue);
     this.grabItem(Item.get("Lynyrd snare"), 3, this.freeFightValue);
+    this.grabBuffItems();
 
     if (this.doSideStuff) {
       this.grabItem(Item.get("Drum Machine"), 3, this.freeFightValue * 5);
@@ -236,8 +302,6 @@ class Tofu {
     }
 
     retrieveItem(100, Item.get("Third-Hand Lantern"));
-    retrieveItem(20, Item.get("recording of The Ballad of Richie Thingfinder"));
-
     retrieveItem(1000, Item.get("meat paste"));
     this.buyCheapestChocolates(10);
 
@@ -764,32 +828,6 @@ class Tofu {
     print("Fought some worms!");
   }
 
-  doStock() {
-    print("I need to dump this essential tofu somewhere...", "blue");
-    let tofu = Item.get("Essential Tofu");
-    let to_sell = itemAmount(tofu) - 10;
-
-    if (to_sell <= 0) {
-      print("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
-      return;
-    }
-
-    if (this.sendToMallMulti) {
-      print(
-        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
-        "purple"
-      );
-      cliExecute(
-        `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
-      );
-    } else {
-      print("Stocking my own shop! " + to_sell + " tofu to stock!", "purple");
-      putShop(this.pricePerTofu, this.mallLimit, to_sell, tofu);
-    }
-
-    print("Got rid of that tofu!", "gray");
-  }
-
   voterSetup(): void {
     print("Oh god, I forgot I need to vote in the elections today", "blue");
 
@@ -895,6 +933,45 @@ class Tofu {
       `choice.php?option=1&whichchoice=1331&g=${monsterVote}&local[]=${firstInit}&local[]=${firstInit}`
     );
     waitq(1);
+  }
+
+  doStock() {
+    print("I need to dump this essential tofu somewhere...", "blue");
+    let tofu = Item.get("Essential Tofu");
+    let to_sell = itemAmount(tofu) - 10;
+
+    if (to_sell <= 0) {
+      print("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
+      return;
+    }
+
+    if (this.sendToMallMulti) {
+      print(
+        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+        "purple"
+      );
+      cliExecute(
+        `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
+      );
+    } else if (
+      this.sellbotOverflow < 100_000_000 &&
+      shopAmount(tofu) > this.sellbotOverflow
+    ) {
+      print(
+        `We have ${this.getNumber(
+          shopAmount(tofu)
+        )} tofu in mall, our overflow is ${this.getNumber(
+          this.sellbotOverflow
+        )} so lets send ${this.getNumber(to_sell)} excess tofu to sellbot!`,
+        "purple"
+      );
+
+      cliExecute(`csend ${to_sell} essential tofu to sellbot`);
+    } else {
+      putShop(this.pricePerTofu, this.mallLimit, to_sell, tofu);
+    }
+
+    print("Got rid of that tofu!", "gray");
   }
 }
 
