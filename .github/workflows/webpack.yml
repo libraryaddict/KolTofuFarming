@@ -32,7 +32,7 @@ jobs:
           git fetch --all
           git switch release
           rm -r scripts/
-          mv dist/scripts scripts
+          mv built/scripts scripts
           git add scripts/
           git commit -m "Build Mafia files for commit $GITHUB_SHA"
           git push origin release
