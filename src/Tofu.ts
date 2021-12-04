@@ -15,6 +15,7 @@ import {
   historicalPrice,
   isOnline,
   itemAmount,
+  lastMonster,
   mallPrice,
   moodList,
   myAbsorbs,
@@ -40,6 +41,7 @@ import {
   toEffect,
   toInt,
   toItem,
+  toMonster,
   totalTurnsPlayed,
   use,
   useSkill,
@@ -301,6 +303,9 @@ class Tofu {
       this.grabItem(Item.get("Blue Mana"), 10, this.adventuresValuedAt);
     }
 
+    this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+    this.grabItem(Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
+
     retrieveItem(100, Item.get("Third-Hand Lantern"));
     retrieveItem(1000, Item.get("meat paste"));
     this.buyCheapestChocolates(10);
@@ -457,7 +462,7 @@ class Tofu {
       getProperty("_timeArrowSent") == "" &&
       availableAmount(Item.get("Time's Arrow")) > 0
     ) {
-      cliExecute("send time's arrow to botticelli");
+      cliExecute("send time's arrow to cookiebot || arrow");
       setProperty("_timeArrowSent", "true");
     }
 
@@ -485,6 +490,28 @@ class Tofu {
         "gray"
       );
     }
+  }
+
+  doRubberSpider() {
+    if (availableAmount(Item.get("Rubber Spider")) <= 0) {
+      return;
+    }
+
+    let pref = "lastSpiderUsed";
+    let turnsAgo = totalTurnsPlayed() - toInt(getProperty(pref));
+
+    if (lastMonster() != toMonster("Giant rubber spider") && turnsAgo < 20) {
+      return;
+    }
+
+    cliExecute("send rubber spider to cookiebot || spider");
+    setProperty(pref, totalTurnsPlayed().toString());
+
+    print(
+      "Waiting 5 seconds to be better reassured that the rubber spider is applied soon as feasible",
+      "gray"
+    );
+    waitq(5);
   }
 
   doFreeFights() {
@@ -695,6 +722,7 @@ class Tofu {
       ) {
         this.doJokestersGun();
         outfit("Farming");
+        this.doRubberSpider();
 
         if (
           haveEffect(Effect.get("Fat Leon's Phat Loot Lyric")) < 100 &&
@@ -715,6 +743,7 @@ class Tofu {
     } else {
       this.doJokestersGun();
       outfit("Farming");
+      this.doRubberSpider();
 
       const adventuresToKeep = 200 - this.rolloverAdventures;
 
