@@ -3,7 +3,6 @@ const path = require("path");
 module.exports = {
   entry: {
     tofu: "./src/Tofu.ts",
-    tofuabusers: "./src/TofuAbusers.ts",
   },
   mode: "production",
   module: {
