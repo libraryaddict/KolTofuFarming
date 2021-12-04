@@ -301,6 +301,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         this.grabItem(Item.get("Blue Mana"), 10, this.adventuresValuedAt);
       }
 
+      this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+      this.grabItem(Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
+
       (0,external_kolmafia_namespaceObject.retrieveItem)(100, Item.get("Third-Hand Lantern"));
       (0,external_kolmafia_namespaceObject.retrieveItem)(1000, Item.get("meat paste"));
       this.buyCheapestChocolates(10);
@@ -457,7 +460,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.getProperty)("_timeArrowSent") == "" &&
       (0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Time's Arrow")) > 0)
       {
-        (0,external_kolmafia_namespaceObject.cliExecute)("send time's arrow to botticelli");
+        (0,external_kolmafia_namespaceObject.cliExecute)("send time's arrow to cookiebot || arrow");
         (0,external_kolmafia_namespaceObject.setProperty)("_timeArrowSent", "true");
       }
 
@@ -485,6 +488,28 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         "gray");
 
       }
+    } }, { key: "doRubberSpider", value:
+
+    function doRubberSpider() {
+      if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Rubber Spider")) <= 0) {
+        return;
+      }
+
+      var pref = "lastSpiderUsed";
+      var turnsAgo = (0,external_kolmafia_namespaceObject.totalTurnsPlayed)() - (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)(pref));
+
+      if ((0,external_kolmafia_namespaceObject.lastMonster)() != (0,external_kolmafia_namespaceObject.toMonster)("Giant rubber spider") && turnsAgo < 20) {
+        return;
+      }
+
+      (0,external_kolmafia_namespaceObject.cliExecute)("send rubber spider to cookiebot || spider");
+      (0,external_kolmafia_namespaceObject.setProperty)(pref, (0,external_kolmafia_namespaceObject.totalTurnsPlayed)().toString());
+
+      (0,external_kolmafia_namespaceObject.print)(
+      "Waiting 5 seconds to be better reassured that the rubber spider is applied soon as feasible",
+      "gray");
+
+      (0,external_kolmafia_namespaceObject.waitq)(5);
     } }, { key: "doFreeFights", value:
 
     function doFreeFights() {
@@ -695,6 +720,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         {
           this.doJokestersGun();
           (0,external_kolmafia_namespaceObject.outfit)("Farming");
+          this.doRubberSpider();
 
           if (
           (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("Fat Leon's Phat Loot Lyric")) < 100 &&
@@ -715,6 +741,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       } else {
         this.doJokestersGun();
         (0,external_kolmafia_namespaceObject.outfit)("Farming");
+        this.doRubberSpider();
 
         var adventuresToKeep = 200 - this.rolloverAdventures;
 
