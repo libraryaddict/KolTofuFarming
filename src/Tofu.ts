@@ -492,26 +492,45 @@ class Tofu {
     }
   }
 
-  doRubberSpider() {
+  doRubberSpider(): boolean {
     if (availableAmount(Item.get("Rubber Spider")) <= 0) {
-      return;
+      return false;
     }
 
     let pref = "lastSpiderUsed";
     let turnsAgo = totalTurnsPlayed() - toInt(getProperty(pref));
 
-    if (lastMonster() != toMonster("Giant rubber spider") && turnsAgo < 20) {
+    if (turnsAgo < 10 || getProperty("_skipRubberSpiders") == "true") {
       return;
     }
 
-    cliExecute("send rubber spider to cookiebot || spider");
+    if (getProperty("lastEncounter") != "giant rubber spider") {
+      if (turnsAgo <= 20) {
+        return false;
+      } else if (turnsAgo == 21) {
+        print(
+          "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one."
+        );
+        adv1(Location.get("The Electric Lemonade Acid Parade"));
+      }
+    }
+
+    if (!isOnline("CookieBot")) {
+      setProperty("_skipRubberSpiders", "true");
+      return false;
+    }
+
     setProperty(pref, totalTurnsPlayed().toString());
+    setProperty("lastEncounter", "");
+
+    cliExecute("send rubber spider to cookiebot || spider");
 
     print(
-      "Waiting 5 seconds to be better reassured that the rubber spider is applied soon as feasible",
+      "Waiting 15 seconds to be better reassured that the rubber spider is applied soon as feasible",
       "gray"
     );
-    waitq(5);
+    waitq(15);
+    return true;
   }
 
   doFreeFights() {
@@ -722,7 +741,10 @@ class Tofu {
       ) {
         this.doJokestersGun();
         outfit("Farming");
-        this.doRubberSpider();
+
+        if (this.doRubberSpider()) {
+          continue;
+        }
 
         if (
           haveEffect(Effect.get("Fat Leon's Phat Loot Lyric")) < 100 &&
@@ -743,7 +765,6 @@ class Tofu {
     } else {
       this.doJokestersGun();
       outfit("Farming");
-      this.doRubberSpider();
 
       const adventuresToKeep = 200 - this.rolloverAdventures;
 
@@ -756,9 +777,15 @@ class Tofu {
       );
 
       while (myAdventures() > adventuresToKeep) {
+        if (this.doRubberSpider()) {
+          continue;
+        }
+
         if (this.doVoterFight()) {
           continue;
         }
+
+        setProperty("lastEncounter", "In Your Cups"); // Probs a bad move?
 
         visitUrl("inv_use.php?pwd&whichitem=4613&teacups=1");
       }
