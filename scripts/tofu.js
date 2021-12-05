@@ -492,24 +492,43 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
     function doRubberSpider() {
       if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Rubber Spider")) <= 0) {
-        return;
+        return false;
       }
 
       var pref = "lastSpiderUsed";
       var turnsAgo = (0,external_kolmafia_namespaceObject.totalTurnsPlayed)() - (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)(pref));
 
-      if ((0,external_kolmafia_namespaceObject.lastMonster)() != (0,external_kolmafia_namespaceObject.toMonster)("Giant rubber spider") && turnsAgo < 20) {
+      if (turnsAgo < 10 || (0,external_kolmafia_namespaceObject.getProperty)("_skipRubberSpiders") == "true") {
         return;
       }
 
-      (0,external_kolmafia_namespaceObject.cliExecute)("send rubber spider to cookiebot || spider");
+      if ((0,external_kolmafia_namespaceObject.getProperty)("lastEncounter") != "giant rubber spider") {
+        if (turnsAgo <= 20) {
+          return false;
+        } else if (turnsAgo == 21) {
+          (0,external_kolmafia_namespaceObject.print)(
+          "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one.");
+
+          (0,external_kolmafia_namespaceObject.adv1)(Location.get("The Electric Lemonade Acid Parade"));
+        }
+      }
+
+      if (!(0,external_kolmafia_namespaceObject.isOnline)("CookieBot")) {
+        (0,external_kolmafia_namespaceObject.setProperty)("_skipRubberSpiders", "true");
+        return false;
+      }
+
       (0,external_kolmafia_namespaceObject.setProperty)(pref, (0,external_kolmafia_namespaceObject.totalTurnsPlayed)().toString());
+      (0,external_kolmafia_namespaceObject.setProperty)("lastEncounter", "");
+
+      (0,external_kolmafia_namespaceObject.cliExecute)("send rubber spider to cookiebot || spider");
 
       (0,external_kolmafia_namespaceObject.print)(
-      "Waiting 5 seconds to be better reassured that the rubber spider is applied soon as feasible",
+      "Waiting 15 seconds to be better reassured that the rubber spider is applied soon as feasible",
       "gray");
 
-      (0,external_kolmafia_namespaceObject.waitq)(5);
+      (0,external_kolmafia_namespaceObject.waitq)(15);
+      return true;
     } }, { key: "doFreeFights", value:
 
     function doFreeFights() {
@@ -720,7 +739,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         {
           this.doJokestersGun();
           (0,external_kolmafia_namespaceObject.outfit)("Farming");
-          this.doRubberSpider();
+
+          if (this.doRubberSpider()) {
+            continue;
+          }
 
           if (
           (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("Fat Leon's Phat Loot Lyric")) < 100 &&
@@ -741,7 +763,6 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       } else {
         this.doJokestersGun();
         (0,external_kolmafia_namespaceObject.outfit)("Farming");
-        this.doRubberSpider();
 
         var adventuresToKeep = 200 - this.rolloverAdventures;
 
@@ -754,9 +775,15 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
 
         while ((0,external_kolmafia_namespaceObject.myAdventures)() > adventuresToKeep) {
+          if (this.doRubberSpider()) {
+            continue;
+          }
+
           if (this.doVoterFight()) {
             continue;
           }
+
+          (0,external_kolmafia_namespaceObject.setProperty)("lastEncounter", "In Your Cups"); // Probs a bad move?
 
           (0,external_kolmafia_namespaceObject.visitUrl)("inv_use.php?pwd&whichitem=4613&teacups=1");
         }
