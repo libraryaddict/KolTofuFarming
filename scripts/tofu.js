@@ -57,33 +57,59 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     3);_defineProperty(this, "breakfastScript",
     "breakfast");_defineProperty(this, "rolloverAdventures",
     70);_defineProperty(this, "sellbotOverflow",
-    100000000);}_createClass(Tofu, [{ key: "startTofuing", value: // When we have more than this amount of tofu in our store, we send the rest to sellbot
+    100000000);_defineProperty(this, "skipRubberSpiders",
+    false);}_createClass(Tofu, [{ key: "startTofuing", value:
 
     function startTofuing() {
       if ((0,external_kolmafia_namespaceObject.myClass)() != Class.get("Gelatinous Noob")) {
         throw "You're not a Gelatinous Noob!";
       }
 
-      var tofu = new Tofu();
-
-      if (!tofu.doQuickCheck()) {
+      if (!this.doQuickCheck()) {
         (0,external_kolmafia_namespaceObject.print)("Cannot continue when you can't meet basic requirements!");
         return;
       }
 
-      tofu.loadProperties();
-      tofu.doInitialSetup();
-      tofu.grabRequiredItems();
-      tofu.voterSetup();
-      tofu.createLightsThatGoOut();
-      tofu.doAbsorbs();
-      tofu.doMood();
+      var startedCups = (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("In Your Cups"));
+      var turnsSpent = (0,external_kolmafia_namespaceObject.turnsPlayed)();
+
+      this.loadProperties();
+      this.doInitialSetup();
+      this.grabRequiredItems();
+      this.voterSetup();
+      this.createLightsThatGoOut();
+      this.doAbsorbs();
+      this.doMood();
       //    tofu.doStash();
-      tofu.doFreeFights();
-      tofu.generateAdventures();
-      tofu.doFarming();
-      tofu.doStock();
-      tofu.doFinish();
+      this.doFreeFights();
+      this.generateAdventures();
+      this.doFarming();
+      this.doStock();
+      this.doFinish();
+
+      var cupsEarned;
+
+      var effDiff = (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("In Your Cups")) - startedCups;
+      turnsSpent = (0,external_kolmafia_namespaceObject.turnsPlayed)() - turnsSpent;
+
+      if (this.isFarmingDay()) {
+        // On a farming day we'll have -200 effDiff
+        // So with 190 advs spent, that means we do a -effDiff
+        cupsEarned = -effDiff - turnsSpent;
+      } else {
+        cupsEarned = effDiff - turnsSpent;
+      }
+
+      if (cupsEarned > 0) {
+        (0,external_kolmafia_namespaceObject.print)(
+        "Spent " +
+        turnsSpent +
+        " turns and gained an extra " +
+        cupsEarned +
+        ' of "In Your Cups!"',
+        "gray");
+
+      }
     } }, { key: "loadProperties", value:
 
     function loadProperties() {
@@ -122,6 +148,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
       this.sellbotOverflow = (0,external_kolmafia_namespaceObject.toInt)(
       load("tofuSellbotOverflow", this.sellbotOverflow.toString()));
+
+      this.skipRubberSpiders = (0,external_kolmafia_namespaceObject.toBoolean)(
+      load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString()));
 
     } }, { key: "doQuickCheck", value:
 
@@ -301,7 +330,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         this.grabItem(Item.get("Blue Mana"), 10, this.adventuresValuedAt);
       }
 
-      this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+      if (!this.skipRubberSpiders) {
+        this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+      }
+
       this.grabItem(Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
 
       (0,external_kolmafia_namespaceObject.retrieveItem)(100, Item.get("Third-Hand Lantern"));
@@ -488,24 +520,31 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         "gray");
 
       }
+
+      return (0,external_kolmafia_namespaceObject.myAdventures)() - advs;
     } }, { key: "doRubberSpider", value:
 
     function doRubberSpider() {
-      if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Rubber Spider")) <= 0) {
+      if (
+      this.skipRubberSpiders ||
+      (0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Rubber Spider")) <= 0)
+      {
         return false;
       }
 
-      var pref = "lastSpiderUsed";
+      var pref = "_lastSpiderUsed";
+      var prefNubbin = "_rubberNubins";
       var turnsAgo = (0,external_kolmafia_namespaceObject.totalTurnsPlayed)() - (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)(pref));
+      var nubbin = Item.get("Rubber nubbin");
 
       if (turnsAgo < 10 || (0,external_kolmafia_namespaceObject.getProperty)("_skipRubberSpiders") == "true") {
         return;
       }
 
-      if ((0,external_kolmafia_namespaceObject.getProperty)("lastEncounter") != "giant rubber spider") {
+      if ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)(prefNubbin)) == (0,external_kolmafia_namespaceObject.availableAmount)(nubbin)) {
         if (turnsAgo <= 20) {
           return false;
-        } else if (turnsAgo == 21) {
+        } else if (turnsAgo == 21 && !this.isFarmingDay()) {
           (0,external_kolmafia_namespaceObject.print)(
           "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one.");
 
@@ -519,7 +558,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       }
 
       (0,external_kolmafia_namespaceObject.setProperty)(pref, (0,external_kolmafia_namespaceObject.totalTurnsPlayed)().toString());
-      (0,external_kolmafia_namespaceObject.setProperty)("lastEncounter", "");
+      (0,external_kolmafia_namespaceObject.setProperty)(prefNubbin, (0,external_kolmafia_namespaceObject.availableAmount)(nubbin) + "");
 
       (0,external_kolmafia_namespaceObject.cliExecute)("send rubber spider to cookiebot || spider");
 
@@ -539,9 +578,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.outfit)("Farming");
 
+      var freeFights = 0;
+
       while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_brickoFights")) < 10) {
         if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("BRICKO Ooze")) > 0) {
           (0,external_kolmafia_namespaceObject.use)(1, Item.get("BRICKO Ooze"));
+          freeFights++;
         } else {
           break;
         }
@@ -550,6 +592,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_lynyrdSnareUses")) < 3) {
         if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("Lynyrd snare")) > 0) {
           (0,external_kolmafia_namespaceObject.use)(1, Item.get("Lynyrd snare"));
+          freeFights++;
         } else {
           break;
         }
@@ -572,11 +615,13 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         }
 
         (0,external_kolmafia_namespaceObject.adv1)(Location.get("The Hidden Bowling Alley"), -1, "");
+        freeFights++;
       }
 
       while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_glarkCableUses")) < 5) {
         if ((0,external_kolmafia_namespaceObject.availableAmount)(Item.get("glark cable")) > 0) {
           (0,external_kolmafia_namespaceObject.adv1)(Location.get("The Red Zeppelin"), -1, "");
+          freeFights++;
         } else {
           break;
         }
@@ -586,9 +631,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.visitUrl)("place.php?whichplace=forestvillage&action=fv_scientist");
         (0,external_kolmafia_namespaceObject.runChoice)(1);
         (0,external_kolmafia_namespaceObject.runCombat)();
+        freeFights++;
       }
 
       (0,external_kolmafia_namespaceObject.print)("Free fights are all done! I feel empowered!", "gray");
+
+      return freeFights;
     } }, { key: "createLightsThatGoOut", value:
 
     function createLightsThatGoOut() {
