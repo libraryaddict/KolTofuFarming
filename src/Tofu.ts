@@ -43,6 +43,7 @@ import {
   toItem,
   toMonster,
   totalTurnsPlayed,
+  turnsPlayed,
   use,
   useSkill,
   visitUrl,
@@ -60,32 +61,58 @@ class Tofu {
   private breakfastScript: string = "breakfast";
   private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
+  private skipRubberSpiders: boolean = false;
 
   startTofuing() {
     if (myClass() != Class.get("Gelatinous Noob")) {
       throw "You're not a Gelatinous Noob!";
     }
 
-    let tofu = new Tofu();
-
-    if (!tofu.doQuickCheck()) {
+    if (!this.doQuickCheck()) {
       print("Cannot continue when you can't meet basic requirements!");
       return;
     }
 
-    tofu.loadProperties();
-    tofu.doInitialSetup();
-    tofu.grabRequiredItems();
-    tofu.voterSetup();
-    tofu.createLightsThatGoOut();
-    tofu.doAbsorbs();
-    tofu.doMood();
+    let startedCups = haveEffect(Effect.get("In Your Cups"));
+    let turnsSpent = turnsPlayed();
+
+    this.loadProperties();
+    this.doInitialSetup();
+    this.grabRequiredItems();
+    this.voterSetup();
+    this.createLightsThatGoOut();
+    this.doAbsorbs();
+    this.doMood();
     //    tofu.doStash();
-    tofu.doFreeFights();
-    tofu.generateAdventures();
-    tofu.doFarming();
-    tofu.doStock();
-    tofu.doFinish();
+    this.doFreeFights();
+    this.generateAdventures();
+    this.doFarming();
+    this.doStock();
+    this.doFinish();
+
+    let cupsEarned: number;
+
+    let effDiff = haveEffect(Effect.get("In Your Cups")) - startedCups;
+    turnsSpent = turnsPlayed() - turnsSpent;
+
+    if (this.isFarmingDay()) {
+      // On a farming day we'll have -200 effDiff
+      // So with 190 advs spent, that means we do a -effDiff
+      cupsEarned = -effDiff - turnsSpent;
+    } else {
+      cupsEarned = effDiff - turnsSpent;
+    }
+
+    if (cupsEarned > 0) {
+      print(
+        "Spent " +
+          turnsSpent +
+          " turns and gained an extra " +
+          cupsEarned +
+          ' of "In Your Cups!"',
+        "gray"
+      );
+    }
   }
 
   loadProperties() {
@@ -124,6 +151,9 @@ class Tofu {
     this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
     this.sellbotOverflow = toInt(
       load("tofuSellbotOverflow", this.sellbotOverflow.toString())
+    );
+    this.skipRubberSpiders = toBoolean(
+      load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString())
     );
   }
 
@@ -303,7 +333,10 @@ class Tofu {
       this.grabItem(Item.get("Blue Mana"), 10, this.adventuresValuedAt);
     }
 
-    this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+    if (!this.skipRubberSpiders) {
+      this.grabItem(Item.get("Rubber Spider"), 45, this.freeFightValue);
+    }
+
     this.grabItem(Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
 
     retrieveItem(100, Item.get("Third-Hand Lantern"));
@@ -418,7 +451,7 @@ class Tofu {
     while (amount > 0 && buyChocolates()) {}
   }
 
-  generateAdventures() {
+  generateAdventures(): number {
     print("Now hyping ourselves up so we can do more adventures..", "blue");
     let advs = myAdventures();
 
@@ -490,24 +523,31 @@ class Tofu {
         "gray"
       );
     }
+
+    return myAdventures() - advs;
   }
 
   doRubberSpider(): boolean {
-    if (availableAmount(Item.get("Rubber Spider")) <= 0) {
+    if (
+      this.skipRubberSpiders ||
+      availableAmount(Item.get("Rubber Spider")) <= 0
+    ) {
       return false;
     }
 
-    let pref = "lastSpiderUsed";
+    let pref = "_lastSpiderUsed";
+    let prefNubbin = "_rubberNubins";
     let turnsAgo = totalTurnsPlayed() - toInt(getProperty(pref));
+    let nubbin = Item.get("Rubber nubbin");
 
     if (turnsAgo < 10 || getProperty("_skipRubberSpiders") == "true") {
       return;
     }
 
-    if (getProperty("lastEncounter") != "giant rubber spider") {
+    if (toInt(getProperty(prefNubbin)) == availableAmount(nubbin)) {
       if (turnsAgo <= 20) {
         return false;
-      } else if (turnsAgo == 21) {
+      } else if (turnsAgo == 21 && !this.isFarmingDay()) {
         print(
           "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one."
         );
@@ -521,7 +561,7 @@ class Tofu {
     }
 
     setProperty(pref, totalTurnsPlayed().toString());
-    setProperty("lastEncounter", "");
+    setProperty(prefNubbin, availableAmount(nubbin) + "");
 
     cliExecute("send rubber spider to cookiebot || spider");
 
@@ -533,7 +573,7 @@ class Tofu {
     return true;
   }
 
-  doFreeFights() {
+  doFreeFights(): number {
     print(
       "I want to test out some of my kung fu moves before I head off. Lets do some free fights",
       "blue"
@@ -541,9 +581,12 @@ class Tofu {
 
     outfit("Farming");
 
+    let freeFights = 0;
+
     while (toInt(getProperty("_brickoFights")) < 10) {
       if (availableAmount(Item.get("BRICKO Ooze")) > 0) {
         use(1, Item.get("BRICKO Ooze"));
+        freeFights++;
       } else {
         break;
       }
@@ -552,6 +595,7 @@ class Tofu {
     while (toInt(getProperty("_lynyrdSnareUses")) < 3) {
       if (availableAmount(Item.get("Lynyrd snare")) > 0) {
         use(1, Item.get("Lynyrd snare"));
+        freeFights++;
       } else {
         break;
       }
@@ -574,11 +618,13 @@ class Tofu {
       }
 
       adv1(Location.get("The Hidden Bowling Alley"), -1, "");
+      freeFights++;
     }
 
     while (toInt(getProperty("_glarkCableUses")) < 5) {
       if (availableAmount(Item.get("glark cable")) > 0) {
         adv1(Location.get("The Red Zeppelin"), -1, "");
+        freeFights++;
       } else {
         break;
       }
@@ -588,9 +634,12 @@ class Tofu {
       visitUrl("place.php?whichplace=forestvillage&action=fv_scientist");
       runChoice(1);
       runCombat();
+      freeFights++;
     }
 
     print("Free fights are all done! I feel empowered!", "gray");
+
+    return freeFights;
   }
 
   createLightsThatGoOut() {
