@@ -27,6 +27,7 @@ import {
   outfit,
   outfitPieces,
   print,
+  propertyExists,
   putCloset,
   putShop,
   putStash,
@@ -62,6 +63,11 @@ class Tofu {
   private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
   private skipRubberSpiders: boolean = false;
+  private freeFights: Map<String, number> = new Map();
+
+  addFreeFight(fightName: string) {
+    this.freeFights.set(fightName, (this.freeFights.get(fightName) | 0) + 1);
+  }
 
   startTofuing() {
     if (myClass() != Class.get("Gelatinous Noob")) {
@@ -113,6 +119,20 @@ class Tofu {
         "gray"
       );
     }
+
+    let str = "";
+    let total = 0;
+
+    this.freeFights.forEach((v, k) => {
+      if (str.length > 0) {
+        str += ", ";
+      }
+
+      str += k + ": " + v;
+      total += v;
+    });
+
+    print(`${total} free fights: ${str}`, "gray");
   }
 
   loadProperties() {
@@ -122,11 +142,13 @@ class Tofu {
 
       if (prop == null || prop == "") {
         print(
-          `Tofu Setting ${propertyName} hasn't been set. Defaulting to ${defaultValue}`
+          `Tofu Setting ${propertyName} hasn't been set. Defaulting to ${defaultValue}`,
+          "gray"
         );
         return defaultValue;
       }
 
+      print(`Tofu setting ${propertyName} loaded: ${prop}`, "gray");
       return prop;
     };
 
@@ -555,6 +577,10 @@ class Tofu {
       }
     }
 
+    if (propertyExists(prefNubbin)) {
+      this.addFreeFight("Rubber Spider");
+    }
+
     if (!isOnline("CookieBot")) {
       setProperty("_skipRubberSpiders", "true");
       return false;
@@ -573,7 +599,7 @@ class Tofu {
     return true;
   }
 
-  doFreeFights(): number {
+  doFreeFights() {
     print(
       "I want to test out some of my kung fu moves before I head off. Lets do some free fights",
       "blue"
@@ -581,12 +607,10 @@ class Tofu {
 
     outfit("Farming");
 
-    let freeFights = 0;
-
     while (toInt(getProperty("_brickoFights")) < 10) {
       if (availableAmount(Item.get("BRICKO Ooze")) > 0) {
         use(1, Item.get("BRICKO Ooze"));
-        freeFights++;
+        this.addFreeFight("BRICKO");
       } else {
         break;
       }
@@ -595,7 +619,7 @@ class Tofu {
     while (toInt(getProperty("_lynyrdSnareUses")) < 3) {
       if (availableAmount(Item.get("Lynyrd snare")) > 0) {
         use(1, Item.get("Lynyrd snare"));
-        freeFights++;
+        this.addFreeFight("Lynyrd");
       } else {
         break;
       }
@@ -618,13 +642,13 @@ class Tofu {
       }
 
       adv1(Location.get("The Hidden Bowling Alley"), -1, "");
-      freeFights++;
+      this.addFreeFight("Drunk Pygmy");
     }
 
     while (toInt(getProperty("_glarkCableUses")) < 5) {
       if (availableAmount(Item.get("glark cable")) > 0) {
         adv1(Location.get("The Red Zeppelin"), -1, "");
-        freeFights++;
+        this.addFreeFight("Red Zappelin");
       } else {
         break;
       }
@@ -634,12 +658,16 @@ class Tofu {
       visitUrl("place.php?whichplace=forestvillage&action=fv_scientist");
       runChoice(1);
       runCombat();
-      freeFights++;
+      this.addFreeFight("Eldritch Tentacle");
     }
 
-    print("Free fights are all done! I feel empowered!", "gray");
+    let fights = 0;
 
-    return freeFights;
+    this.freeFights.forEach((v, k) => {
+      fights += v;
+    });
+
+    print(`${fights} free fights are all done! I feel empowered!`, "gray");
   }
 
   createLightsThatGoOut() {
@@ -739,6 +767,7 @@ class Tofu {
     }
 
     outfit("Farming");
+    this.addFreeFight("Jokesters Gun");
   }
 
   doMood() {
@@ -854,9 +883,10 @@ class Tofu {
   }
 
   doVoterFight(): boolean {
+    let voterFreeFight = toInt(getProperty("_voteFreeFights")) >= 3;
     if (
       availableAmount(Item.get('"I voted" Sticker')) == 0 ||
-      (toInt(getProperty("_voteFreeFights")) >= 3 &&
+      (voterFreeFight &&
         (!this.doSideStuff ||
           !this.isFarmingDay() ||
           getProperty("_voteMonster") != "government bureaucrat"))
@@ -870,6 +900,8 @@ class Tofu {
 
     if (!vote_fight_now) {
       return false;
+    } else if (voterFreeFight) {
+      this.addFreeFight("Vote Monster");
     }
 
     print(
