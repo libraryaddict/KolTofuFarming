@@ -6,6 +6,7 @@ import {
   cliExecute,
   craft,
   equip,
+  equippedItem,
   getCustomOutfits,
   getInventory,
   getProperty,
@@ -21,7 +22,9 @@ import {
   myAbsorbs,
   myAdventures,
   myClass,
+  myHp,
   myMeat,
+  myMp,
   myName,
   numericModifier,
   outfit,
@@ -60,13 +63,24 @@ class Tofu {
   private pricePerTofu: number = 5000;
   private mallLimit: number = 3;
   private breakfastScript: string = "breakfast";
-  private rolloverAdventures = 70; // How many adventures we expect to gain from rollover.
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
   private skipRubberSpiders: boolean = false;
   private freeFights: Map<String, number> = new Map();
+  private preferenceNag = "_nagAboutGelKick";
 
   addFreeFight(fightName: string) {
     this.freeFights.set(fightName, (this.freeFights.get(fightName) | 0) + 1);
+  }
+
+  getAdventuresFromRollover() {
+    // How many adventures we expect to gain from rollover.
+    let expected = 70;
+
+    if (haveSkill(Skill.get("Brain Games"))) {
+      expected += 3;
+    }
+
+    return expected;
   }
 
   startTofuing() {
@@ -96,25 +110,22 @@ class Tofu {
     this.doStock();
     this.doFinish();
 
-    let cupsEarned: number;
-
-    let effDiff = haveEffect(Effect.get("In Your Cups")) - startedCups;
+    let finalCups = haveEffect(Effect.get("In Your Cups"));
+    let turnsGained = finalCups - startedCups;
     turnsSpent = turnsPlayed() - turnsSpent;
 
     if (this.isFarmingDay()) {
-      // On a farming day we'll have -200 effDiff
-      // So with 190 advs spent, that means we do a -effDiff
-      cupsEarned = -effDiff - turnsSpent;
+      turnsGained += turnsSpent;
     } else {
-      cupsEarned = effDiff - turnsSpent;
+      turnsGained -= turnsSpent;
     }
 
-    if (cupsEarned > 0) {
+    if (turnsGained != 0) {
       print(
         "Spent " +
           turnsSpent +
           " turns and gained an extra " +
-          cupsEarned +
+          turnsGained +
           ' of "In Your Cups!"',
         "gray"
       );
@@ -133,22 +144,32 @@ class Tofu {
     });
 
     print(`${total} free fights: ${str}`, "gray");
+
+    if (getProperty(this.preferenceNag) == "true") {
+      print(
+        "I'm not sure, but you may need to set up GELATINOUS KICK in your combat macro! Preferably after the first melee attack to minimize MP usage",
+        "red"
+      );
+    }
   }
 
   loadProperties() {
     print("Now loading tofu properties..", "gray");
+
+    let lines: [string, string][] = [];
+
     let load = function (propertyName: string, defaultValue: string): string {
       let prop = getProperty(propertyName);
 
       if (prop == null || prop == "") {
-        print(
-          `Tofu Setting ${propertyName} hasn't been set. Defaulting to ${defaultValue}`,
-          "gray"
-        );
+        lines.push([
+          `Setting Missing: ${propertyName}. Defaulted to: ${defaultValue}`,
+          "gray",
+        ]);
         return defaultValue;
       }
 
-      print(`Tofu setting ${propertyName} loaded: ${prop}`, "gray");
+      lines.push([`Setting Found: ${propertyName}. Value: ${prop}`, "#666666"]);
       return prop;
     };
 
@@ -177,6 +198,12 @@ class Tofu {
     this.skipRubberSpiders = toBoolean(
       load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString())
     );
+
+    lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
+
+    lines.forEach((s) => {
+      print(s[0], s[1]);
+    });
   }
 
   doQuickCheck(): boolean {
@@ -193,9 +220,11 @@ class Tofu {
       "Garbage Sticker",
       "Mr. Cheeng's Spectacles",
       "Xiblaxian holo-wrist-puter",
+      "Carnivorous potted plant",
+      "potato alarm clock",
     ]
       .map((i) => Item.get(i))
-      .filter((i) => availableAmount(i) == 0);
+      .filter((i) => i != Item.get("None") && availableAmount(i) == 0);
 
     if (rec.length > 0) {
       print(
@@ -203,6 +232,8 @@ class Tofu {
           rec.map((i) => i.name).join(", "),
         "red"
       );
+
+      waitq(2);
     }
 
     let rolloverOutfit: Item[] = outfitPieces("Gladiatorial Glad Rags").filter(
@@ -364,6 +395,15 @@ class Tofu {
     retrieveItem(100, Item.get("Third-Hand Lantern"));
     retrieveItem(1000, Item.get("meat paste"));
     this.buyCheapestChocolates(10);
+
+    let famEquip = Item.get("ittah bittah hookah");
+
+    if (
+      famEquip != null &&
+      equippedItem(Slot.get("Familiar")) == Item.get("None")
+    ) {
+      equip(famEquip);
+    }
 
     spent = spent - myMeat();
 
@@ -844,7 +884,7 @@ class Tofu {
       this.doJokestersGun();
       outfit("Farming");
 
-      const adventuresToKeep = 200 - this.rolloverAdventures;
+      const adventuresToKeep = 200 - this.getAdventuresFromRollover();
 
       print(
         `Charging day! Of ${myAdventures()}, we're spending ${Math.max(
@@ -910,8 +950,13 @@ class Tofu {
     );
 
     outfit("Voter");
+    let hp = myHp();
 
     adv1(Location.get("The Electric Lemonade Acid Parade"), 1, "");
+
+    if (myHp() < 5 || hp - myHp() > 200) {
+      setProperty(this.preferenceNag, "true");
+    }
 
     outfit("farming");
 
