@@ -55,14 +55,25 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     "ASSistant");_defineProperty(this, "pricePerTofu",
     5000);_defineProperty(this, "mallLimit",
     3);_defineProperty(this, "breakfastScript",
-    "breakfast");_defineProperty(this, "rolloverAdventures",
-    70);_defineProperty(this, "sellbotOverflow",
+    "breakfast");_defineProperty(this, "sellbotOverflow",
     100000000);_defineProperty(this, "skipRubberSpiders",
     false);_defineProperty(this, "freeFights",
-    new Map());}_createClass(Tofu, [{ key: "addFreeFight", value:
+    new Map());_defineProperty(this, "preferenceNag",
+    "_nagAboutGelKick");}_createClass(Tofu, [{ key: "addFreeFight", value:
 
     function addFreeFight(fightName) {
       this.freeFights.set(fightName, (this.freeFights.get(fightName) | 0) + 1);
+    } }, { key: "getAdventuresFromRollover", value:
+
+    function getAdventuresFromRollover() {
+      // How many adventures we expect to gain from rollover.
+      var expected = 70;
+
+      if ((0,external_kolmafia_namespaceObject.haveSkill)(Skill.get("Brain Games"))) {
+        expected += 3;
+      }
+
+      return expected;
     } }, { key: "startTofuing", value:
 
     function startTofuing() {
@@ -92,25 +103,22 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       this.doStock();
       this.doFinish();
 
-      var cupsEarned;
-
-      var effDiff = (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("In Your Cups")) - startedCups;
+      var finalCups = (0,external_kolmafia_namespaceObject.haveEffect)(Effect.get("In Your Cups"));
+      var turnsGained = finalCups - startedCups;
       turnsSpent = (0,external_kolmafia_namespaceObject.turnsPlayed)() - turnsSpent;
 
       if (this.isFarmingDay()) {
-        // On a farming day we'll have -200 effDiff
-        // So with 190 advs spent, that means we do a -effDiff
-        cupsEarned = -effDiff - turnsSpent;
+        turnsGained += turnsSpent;
       } else {
-        cupsEarned = effDiff - turnsSpent;
+        turnsGained -= turnsSpent;
       }
 
-      if (cupsEarned > 0) {
+      if (turnsGained != 0) {
         (0,external_kolmafia_namespaceObject.print)(
         "Spent " +
         turnsSpent +
         " turns and gained an extra " +
-        cupsEarned +
+        turnsGained +
         ' of "In Your Cups!"',
         "gray");
 
@@ -129,22 +137,32 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       });
 
       (0,external_kolmafia_namespaceObject.print)("".concat(total, " free fights: ").concat(str), "gray");
+
+      if ((0,external_kolmafia_namespaceObject.getProperty)(this.preferenceNag) == "true") {
+        (0,external_kolmafia_namespaceObject.print)(
+        "I'm not sure, but you may need to set up GELATINOUS KICK in your combat macro! Preferably after the first melee attack to minimize MP usage",
+        "red");
+
+      }
     } }, { key: "loadProperties", value:
 
     function loadProperties() {
       (0,external_kolmafia_namespaceObject.print)("Now loading tofu properties..", "gray");
+
+      var lines = [];
+
       var load = function load(propertyName, defaultValue) {
         var prop = (0,external_kolmafia_namespaceObject.getProperty)(propertyName);
 
         if (prop == null || prop == "") {
-          (0,external_kolmafia_namespaceObject.print)("Tofu Setting ".concat(
-          propertyName, " hasn't been set. Defaulting to ").concat(defaultValue),
-          "gray");
+          lines.push(["Setting Missing: ".concat(
+          propertyName, ". Defaulted to: ").concat(defaultValue),
+          "gray"]);
 
           return defaultValue;
         }
 
-        (0,external_kolmafia_namespaceObject.print)("Tofu setting ".concat(propertyName, " loaded: ").concat(prop), "gray");
+        lines.push(["Setting Found: ".concat(propertyName, ". Value: ").concat(prop), "#666666"]);
         return prop;
       };
 
@@ -173,6 +191,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       this.skipRubberSpiders = (0,external_kolmafia_namespaceObject.toBoolean)(
       load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString()));
 
+
+      lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
+
+      lines.forEach((s) => {
+        (0,external_kolmafia_namespaceObject.print)(s[0], s[1]);
+      });
     } }, { key: "doQuickCheck", value:
 
     function doQuickCheck() {
@@ -188,10 +212,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       "Mafia Thumb Ring",
       "Garbage Sticker",
       "Mr. Cheeng's Spectacles",
-      "Xiblaxian holo-wrist-puter"].
+      "Xiblaxian holo-wrist-puter",
+      "Carnivorous potted plant",
+      "potato alarm clock"].
 
       map((i) => Item.get(i)).
-      filter((i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
+      filter((i) => i != Item.get("None") && (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
 
       if (rec.length > 0) {
         (0,external_kolmafia_namespaceObject.print)(
@@ -199,6 +225,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         rec.map((i) => i.name).join(", "),
         "red");
 
+
+        (0,external_kolmafia_namespaceObject.waitq)(2);
       }
 
       var rolloverOutfit = (0,external_kolmafia_namespaceObject.outfitPieces)("Gladiatorial Glad Rags").filter(
@@ -360,6 +388,15 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.retrieveItem)(100, Item.get("Third-Hand Lantern"));
       (0,external_kolmafia_namespaceObject.retrieveItem)(1000, Item.get("meat paste"));
       this.buyCheapestChocolates(10);
+
+      var famEquip = Item.get("ittah bittah hookah");
+
+      if (
+      famEquip != null &&
+      (0,external_kolmafia_namespaceObject.equippedItem)(Slot.get("Familiar")) == Item.get("None"))
+      {
+        (0,external_kolmafia_namespaceObject.equip)(famEquip);
+      }
 
       spent = spent - (0,external_kolmafia_namespaceObject.myMeat)();
 
@@ -840,7 +877,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         this.doJokestersGun();
         (0,external_kolmafia_namespaceObject.outfit)("Farming");
 
-        var adventuresToKeep = 200 - this.rolloverAdventures;
+        var adventuresToKeep = 200 - this.getAdventuresFromRollover();
 
         (0,external_kolmafia_namespaceObject.print)("Charging day! Of ".concat(
         (0,external_kolmafia_namespaceObject.myAdventures)(), ", we're spending ").concat(Math.max(
@@ -906,8 +943,13 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
 
       (0,external_kolmafia_namespaceObject.outfit)("Voter");
+      var hp = (0,external_kolmafia_namespaceObject.myHp)();
 
       (0,external_kolmafia_namespaceObject.adv1)(Location.get("The Electric Lemonade Acid Parade"), 1, "");
+
+      if ((0,external_kolmafia_namespaceObject.myHp)() < 5 || hp - (0,external_kolmafia_namespaceObject.myHp)() > 200) {
+        (0,external_kolmafia_namespaceObject.setProperty)(this.preferenceNag, "true");
+      }
 
       (0,external_kolmafia_namespaceObject.outfit)("farming");
 
