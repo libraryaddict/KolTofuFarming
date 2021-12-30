@@ -1,4 +1,5 @@
 import {
+  abort,
   adv1,
   adventure,
   availableAmount,
@@ -106,13 +107,18 @@ class Tofu {
     //    tofu.doStash();
     this.doFreeFights();
     this.generateAdventures();
+
+    let startedTofu = itemAmount(Item.get("Essential Tofu"));
+
     this.doFarming();
+
+    turnsSpent = turnsPlayed() - turnsSpent;
+    let finalTofu = itemAmount(Item.get("Essential Tofu")) - startedTofu;
     this.doStock();
     this.doFinish();
 
     let finalCups = haveEffect(Effect.get("In Your Cups"));
     let turnsGained = finalCups - startedCups;
-    turnsSpent = turnsPlayed() - turnsSpent;
 
     if (this.isFarmingDay()) {
       turnsGained += turnsSpent;
@@ -144,6 +150,10 @@ class Tofu {
     });
 
     print(`${total} free fights: ${str}`, "gray");
+
+    if ((finalTofu -= turnsSpent) > 0) {
+      print("Gained from free fights, " + finalTofu + " extra tofu!", "gray");
+    }
 
     if (getProperty(this.preferenceNag) == "true") {
       print(
@@ -676,7 +686,7 @@ class Tofu {
       if (
         availableAmount(Item.get("Louder than Bomb")) == 0 ||
         availableAmount(Item.get("Divine champagne popper")) == 0 ||
-        availableAmount(Item.get("Bowl of Scorpions")) == 0
+        itemAmount(Item.get("Bowl of Scorpions")) == 0
       ) {
         break;
       }
@@ -686,9 +696,21 @@ class Tofu {
     }
 
     while (toInt(getProperty("_glarkCableUses")) < 5) {
-      if (availableAmount(Item.get("glark cable")) > 0) {
+      let count = myAdventures();
+
+      if (itemAmount(Item.get("glark cable")) > 0) {
         adv1(Location.get("The Red Zeppelin"), -1, "");
         this.addFreeFight("Red Zappelin");
+
+        if (
+          count > myAdventures() &&
+          getProperty("lastCopyableMonster").includes("red")
+        ) {
+          abort(
+            "You spent an adventure at the red zeppelin. The last copyable monster has 'red' in the name. I'm assuming your combat script is borked."
+          );
+          throw "Please check combat script";
+        }
       } else {
         break;
       }
@@ -1150,7 +1172,14 @@ class Tofu {
 
       cliExecute(`csend ${to_sell} essential tofu to sellbot`);
     } else {
-      putShop(this.pricePerTofu, this.mallLimit, to_sell, tofu);
+      let amountInShop = shopAmount(tofu) + to_sell;
+      let price = this.pricePerTofu;
+
+      if (amountInShop < 800) {
+        price += 1;
+      }
+
+      putShop(price, this.mallLimit, to_sell, tofu);
     }
 
     print("Got rid of that tofu!", "gray");
