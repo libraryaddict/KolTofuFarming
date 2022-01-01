@@ -1138,6 +1138,17 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if (to_sell <= 0) {
         (0,external_kolmafia_namespaceObject.print)("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
+
+        if ((0,external_kolmafia_namespaceObject.shopAmount)(tofu) > 0 && (0,external_kolmafia_namespaceObject.shopPrice)(tofu) != this.getShopPrice()) {
+          (0,external_kolmafia_namespaceObject.repriceShop)(this.getShopPrice(), (0,external_kolmafia_namespaceObject.shopLimit)(tofu), tofu);
+          (0,external_kolmafia_namespaceObject.print)(
+          "Readjusted price of tofu in shop to " +
+          this.getShopPrice() +
+          " to discourage buyers",
+          "gray");
+
+        }
+
         return;
       }
 
@@ -1164,17 +1175,21 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
         (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(to_sell, " essential tofu to sellbot"));
       } else {
-        var amountInShop = (0,external_kolmafia_namespaceObject.shopAmount)(tofu) + to_sell;
-        var price = this.pricePerTofu;
-
-        if (amountInShop < 800) {
-          price += 1;
-        }
-
-        (0,external_kolmafia_namespaceObject.putShop)(price, this.mallLimit, to_sell, tofu);
+        (0,external_kolmafia_namespaceObject.putShop)(this.getShopPrice(), this.mallLimit, to_sell, tofu);
       }
 
       (0,external_kolmafia_namespaceObject.print)("Got rid of that tofu!", "gray");
+    } }, { key: "getShopPrice", value:
+
+    function getShopPrice() {
+      var tofu = Item.get("Essential Tofu");
+      var amountIHave = (0,external_kolmafia_namespaceObject.shopAmount)(tofu) + (0,external_kolmafia_namespaceObject.itemAmount)(tofu);
+
+      if (amountIHave < 800) {
+        return this.pricePerTofu + 1;
+      }
+
+      return this.pricePerTofu;
     } }]);return Tofu;}();
 
 
