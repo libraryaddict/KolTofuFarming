@@ -36,11 +36,14 @@ import {
   putShop,
   putStash,
   refreshStatus,
+  repriceShop,
   retrieveItem,
   runChoice,
   runCombat,
   setProperty,
   shopAmount,
+  shopLimit,
+  shopPrice,
   takeStash,
   toBoolean,
   toEffect,
@@ -1146,6 +1149,17 @@ class Tofu {
 
     if (to_sell <= 0) {
       print("Oh! I don't have any tofu to sell.. Nevermind then!", "gray");
+
+      if (shopAmount(tofu) > 0 && shopPrice(tofu) != this.getShopPrice()) {
+        repriceShop(this.getShopPrice(), shopLimit(tofu), tofu);
+        print(
+          "Readjusted price of tofu in shop to " +
+            this.getShopPrice() +
+            " to discourage buyers",
+          "gray"
+        );
+      }
+
       return;
     }
 
@@ -1172,17 +1186,21 @@ class Tofu {
 
       cliExecute(`csend ${to_sell} essential tofu to sellbot`);
     } else {
-      let amountInShop = shopAmount(tofu) + to_sell;
-      let price = this.pricePerTofu;
-
-      if (amountInShop < 800) {
-        price += 1;
-      }
-
-      putShop(price, this.mallLimit, to_sell, tofu);
+      putShop(this.getShopPrice(), this.mallLimit, to_sell, tofu);
     }
 
     print("Got rid of that tofu!", "gray");
+  }
+
+  getShopPrice(): number {
+    let tofu = Item.get("Essential Tofu");
+    let amountIHave = shopAmount(tofu) + itemAmount(tofu);
+
+    if (amountIHave < 800) {
+      return this.pricePerTofu + 1;
+    }
+
+    return this.pricePerTofu;
   }
 }
 
