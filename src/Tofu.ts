@@ -678,7 +678,12 @@ class Tofu {
       }
     }
 
-    while (toInt(getProperty("_drunkPygmyBanishes")) < 11) {
+    let myTurns = myAdventures();
+
+    while (
+      toInt(getProperty("_drunkPygmyBanishes")) < 11 &&
+      myTurns <= myAdventures()
+    ) {
       let bowling = Item.get("bowling ball");
 
       if (getInventory()[bowling.name] > 0) {
