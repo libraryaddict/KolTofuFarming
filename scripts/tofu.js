@@ -667,7 +667,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         }
       }
 
-      while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_drunkPygmyBanishes")) < 11) {
+      var myTurns = (0,external_kolmafia_namespaceObject.myAdventures)();
+
+      while (
+      (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_drunkPygmyBanishes")) < 11 &&
+      myTurns <= (0,external_kolmafia_namespaceObject.myAdventures)())
+      {
         var bowling = Item.get("bowling ball");
 
         if ((0,external_kolmafia_namespaceObject.getInventory)()[bowling.name] > 0) {
