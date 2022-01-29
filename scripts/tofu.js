@@ -56,7 +56,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     5000);_defineProperty(this, "mallLimit",
     3);_defineProperty(this, "breakfastScript",
     "breakfast");_defineProperty(this, "sellbotOverflow",
-    100000000);_defineProperty(this, "skipRubberSpiders",
+    100000000);_defineProperty(this, "sellbotSendSome",
+    0);_defineProperty(this, "skipRubberSpiders",
     false);_defineProperty(this, "freeFights",
     new Map());_defineProperty(this, "preferenceNag",
     "_nagAboutGelKick");}_createClass(Tofu, [{ key: "addFreeFight", value:
@@ -199,6 +200,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       this.skipRubberSpiders = (0,external_kolmafia_namespaceObject.toBoolean)(
       load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString()));
+
+      this.sellbotSendSome = (0,external_kolmafia_namespaceObject.toInt)(
+      load("tofuSellbotSendSome", this.sellbotSendSome.toString()));
 
 
       lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
@@ -1157,30 +1161,45 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         return;
       }
 
-      if (this.sendToMallMulti) {
-        (0,external_kolmafia_namespaceObject.print)(
-        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
-        "purple");
+      if (this.sellbotSendSome > 0) {
+        var toSend = Math.min(to_sell, this.sellbotSendSome);
 
-        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(
-        to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(this.mallLimit, "@").concat(this.pricePerTofu));
-
-      } else if (
-      this.sellbotOverflow < 100000000 &&
-      (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > this.sellbotOverflow)
-      {
-        (0,external_kolmafia_namespaceObject.print)("We have ".concat(
-        this.getNumber(
-        (0,external_kolmafia_namespaceObject.shopAmount)(tofu)), " tofu in mall, our overflow is ").concat(
-        this.getNumber(
-        this.sellbotOverflow), " so lets send ").concat(
-        this.getNumber(to_sell), " excess tofu to sellbot!"),
+        (0,external_kolmafia_namespaceObject.print)("We want to send ".concat(
+        toSend, " tofu to sellbot! We're handling the rest at low prices!"),
         "purple");
 
 
-        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(to_sell, " essential tofu to sellbot"));
-      } else {
-        (0,external_kolmafia_namespaceObject.putShop)(this.getShopPrice(), this.mallLimit, to_sell, tofu);
+        (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(toSend, " essential tofu to sellbot"));
+
+        to_sell -= toSend;
+      }
+
+      if (to_sell > 0) {
+        if (this.sendToMallMulti) {
+          (0,external_kolmafia_namespaceObject.print)(
+          "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+          "purple");
+
+          (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(
+          to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(this.mallLimit, "@").concat(this.pricePerTofu));
+
+        } else if (
+        this.sellbotOverflow < 100000000 &&
+        (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > this.sellbotOverflow)
+        {
+          (0,external_kolmafia_namespaceObject.print)("We have ".concat(
+          this.getNumber(
+          (0,external_kolmafia_namespaceObject.shopAmount)(tofu)), " tofu in mall, our overflow is ").concat(
+          this.getNumber(
+          this.sellbotOverflow), " so lets send ").concat(
+          this.getNumber(to_sell), " excess tofu to sellbot!"),
+          "purple");
+
+
+          (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(to_sell, " essential tofu to sellbot"));
+        } else {
+          (0,external_kolmafia_namespaceObject.putShop)(this.getShopPrice(), this.mallLimit, to_sell, tofu);
+        }
       }
 
       (0,external_kolmafia_namespaceObject.print)("Got rid of that tofu!", "gray");
