@@ -68,6 +68,7 @@ class Tofu {
   private mallLimit: number = 3;
   private breakfastScript: string = "breakfast";
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
+  private sellbotSendSome: number = 0;
   private skipRubberSpiders: boolean = false;
   private freeFights: Map<String, number> = new Map();
   private preferenceNag = "_nagAboutGelKick";
@@ -210,6 +211,9 @@ class Tofu {
     );
     this.skipRubberSpiders = toBoolean(
       load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString())
+    );
+    this.sellbotSendSome = toInt(
+      load("tofuSellbotSendSome", this.sellbotSendSome.toString())
     );
 
     lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
@@ -1168,30 +1172,45 @@ class Tofu {
       return;
     }
 
-    if (this.sendToMallMulti) {
+    if (this.sellbotSendSome > 0) {
+      let toSend = Math.min(to_sell, this.sellbotSendSome);
+
       print(
-        "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
-        "purple"
-      );
-      cliExecute(
-        `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
-      );
-    } else if (
-      this.sellbotOverflow < 100_000_000 &&
-      shopAmount(tofu) > this.sellbotOverflow
-    ) {
-      print(
-        `We have ${this.getNumber(
-          shopAmount(tofu)
-        )} tofu in mall, our overflow is ${this.getNumber(
-          this.sellbotOverflow
-        )} so lets send ${this.getNumber(to_sell)} excess tofu to sellbot!`,
+        `We want to send ${toSend} tofu to sellbot! We're handling the rest at low prices!`,
         "purple"
       );
 
-      cliExecute(`csend ${to_sell} essential tofu to sellbot`);
-    } else {
-      putShop(this.getShopPrice(), this.mallLimit, to_sell, tofu);
+      cliExecute(`csend ${toSend} essential tofu to sellbot`);
+
+      to_sell -= toSend;
+    }
+
+    if (to_sell > 0) {
+      if (this.sendToMallMulti) {
+        print(
+          "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
+          "purple"
+        );
+        cliExecute(
+          `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
+        );
+      } else if (
+        this.sellbotOverflow < 100_000_000 &&
+        shopAmount(tofu) > this.sellbotOverflow
+      ) {
+        print(
+          `We have ${this.getNumber(
+            shopAmount(tofu)
+          )} tofu in mall, our overflow is ${this.getNumber(
+            this.sellbotOverflow
+          )} so lets send ${this.getNumber(to_sell)} excess tofu to sellbot!`,
+          "purple"
+        );
+
+        cliExecute(`csend ${to_sell} essential tofu to sellbot`);
+      } else {
+        putShop(this.getShopPrice(), this.mallLimit, to_sell, tofu);
+      }
     }
 
     print("Got rid of that tofu!", "gray");
