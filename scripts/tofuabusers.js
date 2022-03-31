@@ -378,7 +378,7 @@ TofuAbusers = /*#__PURE__*/function () {
       var tofuCouldveConsumed = 14 * this.maxTofuPerDay;
 
       var allPurchases = this.getPurchases().filter(
-      (p) => p.item == Item.get("Essential Tofu"));
+      (p) => p.item == external_kolmafia_namespaceObject.Item.get("Essential Tofu"));
 
 
       //let purchases = allPurchases.filter((p) => p.amount == 3);
