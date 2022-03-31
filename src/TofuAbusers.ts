@@ -6,6 +6,7 @@ import {
   getPlayerName,
   getProperty,
   getShopLog,
+  Item,
   myName,
   nowToInt,
   print,

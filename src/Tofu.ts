@@ -56,6 +56,15 @@ import {
   useSkill,
   visitUrl,
   waitq,
+  Item,
+  Class,
+  Skill,
+  Effect,
+  Slot,
+  Location,
+  Monster,
+  limitMode,
+  holiday,
 } from "kolmafia";
 
 class Tofu {
@@ -161,7 +170,7 @@ class Tofu {
 
     if (getProperty(this.preferenceNag) == "true") {
       print(
-        "I'm not sure, but you may need to set up GELATINOUS KICK in your combat macro! Preferably after the first melee attack to minimize MP usage",
+        "I'm not sure, but you may need to set up GELATINOUS KICK in your combat macro! Preferably after the first melee attack to minimize MP usage. The bot was likely defeated today.",
         "red"
       );
     }
@@ -535,6 +544,14 @@ class Tofu {
     let advs = myAdventures();
 
     if (
+      getProperty("_timeArrowSent") == "" &&
+      availableAmount(Item.get("Time's Arrow")) > 0
+    ) {
+      cliExecute("send time's arrow to cookiebot || arrow");
+      setProperty("_timeArrowSent", "true");
+    }
+
+    if (
       !toBoolean(getProperty("_essentialTofuUsed")) &&
       availableAmount(Item.get("Essential Tofu")) > 0
     ) {
@@ -569,14 +586,6 @@ class Tofu {
     //   );
     //   return;
     // }
-
-    if (
-      getProperty("_timeArrowSent") == "" &&
-      availableAmount(Item.get("Time's Arrow")) > 0
-    ) {
-      cliExecute("send time's arrow to cookiebot || arrow");
-      setProperty("_timeArrowSent", "true");
-    }
 
     while (
       haveSkill(Skill.get("Ancestral Recall")) &&
@@ -657,6 +666,10 @@ class Tofu {
   }
 
   doFreeFights() {
+    if (myAdventures() <= 0) {
+      return;
+    }
+
     print(
       "I want to test out some of my kung fu moves before I head off. Lets do some free fights",
       "blue"
@@ -752,17 +765,22 @@ class Tofu {
     let ingred = Item.get("Lump of Brituminous coal");
     let ingred2 = Item.get("third-hand lantern");
 
+    let getCostToMake: () => number = () =>
+      mallPrice(ingred) + mallPrice(ingred2) + mallPrice(record) / 4;
+
     while (
       availableAmount(itemToMake) < 15 &&
-      mallPrice(itemToMake) < mallPrice(ingred) + 100 + mallPrice(record) / 4
+      mallPrice(itemToMake) < getCostToMake()
     ) {
-      buy(itemToMake, 15, mallPrice(ingred) + 100 + mallPrice(record) / 4);
+      print("Looks like it's cheaper to buy them, than to make them..","gray");
+      buy(itemToMake, 15, getCostToMake());
     }
 
     while (
       availableAmount(itemToMake) + availableAmount(ingred) < 20 &&
-      mallPrice(ingred) + mallPrice(record) / 4 < mallPrice(itemToMake)
+      getCostToMake() < mallPrice(itemToMake)
     ) {
+      print("Looks like it's cheaper to make them, than to buy them..","gray");
       buy(ingred, 15, mallPrice(itemToMake));
     }
 
@@ -774,7 +792,7 @@ class Tofu {
       use(record);
 
       while (haveEffect(effect) >= 5) {
-        craft("smith", 1, ingred, ingred2);
+        craft("smith", Math.floor(haveEffect(effect) / 5), ingred, ingred2);
       }
     }
 
@@ -786,10 +804,33 @@ class Tofu {
     print("Whee! Now my light will never go out!", "gray");
   }
 
+  isWandererHoliday(): boolean {
+    for (let wandererHoliday of  [
+      "El Dia De Los Muertos Borrachos",
+      "Feast of Boris",
+      "Talk Like a Pirate Day",
+    ]) {
+      if (!holiday().toLowerCase().includes(wandererHoliday.toLowerCase())) {
+        continue;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
   doAbsorbs() {
     print("My stomach feels peckish.. Lets do some absorbs!", "blue");
 
-    if (haveEffect(Effect.get("In Your Cups")) > 450) {
+    if (this.isWandererHoliday()) {
+      print("Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.","blue");
+    }
+
+    if (
+      !this.isWandererHoliday() &&
+      haveEffect(Effect.get("In Your Cups")) > 450
+    ) {
       while (myAbsorbs() < 15) {
         cliExecute("absorb light that never goes out");
       }
@@ -1211,6 +1252,18 @@ class Tofu {
       } else {
         putShop(this.getShopPrice(), this.mallLimit, to_sell, tofu);
       }
+    }
+
+    if (shopLimit(tofu) != this.mallLimit) {
+      print(
+        "Huh, the shop limit should be " +
+          this.mallLimit +
+          " but is " +
+          shopLimit(tofu) +
+          "... Lets fix that!",
+        "purple"
+      );
+      putShop(this.getShopPrice(), this.mallLimit, 0, tofu);
     }
 
     print("Got rid of that tofu!", "gray");
