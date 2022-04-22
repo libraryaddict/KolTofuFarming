@@ -75,6 +75,7 @@ class Tofu {
   private mallMultiName: string = "ASSistant";
   private pricePerTofu: number = 5000;
   private mallLimit: number = 3;
+  private dynMallLimit: number = 1000;
   private breakfastScript: string = "breakfast";
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
   private sellbotSendSome: number = 0;
@@ -223,6 +224,9 @@ class Tofu {
     );
     this.sellbotSendSome = toInt(
       load("tofuSellbotSendSome", this.sellbotSendSome.toString())
+    );
+    this.dynMallLimit = toInt(
+      load("tofuLimitPerXTofuStocked", this.dynMallLimit.toString())
     );
 
     lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
@@ -1226,6 +1230,8 @@ class Tofu {
       to_sell -= toSend;
     }
 
+    let ourLimit = Math.max(1, Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit)));
+
     if (to_sell > 0) {
       if (this.sendToMallMulti) {
         print(
@@ -1233,7 +1239,7 @@ class Tofu {
           "purple"
         );
         cliExecute(
-          `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${this.mallLimit}@${this.pricePerTofu}`
+          `csend ${to_sell} essential tofu to ${this.mallMultiName} || ${ourLimit}@${this.pricePerTofu}`
         );
       } else if (
         this.sellbotOverflow < 100_000_000 &&
@@ -1250,20 +1256,20 @@ class Tofu {
 
         cliExecute(`csend ${to_sell} essential tofu to sellbot`);
       } else {
-        putShop(this.getShopPrice(), this.mallLimit, to_sell, tofu);
+        putShop(this.getShopPrice(), ourLimit, to_sell, tofu);
       }
     }
 
-    if (shopLimit(tofu) != this.mallLimit) {
+    if (shopLimit(tofu) != ourLimit) {
       print(
         "Huh, the shop limit should be " +
-          this.mallLimit +
+           ourLimit +
           " but is " +
           shopLimit(tofu) +
           "... Lets fix that!",
         "purple"
       );
-      putShop(this.getShopPrice(), this.mallLimit, 0, tofu);
+      putShop(this.getShopPrice(), ourLimit, 0, tofu);
     }
 
     print("Got rid of that tofu!", "gray");

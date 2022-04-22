@@ -496,8 +496,9 @@ class TofuAbusers {
   processBaddies() {
     for (let purchase of this.getBaddies()) {
       let maxUses = this.maxTofuPerDay * (purchase.ascensions + 14);
+      let wentOverBy = purchase.purchased - maxUses;
 
-      if (purchase.purchased - (purchase.ascensions + 14) <= 1) {
+      if (wentOverBy < -6) {
         continue;
       }
 
