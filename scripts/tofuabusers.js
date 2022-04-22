@@ -525,8 +525,9 @@ TofuAbusers = /*#__PURE__*/function () {
     function processBaddies() {var _iterator7 = _createForOfIteratorHelper(
       this.getBaddies()),_step7;try {for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {var purchase = _step7.value;
           var maxUses = this.maxTofuPerDay * (purchase.ascensions + 14);
+          var wentOverBy = purchase.purchased - maxUses;
 
-          if (purchase.purchased - (purchase.ascensions + 14) <= 1) {
+          if (wentOverBy < -6) {
             continue;
           }
 
