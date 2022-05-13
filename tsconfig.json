@@ -13,7 +13,7 @@
     "pretty": true,
     "strict": false,
     "target": "esnext",
-    "useDefineForClassFields": true,
+    "useDefineForClassFields": false,
     "outDir": "dist", // Ensure that .d.ts files are created by tsc, but not .js files
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true,

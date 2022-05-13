@@ -703,7 +703,8 @@ class Tofu {
 
     while (
       toInt(getProperty("_drunkPygmyBanishes")) < 11 &&
-      myTurns <= myAdventures() && !this.isWandererHoliday()
+      myTurns <= myAdventures() &&
+      !this.isWandererHoliday()
     ) {
       let bowling = Item.get("bowling ball");
 
@@ -724,7 +725,10 @@ class Tofu {
       this.addFreeFight("Drunk Pygmy");
     }
 
-    while (toInt(getProperty("_glarkCableUses")) < 5 && !this.isWandererHoliday()) {
+    while (
+      toInt(getProperty("_glarkCableUses")) < 5 &&
+      !this.isWandererHoliday()
+    ) {
       let count = myAdventures();
 
       if (itemAmount(Item.get("glark cable")) > 0) {
@@ -776,7 +780,7 @@ class Tofu {
       availableAmount(itemToMake) < 15 &&
       mallPrice(itemToMake) < getCostToMake()
     ) {
-      print("Looks like it's cheaper to buy them, than to make them..","gray");
+      print("Looks like it's cheaper to buy them, than to make them..", "gray");
       buy(itemToMake, 15, getCostToMake());
     }
 
@@ -784,7 +788,7 @@ class Tofu {
       availableAmount(itemToMake) + availableAmount(ingred) < 20 &&
       getCostToMake() < mallPrice(itemToMake)
     ) {
-      print("Looks like it's cheaper to make them, than to buy them..","gray");
+      print("Looks like it's cheaper to make them, than to buy them..", "gray");
       buy(ingred, 15, mallPrice(itemToMake));
     }
 
@@ -809,7 +813,7 @@ class Tofu {
   }
 
   isWandererHoliday(): boolean {
-    for (let wandererHoliday of  [
+    for (let wandererHoliday of [
       "El Dia De Los Muertos Borrachos",
       "Feast of Boris",
       "Talk Like a Pirate Day",
@@ -828,7 +832,10 @@ class Tofu {
     print("My stomach feels peckish.. Lets do some absorbs!", "blue");
 
     if (this.isWandererHoliday()) {
-      print("Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.","blue");
+      print(
+        "Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.",
+        "blue"
+      );
     }
 
     if (
@@ -1002,13 +1009,20 @@ class Tofu {
   }
 
   doVoterFight(): boolean {
-    let voterFreeFight = toInt(getProperty("_voteFreeFights")) >= 3;
+    if (availableAmount(Item.get('"I voted" Sticker')) == 0) {
+      return false;
+    }
+
+    let freeFight = toInt(getProperty("_voteFreeFights")) < 3;
+
     if (
-      availableAmount(Item.get('"I voted" Sticker')) == 0 ||
-      (voterFreeFight &&
+      (!freeFight &&
         (!this.doSideStuff ||
           !this.isFarmingDay() ||
-          getProperty("_voteMonster") != "government bureaucrat"))
+          getProperty("_voteMonster") != "government bureaucrat")) ||
+      shopAmount(Item.get("absentee voter ballot")) +
+        itemAmount(Item.get("absentee voter ballot")) >
+        300
     ) {
       return false;
     }
@@ -1019,7 +1033,7 @@ class Tofu {
 
     if (!vote_fight_now) {
       return false;
-    } else if (voterFreeFight) {
+    } else if (freeFight) {
       this.addFreeFight("Vote Monster");
     }
 
@@ -1230,7 +1244,10 @@ class Tofu {
       to_sell -= toSend;
     }
 
-    let ourLimit = Math.max(1, Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit)));
+    let ourLimit = Math.max(
+      1,
+      Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
+    );
 
     if (to_sell > 0) {
       if (this.sendToMallMulti) {
@@ -1263,7 +1280,7 @@ class Tofu {
     if (shopLimit(tofu) != ourLimit) {
       print(
         "Huh, the shop limit should be " +
-           ourLimit +
+          ourLimit +
           " but is " +
           shopLimit(tofu) +
           "... Lets fix that!",
