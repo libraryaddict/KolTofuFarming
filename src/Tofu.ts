@@ -703,7 +703,7 @@ class Tofu {
 
     while (
       toInt(getProperty("_drunkPygmyBanishes")) < 11 &&
-      myTurns <= myAdventures()
+      myTurns <= myAdventures() && !this.isWandererHoliday()
     ) {
       let bowling = Item.get("bowling ball");
 
@@ -724,7 +724,7 @@ class Tofu {
       this.addFreeFight("Drunk Pygmy");
     }
 
-    while (toInt(getProperty("_glarkCableUses")) < 5) {
+    while (toInt(getProperty("_glarkCableUses")) < 5 && !this.isWandererHoliday()) {
       let count = myAdventures();
 
       if (itemAmount(Item.get("glark cable")) > 0) {
