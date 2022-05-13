@@ -683,7 +683,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       while (
       (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_drunkPygmyBanishes")) < 11 &&
-      myTurns <= (0,external_kolmafia_namespaceObject.myAdventures)())
+      myTurns <= (0,external_kolmafia_namespaceObject.myAdventures)() && !this.isWandererHoliday())
       {
         var bowling = external_kolmafia_namespaceObject.Item.get("bowling ball");
 
@@ -704,7 +704,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         this.addFreeFight("Drunk Pygmy");
       }
 
-      while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_glarkCableUses")) < 5) {
+      while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_glarkCableUses")) < 5 && !this.isWandererHoliday()) {
         var count = (0,external_kolmafia_namespaceObject.myAdventures)();
 
         if ((0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("glark cable")) > 0) {
