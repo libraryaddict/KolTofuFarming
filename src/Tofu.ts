@@ -1015,16 +1015,26 @@ class Tofu {
 
     let freeFight = toInt(getProperty("_voteFreeFights")) < 3;
 
-    if (
-      (!freeFight &&
-        (!this.doSideStuff ||
-          !this.isFarmingDay() ||
-          getProperty("_voteMonster") != "government bureaucrat")) ||
-      shopAmount(Item.get("absentee voter ballot")) +
-        itemAmount(Item.get("absentee voter ballot")) >
+    if (!freeFight) {
+      if (!this.doSideStuff) {
+        return false;
+      }
+
+      if (!this.isFarmingDay()) {
+        return false;
+      }
+
+      if (getProperty("_voteMonster") != "government bureaucrat") {
+        return false;
+      }
+
+      if (
+        shopAmount(Item.get("absentee voter ballot")) +
+          itemAmount(Item.get("absentee voter ballot")) >
         300
-    ) {
-      return false;
+      ) {
+        return false;
+      }
     }
 
     let vote_fight_now =
