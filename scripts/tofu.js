@@ -683,7 +683,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       while (
       (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_drunkPygmyBanishes")) < 11 &&
-      myTurns <= (0,external_kolmafia_namespaceObject.myAdventures)() && !this.isWandererHoliday())
+      myTurns <= (0,external_kolmafia_namespaceObject.myAdventures)() &&
+      !this.isWandererHoliday())
       {
         var bowling = external_kolmafia_namespaceObject.Item.get("bowling ball");
 
@@ -704,7 +705,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         this.addFreeFight("Drunk Pygmy");
       }
 
-      while ((0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_glarkCableUses")) < 5 && !this.isWandererHoliday()) {
+      while (
+      (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_glarkCableUses")) < 5 &&
+      !this.isWandererHoliday())
+      {
         var count = (0,external_kolmafia_namespaceObject.myAdventures)();
 
         if ((0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("glark cable")) > 0) {
@@ -808,7 +812,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.print)("My stomach feels peckish.. Lets do some absorbs!", "blue");
 
       if (this.isWandererHoliday()) {
-        (0,external_kolmafia_namespaceObject.print)("Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.", "blue");
+        (0,external_kolmafia_namespaceObject.print)(
+        "Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.",
+        "blue");
+
       }
 
       if (
@@ -982,15 +989,32 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     } }, { key: "doVoterFight", value:
 
     function doVoterFight() {
-      var voterFreeFight = (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_voteFreeFights")) >= 3;
-      if (
-      (0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get('"I voted" Sticker')) == 0 ||
-      voterFreeFight && (
-      !this.doSideStuff ||
-      !this.isFarmingDay() ||
-      (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster") != "government bureaucrat"))
-      {
+      if ((0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get('"I voted" Sticker')) == 0) {
         return false;
+      }
+
+      var freeFight = (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_voteFreeFights")) < 3;
+
+      if (!freeFight) {
+        if (!this.doSideStuff) {
+          return false;
+        }
+
+        if (!this.isFarmingDay()) {
+          return false;
+        }
+
+        if ((0,external_kolmafia_namespaceObject.getProperty)("_voteMonster") != "government bureaucrat") {
+          return false;
+        }
+
+        if (
+        (0,external_kolmafia_namespaceObject.shopAmount)(external_kolmafia_namespaceObject.Item.get("absentee voter ballot")) +
+        (0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("absentee voter ballot")) >
+        300)
+        {
+          return false;
+        }
       }
 
       var vote_fight_now =
@@ -999,7 +1023,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if (!vote_fight_now) {
         return false;
-      } else if (voterFreeFight) {
+      } else if (freeFight) {
         this.addFreeFight("Vote Monster");
       }
 
@@ -1210,7 +1234,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         to_sell -= toSend;
       }
 
-      var ourLimit = Math.max(1, Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit)));
+      var ourLimit = Math.max(
+      1,
+      Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit)));
+
 
       if (to_sell > 0) {
         if (this.sendToMallMulti) {
