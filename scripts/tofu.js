@@ -45,7 +45,7 @@ __webpack_require__.d(__webpack_exports__, {
 ;// CONCATENATED MODULE: external "kolmafia"
 const external_kolmafia_namespaceObject = require("kolmafia");
 ;// CONCATENATED MODULE: ./src/Tofu.ts
-function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var
+function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _defineProperty(obj, key, value) {key = _toPropertyKey(key);if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toPropertyKey(arg) {var key = _toPrimitive(arg, "string");return typeof key === "symbol" ? key : String(key);}function _toPrimitive(input, hint) {if (typeof input !== "object" || input === null) return input;var prim = input[Symbol.toPrimitive];if (prim !== undefined) {var res = prim.call(input, hint || "default");if (typeof res !== "object") return res;throw new TypeError("@@toPrimitive must return a primitive value.");}return (hint === "string" ? String : Number)(input);}var
 
 Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_defineProperty(this, "adventuresValuedAt",
     4000);_defineProperty(this, "doSideStuff",
@@ -57,8 +57,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     3);_defineProperty(this, "dynMallLimit",
     1000);_defineProperty(this, "breakfastScript",
     "breakfast");_defineProperty(this, "sellbotOverflow",
-    100000000);_defineProperty(this, "sellbotSendSome",
-    0);_defineProperty(this, "skipRubberSpiders",
+    100000000); // When we have more than this amount of tofu in our store, we send the rest to sellbot
+    _defineProperty(this, "sellbotSendSome", 0);_defineProperty(this, "skipRubberSpiders",
     false);_defineProperty(this, "freeFights",
     new Map());_defineProperty(this, "preferenceNag",
     "_nagAboutGelKick");}_createClass(Tofu, [{ key: "addFreeFight", value:
@@ -105,6 +105,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       var startedTofu = (0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("Essential Tofu"));
 
       this.doFarming();
+
+      this.setGovermentToday();
 
       turnsSpent = (0,external_kolmafia_namespaceObject.turnsPlayed)() - turnsSpent;
       var finalTofu = (0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("Essential Tofu")) - startedTofu;
@@ -234,7 +236,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       "potato alarm clock"].
 
       map((i) => external_kolmafia_namespaceObject.Item.get(i)).
-      filter((i) => i != external_kolmafia_namespaceObject.Item.get("None") && (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
+      filter((i) => i != external_kolmafia_namespaceObject.Item.none && (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
 
       if (rec.length > 0) {
         (0,external_kolmafia_namespaceObject.print)(
@@ -246,9 +248,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.waitq)(2);
       }
 
-      var rolloverOutfit = (0,external_kolmafia_namespaceObject.outfitPieces)("Gladiatorial Glad Rags").filter(
-      (i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
-
+      var rolloverOutfit = (0,external_kolmafia_namespaceObject.outfitPieces)(
+      "Gladiatorial Glad Rags").
+      filter((i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
 
       if (rolloverOutfit.length > 0) {
         (0,external_kolmafia_namespaceObject.print)(
@@ -303,7 +305,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       var moodStuff = (0,external_kolmafia_namespaceObject.moodList)();var _iterator = _createForOfIteratorHelper(
 
-      moodStuff),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var mood = _step.value;
+        moodStuff),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var mood = _step.value;
           var spl = mood.split(" | ");
 
           if (spl.length != 3) {
@@ -322,7 +324,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
           var item = (0,external_kolmafia_namespaceObject.toItem)(match[1]);
 
-          if (item == null || item == external_kolmafia_namespaceObject.Item.get("None")) {
+          if (item == null || item == external_kolmafia_namespaceObject.Item.none) {
             (0,external_kolmafia_namespaceObject.print)("Can't find the mood item '" + match[1] + "'", "red");
             continue;
           }
@@ -408,10 +410,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       var famEquip = external_kolmafia_namespaceObject.Item.get("ittah bittah hookah");
 
-      if (
-      famEquip != null &&
-      (0,external_kolmafia_namespaceObject.equippedItem)(external_kolmafia_namespaceObject.Slot.get("Familiar")) == external_kolmafia_namespaceObject.Item.get("None"))
-      {
+      if (famEquip != null && (0,external_kolmafia_namespaceObject.equippedItem)(external_kolmafia_namespaceObject.Slot.get("familiar")) == external_kolmafia_namespaceObject.Item.none) {
         (0,external_kolmafia_namespaceObject.equip)(famEquip);
       }
 
@@ -501,7 +500,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         var cheapest;
         var price;var _iterator2 = _createForOfIteratorHelper(
 
-        chocs),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var i = _step2.value;
+          chocs),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var i = _step2.value;
             var p = (0,external_kolmafia_namespaceObject.historicalAge)(i) > 31 ? (0,external_kolmafia_namespaceObject.mallPrice)(i) : (0,external_kolmafia_namespaceObject.historicalPrice)(i);
 
             if (cheapest != null || price <= p || p > v) {
@@ -738,7 +737,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       var fights = 0;
 
-      this.freeFights.forEach((v, k) => {
+      this.freeFights.forEach((v) => {
         fights += v;
       });
 
@@ -794,9 +793,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
     function isWandererHoliday() {
       for (var _i = 0, _arr = [
-      "El Dia De Los Muertos Borrachos",
-      "Feast of Boris",
-      "Talk Like a Pirate Day"]; _i < _arr.length; _i++)
+        "El Dia De Los Muertos Borrachos",
+        "Feast of Boris",
+        "Talk Like a Pirate Day"]; _i < _arr.length; _i++)
       {var wandererHoliday = _arr[_i];
         if (!(0,external_kolmafia_namespaceObject.holiday)().toLowerCase().includes(wandererHoliday.toLowerCase())) {
           continue;
@@ -818,9 +817,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       }
 
+      var cups = (0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups"));
+
       if (
       !this.isWandererHoliday() &&
-      (0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups")) > 450)
+      cups > 450 && (
+      cups > 2000 || this.isGovermentToday()))
       {
         while ((0,external_kolmafia_namespaceObject.myAbsorbs)() < 15) {
           (0,external_kolmafia_namespaceObject.cliExecute)("absorb light that never goes out");
@@ -1013,9 +1015,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("absentee voter ballot")) >
         300)
         {
-          return false;
-        }
-      }
+
+          //  return false;
+        }}
 
       var vote_fight_now =
       (0,external_kolmafia_namespaceObject.totalTurnsPlayed)() % 11 == 1 &&
@@ -1091,6 +1093,28 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       }
 
       (0,external_kolmafia_namespaceObject.print)("Fought some worms!");
+    } }, { key: "isGovermentToday", value:
+
+    function isGovermentToday() {
+      var prop = (0,external_kolmafia_namespaceObject.getProperty)("votingMonsters");
+
+      return (
+        !prop.includes((0,external_kolmafia_namespaceObject.myDaycount)() + "|") &&
+        prop.includes("government bureaucrat") && (
+        !prop.includes("mutant") ||
+        (0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups")) > 3000));
+
+    } }, { key: "setGovermentToday", value:
+
+    function setGovermentToday() {
+      (0,external_kolmafia_namespaceObject.setProperty)(
+      "votingMonsters",
+      (0,external_kolmafia_namespaceObject.myDaycount)() +
+      "|" +
+      (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster1") +
+      "|" +
+      (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster2"));
+
     } }, { key: "voterSetup", value:
 
     function voterSetup() {
@@ -1101,28 +1125,33 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         return;
       }
 
+      if ((0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("Absentee Voter Ballot")) == 0) {
+        (0,external_kolmafia_namespaceObject.print)("Can't vote unfortunately..", "gray");
+        return;
+      }
+
       var voterValueTable = [
       {
         monster: external_kolmafia_namespaceObject.Monster.get("terrible mutant"),
-        value: (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("glob of undifferentiated tissue")) + 10 },
-
+        value: (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("glob of undifferentiated tissue")) + 10
+      },
       {
         monster: external_kolmafia_namespaceObject.Monster.get("angry ghost"),
-        value: (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("ghostly ectoplasm")) * 1.11 },
-
+        value: (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("ghostly ectoplasm")) * 1.11
+      },
       {
         monster: external_kolmafia_namespaceObject.Monster.get("government bureaucrat"),
         value:
-        (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("absentee voter ballot")) * 0.05 + 75 * 0.25 + 50 },
-
+        (0,external_kolmafia_namespaceObject.mallPrice)(external_kolmafia_namespaceObject.Item.get("absentee voter ballot")) * 0.05 + 75 * 0.25 + 50
+      },
       {
         monster: external_kolmafia_namespaceObject.Monster.get("annoyed snake"),
-        value: 25 * 0.5 + 25 },
-
+        value: 25 * 0.5 + 25
+      },
       {
         monster: external_kolmafia_namespaceObject.Monster.get("slime blob"),
-        value: 20 * 0.4 + 50 * 0.2 + 250 * 0.01 }];
-
+        value: 20 * 0.4 + 50 * 0.2 + 250 * 0.01
+      }];
 
 
       try {
@@ -1267,7 +1296,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         }
       }
 
-      if ((0,external_kolmafia_namespaceObject.shopLimit)(tofu) != ourLimit) {
+      if ((0,external_kolmafia_namespaceObject.shopLimit)(tofu) != ourLimit && (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > 0) {
         (0,external_kolmafia_namespaceObject.print)(
         "Huh, the shop limit should be " +
         ourLimit +

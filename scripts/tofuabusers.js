@@ -45,7 +45,7 @@ __webpack_require__.d(__webpack_exports__, {
 ;// CONCATENATED MODULE: external "kolmafia"
 const external_kolmafia_namespaceObject = require("kolmafia");
 ;// CONCATENATED MODULE: ./src/TofuAbusers.ts
-function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var
+function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];return arr2;}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperty(obj, key, value) {key = _toPropertyKey(key);if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toPropertyKey(arg) {var key = _toPrimitive(arg, "string");return typeof key === "symbol" ? key : String(key);}function _toPrimitive(input, hint) {if (typeof input !== "object" || input === null) return input;var prim = input[Symbol.toPrimitive];if (prim !== undefined) {var res = prim.call(input, hint || "default");if (typeof res !== "object") return res;throw new TypeError("@@toPrimitive must return a primitive value.");}return (hint === "string" ? String : Number)(input);}var
 
 StorePurchase = /*#__PURE__*/_createClass(function StorePurchase() {_classCallCheck(this, StorePurchase);_defineProperty(this, "date", void 0);_defineProperty(this, "user", void 0);_defineProperty(this, "amount", void 0);_defineProperty(this, "meat", void 0);_defineProperty(this, "item", void 0);});var
 
@@ -128,7 +128,7 @@ ContactList = /*#__PURE__*/function () {function ContactList() {_classCallCheck(
 
       var users = [];var _iterator = _createForOfIteratorHelper(
 
-      spl),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var s = _step.value;
+        spl),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var s = _step.value;
           var match = s.match(
           /href=(?:'|")showplayer.php\?who=(\d+)(?:'|") class=nounder><b>([a-zA-Z0-9 ]+)</);
 
@@ -197,7 +197,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
       var obj = JSON.parse(string);var _iterator2 = _createForOfIteratorHelper(
 
-      obj),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var array = _step2.value;
+        obj),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var array = _step2.value;
           this.warnings.push(new TofuWarning(array));
         }} catch (err) {_iterator2.e(err);} finally {_iterator2.f();}
     } }, { key: "saveWarnings", value:
@@ -286,7 +286,7 @@ TofuAbusers = /*#__PURE__*/function () {
     function getPurchases() {
       var purchases = [];var _iterator3 = _createForOfIteratorHelper(
 
-      (0,external_kolmafia_namespaceObject.getShopLog)()),_step3;try {var _loop = function _loop() {var line = _step3.value;
+        (0,external_kolmafia_namespaceObject.getShopLog)()),_step3;try {var _loop = function _loop() {var line = _step3.value;
           var getParsedResult = function getParsedResult(regex) {
             return line.match(regex)[1];
           };
@@ -311,8 +311,8 @@ TofuAbusers = /*#__PURE__*/function () {
           purchase.user = name;
           purchase.meat = +meat;
 
-          purchases.push(purchase);};for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {_loop();
-        }} catch (err) {_iterator3.e(err);} finally {_iterator3.f();}
+          purchases.push(purchase);
+        };for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {_loop();}} catch (err) {_iterator3.e(err);} finally {_iterator3.f();}
 
       return purchases;
     } }, { key: "getPlayerId", value:
@@ -320,7 +320,7 @@ TofuAbusers = /*#__PURE__*/function () {
     function getPlayerId(name) {
       var buffer = (0,external_kolmafia_namespaceObject.fileToBuffer)("player_names.txt").split("\n");var _iterator4 = _createForOfIteratorHelper(
 
-      buffer),_step4;try {for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {var line = _step4.value;
+        buffer),_step4;try {for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {var line = _step4.value;
           var spl = line.split("\t");
 
           if (spl[0].toLowerCase() != name.toLowerCase()) {
@@ -348,7 +348,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
       var buffer = (0,external_kolmafia_namespaceObject.visitUrl)("ascensionhistory.php?who=" + id);var _iterator5 = _createForOfIteratorHelper(
 
-      buffer.split("</tr>")),_step5;try {for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {var s = _step5.value;
+        buffer.split("</tr>")),_step5;try {for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {var s = _step5.value;
           var match = s.match(/valign=center>(\d+\/\d+\/\d+)&nbsp;/);
 
           if (match == null) {
@@ -385,9 +385,9 @@ TofuAbusers = /*#__PURE__*/function () {
 
       var moreProcessing = [];var _iterator6 = _createForOfIteratorHelper(
 
-      allPurchases),_step6;try {var _loop3 = function _loop3() {var purchase = _step6.value;
-          if (processedUsers.includes(purchase.user)) {
-            return "continue";
+        allPurchases),_step6;try {var _loop3 = function _loop3() {var purchase = _step6.value;
+          if (processedUsers.includes(purchase.user)) {return "continue";
+
           }
 
           processedUsers.push(purchase.user);
@@ -400,21 +400,21 @@ TofuAbusers = /*#__PURE__*/function () {
 
           // If they're not doing abusive limits in the last few days, they're probably good.
           if (recentCount < _this.maxTofuPerDay * daysAbuse) {
+
             //continue;
           }
-
           var count = allPurchases.
           filter((p) => p.user == purchase.user).
           reduce((v, p) => v + p.amount, 0);
 
-          if (count < tofuCouldveConsumed) {
-            return "continue";
+          if (count < tofuCouldveConsumed) {return "continue";
+
           }
 
           var playerId = _this.getPlayerId(purchase.user);
 
-          if (_this.isIgnored(playerId.toString())) {
-            return "continue";
+          if (_this.isIgnored(playerId.toString())) {return "continue";
+
           }
 
           var player = new TofuPurchase();
@@ -423,20 +423,20 @@ TofuAbusers = /*#__PURE__*/function () {
           player.lastPurchase = purchase.date;
           player.purchased = count;
 
-          if (!_this.isWorthWarning(player)) {
-            return "continue";
+          if (!_this.isWorthWarning(player)) {return "continue";
+
           }
 
-          moreProcessing.push(player);};for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {var _ret2 = _loop3();if (_ret2 === "continue") continue;
-        }} catch (err) {_iterator6.e(err);} finally {_iterator6.f();}
+          moreProcessing.push(player);
+        };for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {var _ret2 = _loop3();if (_ret2 === "continue") continue;}} catch (err) {_iterator6.e(err);} finally {_iterator6.f();}
 
       (0,external_kolmafia_namespaceObject.print)(moreProcessing.length + " customers need further processing..");
 
       var lastPrinted = Date.now();
       var timeBetween = 3000;
-      var processed = 0;var _loop2 = function _loop2() {
+      var processed = 0;var _loop2 = function _loop2()
 
-        var player = _moreProcessing[_i];
+      {var player = _moreProcessing[_i];
         processed++;
 
         if (lastPrinted + timeBetween < Date.now()) {
@@ -461,8 +461,8 @@ TofuAbusers = /*#__PURE__*/function () {
           " times",
           "blue");
 
-          _this.setIgnored(playerId.toString());
-          return "continue";
+          _this.setIgnored(playerId.toString());return "continue";
+
         }
 
         var ascensions = ascendData.filter((a) => a > cutoffAscensionDate).length;
@@ -473,9 +473,9 @@ TofuAbusers = /*#__PURE__*/function () {
 
         // With the added ascensions, is it now acceptable?
         if (player.purchased < tofuCouldConsume) {
+
           //  continue;
         }
-
         var recentCount = allPurchases.
         filter(
         (p) => p.user == player.user && p.date >= cutOffStillAbusingDate).
@@ -484,11 +484,11 @@ TofuAbusers = /*#__PURE__*/function () {
 
         // If they're not doing abusive limits in the last few days, they're probably good.
         if (recentCount < _this.maxTofuPerDay * (daysAbuse + ascensions)) {
+
           //  continue;
         }
-
-        toHandle.push(player);};for (var _i = 0, _moreProcessing = moreProcessing; _i < _moreProcessing.length; _i++) {var _ret = _loop2();if (_ret === "continue") continue;
-      }
+        toHandle.push(player);
+      };for (var _i = 0, _moreProcessing = moreProcessing; _i < _moreProcessing.length; _i++) {var _ret = _loop2();if (_ret === "continue") continue;}
 
       return toHandle;
     } }, { key: "isWorthWarning", value:
@@ -523,7 +523,7 @@ TofuAbusers = /*#__PURE__*/function () {
     } }, { key: "processBaddies", value:
 
     function processBaddies() {var _iterator7 = _createForOfIteratorHelper(
-      this.getBaddies()),_step7;try {for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {var purchase = _step7.value;
+        this.getBaddies()),_step7;try {for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {var purchase = _step7.value;
           var maxUses = this.maxTofuPerDay * (purchase.ascensions + 14);
           var wentOverBy = purchase.purchased - maxUses;
 
@@ -554,6 +554,16 @@ TofuAbusers = /*#__PURE__*/function () {
     } }, { key: "sendKmail", value:
 
     function sendKmail(userId, message) {
+
+
+
+
+
+
+
+
+
+
       // print("Kmail " + userId + " => " + message.substring(0, 20) + "...");
       // visitUrl(
       //   "sendmessage.php?pwd=&action=send&towho=" +
@@ -564,17 +574,7 @@ TofuAbusers = /*#__PURE__*/function () {
       //   true,
       //   true
       // );
-    } }, { key: "getKmail", value:
-
-    function getKmail(name) {
-      return "Hi ".concat(name, ", this is in regards to your Essential Tofu purchases.\n\n            Please don't take this personally, but I can't support the amount of Essential Tofu that is being purchased. \n\n            People are buying more than they need, this is creating supply and demand issues.\n\n            As such, I'm requesting that you only buy what you need. I don't want to be forced to ignore people. It doesn't really matter if you're giving it away either, they can buy their own tofu.\n\n            If you are doing this to build up your Display Case collection or your incase the bots stop working stock. Then can I suggest you buy some of the no limits Essential Tofu?\n\n            If you do not want to receive further kmails, feel free to baleet me.\n            \n            Thank you for your understanding and consideration. This is an automated message.");
-
-
-
-
-
-
-
+    } }, { key: "getKmail", value: function getKmail(name) {return "Hi ".concat(name, ", this is in regards to your Essential Tofu purchases.\n\n            Please don't take this personally, but I can't support the amount of Essential Tofu that is being purchased. \n\n            People are buying more than they need, this is creating supply and demand issues.\n\n            As such, I'm requesting that you only buy what you need. I don't want to be forced to ignore people. It doesn't really matter if you're giving it away either, they can buy their own tofu.\n\n            If you are doing this to build up your Display Case collection or your incase the bots stop working stock. Then can I suggest you buy some of the no limits Essential Tofu?\n\n            If you do not want to receive further kmails, feel free to baleet me.\n            \n            Thank you for your understanding and consideration. This is an automated message.");
 
 
 
