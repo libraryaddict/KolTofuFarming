@@ -8,7 +8,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:types && npm run build:js",
-    "postinstall": "patch-package",
     "build:types": "tsc",
     "build:js": "webpack",
     "watch": "webpack --watch --progress"
