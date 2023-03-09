@@ -17,7 +17,6 @@ import {
   historicalPrice,
   isOnline,
   itemAmount,
-  lastMonster,
   mallPrice,
   moodList,
   myAbsorbs,
@@ -25,7 +24,6 @@ import {
   myClass,
   myHp,
   myMeat,
-  myMp,
   myName,
   numericModifier,
   outfit,
@@ -49,7 +47,6 @@ import {
   toEffect,
   toInt,
   toItem,
-  toMonster,
   totalTurnsPlayed,
   turnsPlayed,
   use,
@@ -63,8 +60,8 @@ import {
   Slot,
   Location,
   Monster,
-  limitMode,
   holiday,
+  myDaycount,
 } from "kolmafia";
 
 class Tofu {
@@ -80,7 +77,7 @@ class Tofu {
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
   private sellbotSendSome: number = 0;
   private skipRubberSpiders: boolean = false;
-  private freeFights: Map<String, number> = new Map();
+  private freeFights: Map<string, number> = new Map();
   private preferenceNag = "_nagAboutGelKick";
 
   addFreeFight(fightName: string) {
@@ -108,7 +105,7 @@ class Tofu {
       return;
     }
 
-    let startedCups = haveEffect(Effect.get("In Your Cups"));
+    const startedCups = haveEffect(Effect.get("In Your Cups"));
     let turnsSpent = turnsPlayed();
 
     this.loadProperties();
@@ -122,16 +119,18 @@ class Tofu {
     this.doFreeFights();
     this.generateAdventures();
 
-    let startedTofu = itemAmount(Item.get("Essential Tofu"));
+    const startedTofu = itemAmount(Item.get("Essential Tofu"));
 
     this.doFarming();
+
+    this.setGovermentToday();
 
     turnsSpent = turnsPlayed() - turnsSpent;
     let finalTofu = itemAmount(Item.get("Essential Tofu")) - startedTofu;
     this.doStock();
     this.doFinish();
 
-    let finalCups = haveEffect(Effect.get("In Your Cups"));
+    const finalCups = haveEffect(Effect.get("In Your Cups"));
     let turnsGained = finalCups - startedCups;
 
     if (this.isFarmingDay()) {
@@ -180,10 +179,10 @@ class Tofu {
   loadProperties() {
     print("Now loading tofu properties..", "gray");
 
-    let lines: [string, string][] = [];
+    const lines: [string, string][] = [];
 
-    let load = function (propertyName: string, defaultValue: string): string {
-      let prop = getProperty(propertyName);
+    const load = function (propertyName: string, defaultValue: string): string {
+      const prop = getProperty(propertyName);
 
       if (prop == null || prop == "") {
         lines.push([
@@ -244,7 +243,7 @@ class Tofu {
       passed = false;
     }
 
-    let rec: Item[] = [
+    const rec: Item[] = [
       "The Jokester's gun",
       "Mafia Thumb Ring",
       "Garbage Sticker",
@@ -254,7 +253,7 @@ class Tofu {
       "potato alarm clock",
     ]
       .map((i) => Item.get(i))
-      .filter((i) => i != Item.get("None") && availableAmount(i) == 0);
+      .filter((i) => i != Item.none && availableAmount(i) == 0);
 
     if (rec.length > 0) {
       print(
@@ -266,9 +265,9 @@ class Tofu {
       waitq(2);
     }
 
-    let rolloverOutfit: Item[] = outfitPieces("Gladiatorial Glad Rags").filter(
-      (i) => availableAmount(i) == 0
-    );
+    const rolloverOutfit: Item[] = outfitPieces(
+      "Gladiatorial Glad Rags"
+    ).filter((i) => availableAmount(i) == 0);
 
     if (rolloverOutfit.length > 0) {
       print(
@@ -278,7 +277,7 @@ class Tofu {
       );
     }
 
-    let need: Item[] = ["Eldritch hat", "eldritch pants"]
+    const need: Item[] = ["Eldritch hat", "eldritch pants"]
       .map((i) => Item.get(i))
       .filter((i) => availableAmount(i) == 0);
 
@@ -296,7 +295,7 @@ class Tofu {
       print("You should consider getting a joksters gun", "red");
     }
 
-    let outfits: string[] = ["rollover", "voter", "farming"].filter(
+    const outfits: string[] = ["rollover", "voter", "farming"].filter(
       (s) =>
         getCustomOutfits().find((o) => o.toLowerCase() == s.toLowerCase()) ==
         null
@@ -321,10 +320,10 @@ class Tofu {
   grabBuffItems() {
     cliExecute("mood acidparade");
 
-    let moodStuff = moodList();
+    const moodStuff = moodList();
 
-    for (let mood of moodStuff) {
-      let spl = mood.split(" | ");
+    for (const mood of moodStuff) {
+      const spl = mood.split(" | ");
 
       if (spl.length != 3) {
         continue;
@@ -334,26 +333,26 @@ class Tofu {
         continue;
       }
 
-      let match = spl[spl.length - 1].match(/use [0-9]+ (.*)/);
+      const match = spl[spl.length - 1].match(/use [0-9]+ (.*)/);
 
       if (match == null) {
         continue;
       }
 
-      let item = toItem(match[1]);
+      const item = toItem(match[1]);
 
-      if (item == null || item == Item.get("None")) {
+      if (item == null || item == Item.none) {
         print("Can't find the mood item '" + match[1] + "'", "red");
         continue;
       }
 
-      let effect = toEffect(spl[1]);
+      const effect = toEffect(spl[1]);
 
       if (effect == null) {
         continue;
       }
 
-      let duration = numericModifier(item, "Effect Duration");
+      const duration = numericModifier(item, "Effect Duration");
 
       if (duration <= 0) {
         continue;
@@ -372,7 +371,7 @@ class Tofu {
   }
 
   grabItem(item: Item, amount: number, price: number) {
-    let required = amount - availableAmount(item);
+    const required = amount - availableAmount(item);
     if (required <= 0) {
       return;
     }
@@ -426,12 +425,9 @@ class Tofu {
     retrieveItem(1000, Item.get("meat paste"));
     this.buyCheapestChocolates(10);
 
-    let famEquip = Item.get("ittah bittah hookah");
+    const famEquip = Item.get("ittah bittah hookah");
 
-    if (
-      famEquip != null &&
-      equippedItem(Slot.get("Familiar")) == Item.get("None")
-    ) {
+    if (famEquip != null && equippedItem(Slot.get("familiar")) == Item.none) {
       equip(famEquip);
     }
 
@@ -505,7 +501,7 @@ class Tofu {
   }
 
   buyCheapestChocolates(amount: number) {
-    let chocs = this.getChocolates();
+    const chocs = this.getChocolates();
 
     chocs.forEach((c) => {
       amount -= availableAmount(c);
@@ -515,14 +511,14 @@ class Tofu {
       return;
     }
 
-    let v = this.adventuresValuedAt;
+    const v = this.adventuresValuedAt;
 
-    let buyChocolates = function (): boolean {
+    const buyChocolates = function (): boolean {
       let cheapest: Item;
       let price: number;
 
-      for (let i of chocs) {
-        let p = historicalAge(i) > 31 ? mallPrice(i) : historicalPrice(i);
+      for (const i of chocs) {
+        const p = historicalAge(i) > 31 ? mallPrice(i) : historicalPrice(i);
 
         if (cheapest != null || price <= p || p > v) {
           continue;
@@ -545,7 +541,7 @@ class Tofu {
 
   generateAdventures(): number {
     print("Now hyping ourselves up so we can do more adventures..", "blue");
-    let advs = myAdventures();
+    const advs = myAdventures();
 
     if (
       getProperty("_timeArrowSent") == "" &&
@@ -568,7 +564,7 @@ class Tofu {
 
     // TODO Calculate if its worth eating a 2nd chocolate
     while (toInt(getProperty("_chocolatesUsed")) < 2) {
-      let c = this.getChocolates().find((i) => availableAmount(i) > 0);
+      const c = this.getChocolates().find((i) => availableAmount(i) > 0);
 
       if (c != null) {
         use(1, c);
@@ -627,10 +623,10 @@ class Tofu {
       return false;
     }
 
-    let pref = "_lastSpiderUsed";
-    let prefNubbin = "_rubberNubins";
-    let turnsAgo = totalTurnsPlayed() - toInt(getProperty(pref));
-    let nubbin = Item.get("Rubber nubbin");
+    const pref = "_lastSpiderUsed";
+    const prefNubbin = "_rubberNubins";
+    const turnsAgo = totalTurnsPlayed() - toInt(getProperty(pref));
+    const nubbin = Item.get("Rubber nubbin");
 
     if (turnsAgo < 10 || getProperty("_skipRubberSpiders") == "true") {
       return;
@@ -699,14 +695,14 @@ class Tofu {
       }
     }
 
-    let myTurns = myAdventures();
+    const myTurns = myAdventures();
 
     while (
       toInt(getProperty("_drunkPygmyBanishes")) < 11 &&
       myTurns <= myAdventures() &&
       !this.isWandererHoliday()
     ) {
-      let bowling = Item.get("bowling ball");
+      const bowling = Item.get("bowling ball");
 
       if (getInventory()[bowling.name] > 0) {
         putCloset(bowling);
@@ -729,7 +725,7 @@ class Tofu {
       toInt(getProperty("_glarkCableUses")) < 5 &&
       !this.isWandererHoliday()
     ) {
-      let count = myAdventures();
+      const count = myAdventures();
 
       if (itemAmount(Item.get("glark cable")) > 0) {
         adv1(Location.get("The Red Zeppelin"), -1, "");
@@ -758,7 +754,7 @@ class Tofu {
 
     let fights = 0;
 
-    this.freeFights.forEach((v, k) => {
+    this.freeFights.forEach((v) => {
       fights += v;
     });
 
@@ -767,13 +763,13 @@ class Tofu {
 
   createLightsThatGoOut() {
     print("May need to make some lights that never go out!", "blue");
-    let itemToMake = Item.get("A Light That Never Goes Out");
-    let record = Item.get("Recording of Inigo's Incantation of Inspiration");
-    let effect = Effect.get("Inigo's Incantation of Inspiration");
-    let ingred = Item.get("Lump of Brituminous coal");
-    let ingred2 = Item.get("third-hand lantern");
+    const itemToMake = Item.get("A Light That Never Goes Out");
+    const record = Item.get("Recording of Inigo's Incantation of Inspiration");
+    const effect = Effect.get("Inigo's Incantation of Inspiration");
+    const ingred = Item.get("Lump of Brituminous coal");
+    const ingred2 = Item.get("third-hand lantern");
 
-    let getCostToMake: () => number = () =>
+    const getCostToMake: () => number = () =>
       mallPrice(ingred) + mallPrice(ingred2) + mallPrice(record) / 4;
 
     while (
@@ -813,7 +809,7 @@ class Tofu {
   }
 
   isWandererHoliday(): boolean {
-    for (let wandererHoliday of [
+    for (const wandererHoliday of [
       "El Dia De Los Muertos Borrachos",
       "Feast of Boris",
       "Talk Like a Pirate Day",
@@ -838,9 +834,12 @@ class Tofu {
       );
     }
 
+    const cups = haveEffect(Effect.get("In Your Cups"));
+
     if (
       !this.isWandererHoliday() &&
-      haveEffect(Effect.get("In Your Cups")) > 450
+      cups > 450 &&
+      (cups > 2000 || this.isGovermentToday())
     ) {
       while (myAbsorbs() < 15) {
         cliExecute("absorb light that never goes out");
@@ -913,7 +912,7 @@ class Tofu {
   doFarming() {
     refreshStatus();
     visitUrl("charpane.php");
-    let advs = myAdventures();
+    const advs = myAdventures();
 
     //
     // FARM OR CHARGE AS APPROPRIATE
@@ -1013,7 +1012,7 @@ class Tofu {
       return false;
     }
 
-    let freeFight = toInt(getProperty("_voteFreeFights")) < 3;
+    const freeFight = toInt(getProperty("_voteFreeFights")) < 3;
 
     if (!freeFight) {
       if (!this.doSideStuff) {
@@ -1033,11 +1032,11 @@ class Tofu {
           itemAmount(Item.get("absentee voter ballot")) >
         300
       ) {
-        return false;
+        //  return false;
       }
     }
 
-    let vote_fight_now =
+    const vote_fight_now =
       totalTurnsPlayed() % 11 == 1 &&
       toInt(getProperty("lastVoteMonsterTurn")) < totalTurnsPlayed();
 
@@ -1053,7 +1052,7 @@ class Tofu {
     );
 
     outfit("Voter");
-    let hp = myHp();
+    const hp = myHp();
 
     adv1(Location.get("The Electric Lemonade Acid Parade"), 1, "");
 
@@ -1078,7 +1077,7 @@ class Tofu {
       "gray"
     );
 
-    let licksReady = toInt(getProperty("shockingLickCharges"));
+    const licksReady = toInt(getProperty("shockingLickCharges"));
 
     if (licksReady > 0) {
       print(
@@ -1089,7 +1088,7 @@ class Tofu {
   }
 
   doShockingLicks() {
-    let licks = toInt(getProperty("shockingLickCharges"));
+    const licks = toInt(getProperty("shockingLickCharges"));
 
     print("We have " + licks + " ready!", "blue");
 
@@ -1098,9 +1097,9 @@ class Tofu {
       return;
     }
 
-    let drum = Item.get("Drum Machine");
+    const drum = Item.get("Drum Machine");
     retrieveItem(drum, licks);
-    let adv = myAdventures();
+    const adv = myAdventures();
 
     while (
       toInt(getProperty("shockingLickCharges")) > 0 &&
@@ -1113,11 +1112,38 @@ class Tofu {
     print("Fought some worms!");
   }
 
+  isGovermentToday(): boolean {
+    const prop = getProperty("votingMonsters");
+
+    return (
+      !prop.includes(myDaycount() + "|") &&
+      prop.includes("government bureaucrat") &&
+      (!prop.includes("mutant") ||
+        haveEffect(Effect.get("In Your Cups")) > 3000)
+    );
+  }
+
+  setGovermentToday() {
+    setProperty(
+      "votingMonsters",
+      myDaycount() +
+        "|" +
+        getProperty("_voteMonster1") +
+        "|" +
+        getProperty("_voteMonster2")
+    );
+  }
+
   voterSetup(): void {
     print("Oh god, I forgot I need to vote in the elections today", "blue");
 
     if (availableAmount(Item.get('"I Voted!" sticker')) > 0) {
       print("Already voted for Trump.. Whew!", "gray");
+      return;
+    }
+
+    if (itemAmount(Item.get("Absentee Voter Ballot")) == 0) {
+      print("Can't vote unfortunately..", "gray");
       return;
     }
 
@@ -1222,7 +1248,7 @@ class Tofu {
 
   doStock() {
     print("I need to dump this essential tofu somewhere...", "blue");
-    let tofu = Item.get("Essential Tofu");
+    const tofu = Item.get("Essential Tofu");
     let to_sell = itemAmount(tofu) - 10;
 
     if (to_sell <= 0) {
@@ -1242,7 +1268,7 @@ class Tofu {
     }
 
     if (this.sellbotSendSome > 0) {
-      let toSend = Math.min(to_sell, this.sellbotSendSome);
+      const toSend = Math.min(to_sell, this.sellbotSendSome);
 
       print(
         `We want to send ${toSend} tofu to sellbot! We're handling the rest at low prices!`,
@@ -1254,7 +1280,7 @@ class Tofu {
       to_sell -= toSend;
     }
 
-    let ourLimit = Math.max(
+    const ourLimit = Math.max(
       1,
       Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
     );
@@ -1287,7 +1313,7 @@ class Tofu {
       }
     }
 
-    if (shopLimit(tofu) != ourLimit) {
+    if (shopLimit(tofu) != ourLimit && shopAmount(tofu) > 0) {
       print(
         "Huh, the shop limit should be " +
           ourLimit +
@@ -1303,8 +1329,8 @@ class Tofu {
   }
 
   getShopPrice(): number {
-    let tofu = Item.get("Essential Tofu");
-    let amountIHave = shopAmount(tofu) + itemAmount(tofu);
+    const tofu = Item.get("Essential Tofu");
+    const amountIHave = shopAmount(tofu) + itemAmount(tofu);
 
     if (amountIHave < 800) {
       return this.pricePerTofu + 1;
