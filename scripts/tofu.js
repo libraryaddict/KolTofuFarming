@@ -129,8 +129,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         " turns and gained an extra " +
         turnsGained +
         ' of "In Your Cups!"',
-        "gray");
-
+        "gray"
+        );
       }
 
       var str = "";
@@ -154,8 +154,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if ((0,external_kolmafia_namespaceObject.getProperty)(this.preferenceNag) == "true") {
         (0,external_kolmafia_namespaceObject.print)(
         "I'm not sure, but you may need to set up GELATINOUS KICK in your combat macro! Preferably after the first melee attack to minimize MP usage. The bot was likely defeated today.",
-        "red");
-
+        "red"
+        );
       }
     } }, { key: "loadProperties", value:
 
@@ -170,8 +170,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         if (prop == null || prop == "") {
           lines.push(["Setting Missing: ".concat(
           propertyName, ". Defaulted to: ").concat(defaultValue),
-          "gray"]);
-
+          "gray"]
+          );
           return defaultValue;
         }
 
@@ -180,36 +180,36 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       };
 
       this.adventuresValuedAt = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuAdventuresValue", this.adventuresValuedAt.toString()));
-
+      load("tofuAdventuresValue", this.adventuresValuedAt.toString())
+      );
       this.doSideStuff = (0,external_kolmafia_namespaceObject.toBoolean)(
-      load("tofuSideStuff", this.doSideStuff.toString()));
-
+      load("tofuSideStuff", this.doSideStuff.toString())
+      );
       this.freeFightValue = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuFreeFightValue", this.freeFightValue.toString()));
-
+      load("tofuFreeFightValue", this.freeFightValue.toString())
+      );
 
       this.mallLimit = (0,external_kolmafia_namespaceObject.toInt)(load("tofuMallLimit", this.mallLimit.toString()));
       this.pricePerTofu = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuMallPrice", this.pricePerTofu.toString()));
-
+      load("tofuMallPrice", this.pricePerTofu.toString())
+      );
       this.mallMultiName = load("tofuMallMultiName", this.mallMultiName);
       this.sendToMallMulti = (0,external_kolmafia_namespaceObject.toBoolean)(
-      load("tofuMallMultiEnabled", this.sendToMallMulti.toString()));
-
+      load("tofuMallMultiEnabled", this.sendToMallMulti.toString())
+      );
       this.breakfastScript = load("tofuBreakfastScript", this.breakfastScript);
       this.sellbotOverflow = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuSellbotOverflow", this.sellbotOverflow.toString()));
-
+      load("tofuSellbotOverflow", this.sellbotOverflow.toString())
+      );
       this.skipRubberSpiders = (0,external_kolmafia_namespaceObject.toBoolean)(
-      load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString()));
-
+      load("tofuSkipRubberSpiders", this.skipRubberSpiders.toString())
+      );
       this.sellbotSendSome = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuSellbotSendSome", this.sellbotSendSome.toString()));
-
+      load("tofuSellbotSendSome", this.sellbotSendSome.toString())
+      );
       this.dynMallLimit = (0,external_kolmafia_namespaceObject.toInt)(
-      load("tofuLimitPerXTofuStocked", this.dynMallLimit.toString()));
-
+      load("tofuLimitPerXTofuStocked", this.dynMallLimit.toString())
+      );
 
       lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
 
@@ -242,22 +242,22 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.print)(
         "Missing some nice pieces of gear! " +
         rec.map((i) => i.name).join(", "),
-        "red");
-
+        "red"
+        );
 
         (0,external_kolmafia_namespaceObject.waitq)(2);
       }
 
       var rolloverOutfit = (0,external_kolmafia_namespaceObject.outfitPieces)(
-      "Gladiatorial Glad Rags").
-      filter((i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
+      "Gladiatorial Glad Rags"
+      ).filter((i) => (0,external_kolmafia_namespaceObject.availableAmount)(i) == 0);
 
       if (rolloverOutfit.length > 0) {
         (0,external_kolmafia_namespaceObject.print)(
         "Missing pieces of rollover outfit! Missing: " +
         rolloverOutfit.map((i) => i.name).join(", "),
-        "red");
-
+        "red"
+        );
       }
 
       var need = ["Eldritch hat", "eldritch pants"].
@@ -268,8 +268,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.print)(
         "Missing pieces of farming outfit! Missing: " +
         need.map((i) => i.name).join(", "),
-        "red");
-
+        "red"
+        );
 
         passed = false;
       }
@@ -281,11 +281,16 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       var outfits = ["rollover", "voter", "farming"].filter(
       (s) =>
       (0,external_kolmafia_namespaceObject.getCustomOutfits)().find((o) => o.toLowerCase() == s.toLowerCase()) ==
-      null);
-
+      null
+      );
 
       if (outfits.length > 0) {
         (0,external_kolmafia_namespaceObject.print)("Missing outfits! Missing: " + outfits.join(", "));
+        passed = false;
+      }
+
+      if (!(0,external_kolmafia_namespaceObject.propertyHasDefault)("_monkeyPawWishesUsed")) {
+        (0,external_kolmafia_namespaceObject.print)("Need to update mafia!");
         passed = false;
       }
 
@@ -297,6 +302,22 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.cliExecute)("charpane.php");
       (0,external_kolmafia_namespaceObject.cliExecute)("familiar unspeakachu");
       (0,external_kolmafia_namespaceObject.cliExecute)(this.breakfastScript);
+
+      if (
+      (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_monkeyPawWishesUsed")) < 5 &&
+      (0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get("cursed monkey paw")) > 0)
+      {
+        (0,external_kolmafia_namespaceObject.visitUrl)("main.php?action=cmonk&pwd");
+
+        for (var i = 0; i < 5; i++) {
+          (0,external_kolmafia_namespaceObject.visitUrl)("choice.php?whichchoice=1501&pwd&wish=In+Your+Cups&option=1",
+
+          true,
+          true
+          );
+        }
+      }
+
       (0,external_kolmafia_namespaceObject.print)("Tofu script is ready to rumble!", "gray");
     } }, { key: "grabBuffItems", value:
 
@@ -370,21 +391,21 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       this.grabItem(
       external_kolmafia_namespaceObject.Item.get("Louder than Bomb"),
       10,
-      this.adventuresValuedAt * 11);
-
+      this.adventuresValuedAt * 11
+      );
       this.grabItem(
       external_kolmafia_namespaceObject.Item.get("Divine champagne popper"),
       10,
-      this.adventuresValuedAt * 11);
-
+      this.adventuresValuedAt * 11
+      );
       this.grabItem(external_kolmafia_namespaceObject.Item.get("human musk"), 10, this.adventuresValuedAt * 6);
       this.grabItem(external_kolmafia_namespaceObject.Item.get("borrowed time"), 2, this.adventuresValuedAt * 20);
       this.grabItem(external_kolmafia_namespaceObject.Item.get("glark cable"), 10, this.freeFightValue);
       this.grabItem(
       external_kolmafia_namespaceObject.Item.get("Absentee Voter Ballot"),
       3,
-      this.freeFightValue * 3);
-
+      this.freeFightValue * 3
+      );
 
       this.grabItem(external_kolmafia_namespaceObject.Item.get("BRICKO Ooze"), 10, this.freeFightValue);
       this.grabItem(external_kolmafia_namespaceObject.Item.get("Lynyrd snare"), 3, this.freeFightValue);
@@ -419,22 +440,22 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if (spent == 0) {
         (0,external_kolmafia_namespaceObject.print)(
         "The shopkeeper chases us out, angry we didn't buy anything!",
-        "gray");
-
+        "gray"
+        );
       } else if (spent <= 10000) {
         (0,external_kolmafia_namespaceObject.print)(
         "The shop keeper is grousy, we didn't spend enough meat! (" +
         this.getNumber(spent) +
         ")",
-        "gray");
-
+        "gray"
+        );
       } else {
         (0,external_kolmafia_namespaceObject.print)(
         "The shop keeper feels awe at the amount of meat we've just spent! (" +
         this.getNumber(spent) +
         ")",
-        "gray");
-
+        "gray"
+        );
       }
     } }, { key: "getNumber", value:
 
@@ -584,15 +605,15 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if (advs == (0,external_kolmafia_namespaceObject.myAdventures)()) {
         (0,external_kolmafia_namespaceObject.print)(
         "Mum shakes her head at me, I didn't generate any adventures..",
-        "gray");
-
+        "gray"
+        );
       } else {
         (0,external_kolmafia_namespaceObject.print)(
         "Feeling so adventerous, that I could explore " + (
         (0,external_kolmafia_namespaceObject.myAdventures)() - advs) +
         " more times!",
-        "gray");
-
+        "gray"
+        );
       }
 
       return (0,external_kolmafia_namespaceObject.myAdventures)() - advs;
@@ -620,8 +641,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
           return false;
         } else if (turnsAgo == 21 && !this.isFarmingDay()) {
           (0,external_kolmafia_namespaceObject.print)(
-          "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one.");
-
+          "Last spider was " + turnsAgo + " turns ago.. Lets see if we hit one."
+          );
           (0,external_kolmafia_namespaceObject.adv1)(external_kolmafia_namespaceObject.Location.get("The Electric Lemonade Acid Parade"));
         }
       }
@@ -642,8 +663,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.print)(
       "Waiting 15 seconds to be better reassured that the rubber spider is applied soon as feasible",
-      "gray");
-
+      "gray"
+      );
       (0,external_kolmafia_namespaceObject.waitq)(15);
       return true;
     } }, { key: "doFreeFights", value:
@@ -655,8 +676,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.print)(
       "I want to test out some of my kung fu moves before I head off. Lets do some free fights",
-      "blue");
-
+      "blue"
+      );
 
       (0,external_kolmafia_namespaceObject.outfit)("Farming");
 
@@ -719,8 +740,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
           (0,external_kolmafia_namespaceObject.getProperty)("lastCopyableMonster").includes("red"))
           {
             (0,external_kolmafia_namespaceObject.abort)(
-            "You spent an adventure at the red zeppelin. The last copyable monster has 'red' in the name. I'm assuming your combat script is borked.");
-
+            "You spent an adventure at the red zeppelin. The last copyable monster has 'red' in the name. I'm assuming your combat script is borked."
+            );
             throw "Please check combat script";
           }
         } else {
@@ -813,8 +834,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if (this.isWandererHoliday()) {
         (0,external_kolmafia_namespaceObject.print)(
         "Oh, it's a wanderer holiday.. Well, we definitely are not going to farm today then.",
-        "blue");
-
+        "blue"
+        );
       }
 
       var cups = (0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups"));
@@ -850,8 +871,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.print)(
       '"Is that bulge in your pocket for me?" she asks. But you whip out a gun and say "Not today!"',
-      "blue");
-
+      "blue"
+      );
 
       (0,external_kolmafia_namespaceObject.equip)(external_kolmafia_namespaceObject.Item.get("The Jokester's gun"));
 
@@ -859,19 +880,19 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.use)(external_kolmafia_namespaceObject.Item.get("Drum Machine"));
         (0,external_kolmafia_namespaceObject.print)(
         "Oh god! Your girlfriend transformed into a giant worm! That was horrifying a fight!",
-        "gray");
-
+        "gray"
+        );
       } else if ((0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups")) >= 10) {
         (0,external_kolmafia_namespaceObject.adventure)(1, external_kolmafia_namespaceObject.Location.get("The Electric Lemonade Acid Parade"));
         (0,external_kolmafia_namespaceObject.print)(
         "You blow the smoke off the barrel of your gun, and sneer. Another essential tofu hits the ground.",
-        "gray");
-
+        "gray"
+        );
       } else {
         (0,external_kolmafia_namespaceObject.print)(
         "Couldn't use the jokesters gun for a free fight as not enough in your cups",
-        "red");
-
+        "red"
+        );
       }
 
       (0,external_kolmafia_namespaceObject.outfit)("Farming");
@@ -904,8 +925,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if (this.isFarmingDay()) {
         (0,external_kolmafia_namespaceObject.print)("You sigh as you put on your big boy boots. It's time to milk the tofu again.. In the paddocks, ".concat(
         (0,external_kolmafia_namespaceObject.myAdventures)(), " tofu cows tremble in fear!"),
-        "blue");
-
+        "blue"
+        );
 
         if (
         !(0,external_kolmafia_namespaceObject.toBoolean)((0,external_kolmafia_namespaceObject.getProperty)("_borrowedTimeUsed")) &&
@@ -957,10 +978,10 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.print)("Charging day! Of ".concat(
         (0,external_kolmafia_namespaceObject.myAdventures)(), ", we're spending ").concat(Math.max(
         0,
-        (0,external_kolmafia_namespaceObject.myAdventures)() - adventuresToKeep), " adventures today! That's weak!"),
-
-        "blue");
-
+        (0,external_kolmafia_namespaceObject.myAdventures)() - adventuresToKeep
+        ), " adventures today! That's weak!"),
+        "blue"
+        );
 
         while ((0,external_kolmafia_namespaceObject.myAdventures)() > adventuresToKeep) {
           if (this.doRubberSpider()) {
@@ -980,13 +1001,13 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       if ((0,external_kolmafia_namespaceObject.myAdventures)() == advs) {
         (0,external_kolmafia_namespaceObject.print)(
         "Phew, that wasn't exhausting. Sat on the couch all day! Dad's really proud of me!",
-        "gray");
-
+        "gray"
+        );
       } else {
         (0,external_kolmafia_namespaceObject.print)(
         "Phew, that was exhausting! Mum's going to be real proud of me!",
-        "gray");
-
+        "gray"
+        );
       }
     } }, { key: "doVoterFight", value:
 
@@ -1031,8 +1052,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.print)(
       "Someone is trying to take away my gun rights! I voted for those! Not today!",
-      "gray");
-
+      "gray"
+      );
 
       (0,external_kolmafia_namespaceObject.outfit)("Voter");
       var hp = (0,external_kolmafia_namespaceObject.myHp)();
@@ -1057,16 +1078,16 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.outfit)("Rollover");
       (0,external_kolmafia_namespaceObject.print)(
       "Good night mum! Good night dad! Good night " + (0,external_kolmafia_namespaceObject.myName)() + "!",
-      "gray");
-
+      "gray"
+      );
 
       var licksReady = (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("shockingLickCharges"));
 
       if (licksReady > 0) {
         (0,external_kolmafia_namespaceObject.print)("Psst! My lips are numb! ".concat(
         licksReady, " shocking licks stored!"),
-        "gray");
-
+        "gray"
+        );
       }
     } }, { key: "doShockingLicks", value:
 
@@ -1113,8 +1134,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       "|" +
       (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster1") +
       "|" +
-      (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster2"));
-
+      (0,external_kolmafia_namespaceObject.getProperty)("_voteMonster2")
+      );
     } }, { key: "voterSetup", value:
 
     function voterSetup() {
@@ -1173,8 +1194,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       ["+3 Stats Per Fight", 4],
       ["+4 Moxie Stats Per Fight", 3],
       ["+4 Muscle Stats Per Fight", 2],
-      ["+4 Mysticality Stats Per Fight", 1]]);
-
+      ["+4 Mysticality Stats Per Fight", 1]]
+      );
 
       var monsterVote =
       votingMonsterPriority.indexOf((0,external_kolmafia_namespaceObject.getProperty)("_voteMonster1")) <
@@ -1220,12 +1241,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       " (" +
       secondInit +
       ")",
-      "gray");
-
+      "gray"
+      );
 
       (0,external_kolmafia_namespaceObject.visitUrl)("choice.php?option=1&whichchoice=1331&g=".concat(
-      monsterVote, "&local[]=").concat(firstInit, "&local[]=").concat(firstInit));
-
+      monsterVote, "&local[]=").concat(firstInit, "&local[]=").concat(firstInit)
+      );
       (0,external_kolmafia_namespaceObject.waitq)(1);
     } }, { key: "doStock", value:
 
@@ -1243,8 +1264,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
           "Readjusted price of tofu in shop to " +
           this.getShopPrice() +
           " to discourage buyers",
-          "gray");
-
+          "gray"
+          );
         }
 
         return;
@@ -1255,8 +1276,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
         (0,external_kolmafia_namespaceObject.print)("We want to send ".concat(
         toSend, " tofu to sellbot! We're handling the rest at low prices!"),
-        "purple");
-
+        "purple"
+        );
 
         (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(toSend, " essential tofu to sellbot"));
 
@@ -1265,30 +1286,30 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       var ourLimit = Math.max(
       1,
-      Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit)));
-
+      Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
+      );
 
       if (to_sell > 0) {
         if (this.sendToMallMulti) {
           (0,external_kolmafia_namespaceObject.print)(
           "Stocking " + this.mallMultiName + "! " + to_sell + " tofu to stock!",
-          "purple");
-
+          "purple"
+          );
           (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(
-          to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(ourLimit, "@").concat(this.pricePerTofu));
-
+          to_sell, " essential tofu to ").concat(this.mallMultiName, " || ").concat(ourLimit, "@").concat(this.pricePerTofu)
+          );
         } else if (
         this.sellbotOverflow < 100000000 &&
         (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > this.sellbotOverflow)
         {
           (0,external_kolmafia_namespaceObject.print)("We have ".concat(
           this.getNumber(
-          (0,external_kolmafia_namespaceObject.shopAmount)(tofu)), " tofu in mall, our overflow is ").concat(
-          this.getNumber(
-          this.sellbotOverflow), " so lets send ").concat(
-          this.getNumber(to_sell), " excess tofu to sellbot!"),
-          "purple");
-
+          (0,external_kolmafia_namespaceObject.shopAmount)(tofu)
+          ), " tofu in mall, our overflow is ").concat(this.getNumber(
+          this.sellbotOverflow
+          ), " so lets send ").concat(this.getNumber(to_sell), " excess tofu to sellbot!"),
+          "purple"
+          );
 
           (0,external_kolmafia_namespaceObject.cliExecute)("csend ".concat(to_sell, " essential tofu to sellbot"));
         } else {
@@ -1303,8 +1324,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         " but is " +
         (0,external_kolmafia_namespaceObject.shopLimit)(tofu) +
         "... Lets fix that!",
-        "purple");
-
+        "purple"
+        );
         (0,external_kolmafia_namespaceObject.putShop)(this.getShopPrice(), ourLimit, 0, tofu);
       }
 

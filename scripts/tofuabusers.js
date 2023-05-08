@@ -55,7 +55,7 @@ StorePurchase = /*#__PURE__*/_createClass(function StorePurchase() {_classCallCh
 
 
 
-WarningType;(function (WarningType) {WarningType[WarningType["NONE"] = 0] = "NONE";WarningType[WarningType["KMAIL"] = 1] = "KMAIL";WarningType[WarningType["FINAL_KMAIL"] = 2] = "FINAL_KMAIL";WarningType[WarningType["IGNORED"] = 3] = "IGNORED";})(WarningType || (WarningType = {}));var
+WarningType = /*#__PURE__*/function (WarningType) {WarningType[WarningType["NONE"] = 0] = "NONE";WarningType[WarningType["KMAIL"] = 1] = "KMAIL";WarningType[WarningType["FINAL_KMAIL"] = 2] = "FINAL_KMAIL";WarningType[WarningType["IGNORED"] = 3] = "IGNORED";return WarningType;}(WarningType || {});var
 
 
 
@@ -130,8 +130,8 @@ ContactList = /*#__PURE__*/function () {function ContactList() {_classCallCheck(
 
         spl),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var s = _step.value;
           var match = s.match(
-          /href=(?:'|")showplayer.php\?who=(\d+)(?:'|") class=nounder><b>([a-zA-Z0-9 ]+)</);
-
+          /href=(?:'|")showplayer.php\?who=(\d+)(?:'|") class=nounder><b>([a-zA-Z0-9 ]+)</
+          );
 
           if (match == null) {
             continue;
@@ -155,13 +155,13 @@ TofuPurchase = /*#__PURE__*/_createClass(function TofuPurchase() {_classCallChec
 TofuAbusers = /*#__PURE__*/function () {
 
 
-  // Ascensions count as another day. This should realistically be 1, but we know people love buying stuff
-  // Days
 
 
-  function TofuAbusers() {_classCallCheck(this, TofuAbusers);_defineProperty(this, "warnings", []);_defineProperty(this, "contacts", new ContactList());_defineProperty(this, "maxTofuPerDay", 1.5);_defineProperty(this, "timeBetweenWarnings", 3);_defineProperty(this, "tofuIgnore", "tofuWhitelistAbuse");
-    this.contacts.load();
-    this.loadWarnings();
+
+
+  function TofuAbusers() {_classCallCheck(this, TofuAbusers);_defineProperty(this, "warnings", []);_defineProperty(this, "contacts", new ContactList());_defineProperty(this, "maxTofuPerDay", 1.5); // Ascensions count as another day. This should realistically be 1, but we know people love buying stuff
+    _defineProperty(this, "timeBetweenWarnings", 3); // Days
+    _defineProperty(this, "tofuIgnore", "tofuWhitelistAbuse");this.contacts.load();this.loadWarnings();
   }_createClass(TofuAbusers, [{ key: "getIgnored", value:
 
     function getIgnored() {
@@ -210,8 +210,8 @@ TofuAbusers = /*#__PURE__*/function () {
       var user = purchase.user;
 
       var warning = this.warnings.find(
-      (w) => w.user.toLowerCase() == user.toLowerCase());
-
+      (w) => w.user.toLowerCase() == user.toLowerCase()
+      );
 
       var day = 24 * 60 * 60 * 1000;
 
@@ -227,8 +227,8 @@ TofuAbusers = /*#__PURE__*/function () {
 
           (0,external_kolmafia_namespaceObject.print)("".concat(
           purchase.user, " should be ignored as per logs! How are they doing this! Skipping.. Are they actually ignored though: ").concat(ignored),
-          "red");
-
+          "red"
+          );
           return;
         }
 
@@ -245,8 +245,8 @@ TofuAbusers = /*#__PURE__*/function () {
           purchase.user +
           " about this " +
           Math.round(daysPassed) +
-          " days ago..");
-
+          " days ago.."
+          );
         } else {
           warning.lastWarned = Date.now();
         }
@@ -265,8 +265,8 @@ TofuAbusers = /*#__PURE__*/function () {
           break;
         case WarningType.FINAL_KMAIL:
           (0,external_kolmafia_namespaceObject.print)("".concat(
-          purchase.user, " is a second time offender. Sent a another kmail."));
-
+          purchase.user, " is a second time offender. Sent a another kmail.")
+          );
           this.sendKmail(purchase.userId, this.getFinalKmail(user));
           break;
         case WarningType.IGNORED:
@@ -275,10 +275,10 @@ TofuAbusers = /*#__PURE__*/function () {
           break;
         default:{
             (0,external_kolmafia_namespaceObject.print)(
-            "Unable to handle warning " + warning.status + " on " + warning.user);
-
-          }}
-
+            "Unable to handle warning " + warning.status + " on " + warning.user
+            );
+          }
+      }
 
       this.saveWarnings();
     } }, { key: "getPurchases", value:
@@ -296,8 +296,8 @@ TofuAbusers = /*#__PURE__*/function () {
           var i = getParsedResult(/ bought \d+ \((.*)\) for \d+ Meat./);
           var name = getParsedResult(/:\d+ (.*) bought \d+ /);
           var dateString = getParsedResult(/(\d+\/\d+\/\d+ \d+:\d+:\d+) /).split(
-          " ");
-
+          " "
+          );
 
           var date1 = dateString[0].split("/");
           date1[2] = "20" + date1[2];
@@ -378,8 +378,8 @@ TofuAbusers = /*#__PURE__*/function () {
       var tofuCouldveConsumed = 14 * this.maxTofuPerDay;
 
       var allPurchases = this.getPurchases().filter(
-      (p) => p.item == external_kolmafia_namespaceObject.Item.get("Essential Tofu"));
-
+      (p) => p.item == external_kolmafia_namespaceObject.Item.get("Essential Tofu")
+      );
 
       //let purchases = allPurchases.filter((p) => p.amount == 3);
 
@@ -394,8 +394,8 @@ TofuAbusers = /*#__PURE__*/function () {
 
           var recentCount = allPurchases.
           filter(
-          (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate).
-
+          (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate
+          ).
           reduce((v, p) => v + p.amount, 0);
 
           // If they're not doing abusive limits in the last few days, they're probably good.
@@ -447,8 +447,8 @@ TofuAbusers = /*#__PURE__*/function () {
         var playerId = player.userId;
         var ascendData = _this.getAscensions(playerId);
         var lastMonthAscensions = ascendData.filter(
-        (a) => a > Date.now() - day * 31).
-        length;
+        (a) => a > Date.now() - day * 31
+        ).length;
 
         if (lastMonthAscensions > 31) {
           (0,external_kolmafia_namespaceObject.print)(
@@ -459,8 +459,8 @@ TofuAbusers = /*#__PURE__*/function () {
           ") to tofu whitelist. They'd ascended in the last month " +
           lastMonthAscensions +
           " times",
-          "blue");
-
+          "blue"
+          );
           _this.setIgnored(playerId.toString());return "continue";
 
         }
@@ -478,8 +478,8 @@ TofuAbusers = /*#__PURE__*/function () {
         }
         var recentCount = allPurchases.
         filter(
-        (p) => p.user == player.user && p.date >= cutOffStillAbusingDate).
-
+        (p) => p.user == player.user && p.date >= cutOffStillAbusingDate
+        ).
         reduce((v, p) => v + p.amount, 0);
 
         // If they're not doing abusive limits in the last few days, they're probably good.
@@ -495,8 +495,8 @@ TofuAbusers = /*#__PURE__*/function () {
 
     function isWorthWarning(purchase) {
       var warning = this.warnings.find(
-      (p) => p.user.toLowerCase() == purchase.user.toLowerCase());
-
+      (p) => p.user.toLowerCase() == purchase.user.toLowerCase()
+      );
 
       if (warning == null || true) {
         return true;
@@ -539,8 +539,8 @@ TofuAbusers = /*#__PURE__*/function () {
           maxUses, ", Went over by: ").concat(
           purchase.purchased - maxUses, "."),
 
-          "blue");
-
+          "blue"
+          );
 
           if (!this.isWorthWarning(purchase)) {
             (0,external_kolmafia_namespaceObject.print)("Not worth warning em though");
