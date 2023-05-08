@@ -62,6 +62,7 @@ import {
   Monster,
   holiday,
   myDaycount,
+  propertyHasDefault,
 } from "kolmafia";
 
 class Tofu {
@@ -306,6 +307,11 @@ class Tofu {
       passed = false;
     }
 
+    if (!propertyHasDefault("_monkeyPawWishesUsed")) {
+      print("Need to update mafia!");
+      passed = false;
+    }
+
     return passed;
   }
 
@@ -314,6 +320,22 @@ class Tofu {
     cliExecute("charpane.php");
     cliExecute("familiar unspeakachu");
     cliExecute(this.breakfastScript);
+
+    if (
+      toInt(getProperty("_monkeyPawWishesUsed")) < 5 &&
+      availableAmount(Item.get("cursed monkey paw")) > 0
+    ) {
+      visitUrl("main.php?action=cmonk&pwd");
+
+      for (let i = 0; i < 5; i++) {
+        visitUrl(
+          `choice.php?whichchoice=1501&pwd&wish=In+Your+Cups&option=1`,
+          true,
+          true
+        );
+      }
+    }
+
     print("Tofu script is ready to rumble!", "gray");
   }
 
