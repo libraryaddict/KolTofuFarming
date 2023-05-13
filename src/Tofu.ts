@@ -63,7 +63,11 @@ import {
   holiday,
   myDaycount,
   propertyHasDefault,
+  isBanished,
+  xpath,
+  urlEncode,
 } from "kolmafia";
+import combatMacroText from "./CombatMacro.txt";
 
 class Tofu {
   private adventuresValuedAt: number = 4000;
@@ -80,6 +84,7 @@ class Tofu {
   private skipRubberSpiders: boolean = false;
   private freeFights: Map<string, number> = new Map();
   private preferenceNag = "_nagAboutGelKick";
+  private macroName = "TofuMacro";
 
   addFreeFight(fightName: string) {
     this.freeFights.set(fightName, (this.freeFights.get(fightName) | 0) + 1);
@@ -125,6 +130,7 @@ class Tofu {
     this.doFarming();
 
     this.setGovermentToday();
+    this.doMonkeyWishes();
 
     turnsSpent = turnsPlayed() - turnsSpent;
     let finalTofu = itemAmount(Item.get("Essential Tofu")) - startedTofu;
@@ -320,7 +326,12 @@ class Tofu {
     cliExecute("charpane.php");
     cliExecute("familiar unspeakachu");
     cliExecute(this.breakfastScript);
+    this.saveCombatMacro();
 
+    print("Tofu script is ready to rumble!", "gray");
+  }
+
+  doMonkeyWishes() {
     if (
       toInt(getProperty("_monkeyPawWishesUsed")) < 5 &&
       availableAmount(Item.get("cursed monkey paw")) > 0
@@ -335,8 +346,6 @@ class Tofu {
         );
       }
     }
-
-    print("Tofu script is ready to rumble!", "gray");
   }
 
   grabBuffItems() {
@@ -931,6 +940,49 @@ class Tofu {
     print("Today I feel " + mood + "!", "gray");
   }
 
+  getMacroId(name = this.macroName): number {
+    const macroMatches = xpath(
+      visitUrl("account_combatmacros.php"),
+      `//select[@name="macroid"]/option[text()="${name}"]/@value`
+    );
+
+    if (macroMatches.length === 0) {
+      visitUrl("account_combatmacros.php?action=new");
+
+      const newMacroText = visitUrl(
+        `account_combatmacros.php?macroid=0&name=${name}&macrotext=abort&action=save`
+      );
+
+      return parseInt(
+        xpath(
+          newMacroText,
+          `//select[@name="macroid"]/option[text()="${name}"]/@value`
+        )[0],
+        10
+      );
+    } else {
+      return parseInt(macroMatches[0], 10);
+    }
+  }
+
+  saveCombatMacro() {
+    const id = this.getMacroId();
+
+    const macroText = combatMacroText;
+
+    visitUrl(
+      `account_combatmacros.php?macroid=${id}&name=${urlEncode(
+        this.macroName
+      )}&macrotext=${urlEncode(macroText)}&action=save`,
+      true,
+      true
+    );
+
+    visitUrl(
+      `account.php?am=1&action=autoattack&value=${99000000 + id}&ajax=1`
+    );
+  }
+
   doFarming() {
     refreshStatus();
     visitUrl("charpane.php");
@@ -965,6 +1017,7 @@ class Tofu {
         haveEffect(Effect.get("In Your Cups")) >= 10
       ) {
         this.doJokestersGun();
+
         outfit("Farming");
 
         if (this.doRubberSpider()) {
@@ -983,6 +1036,29 @@ class Tofu {
 
         if (this.doVoterFight()) {
           continue;
+        }
+
+        // TODO Check if we have monkey paw, if there is something that needs a banish, the paw has nothing banished, and the paw is banish mode
+        const monkeyBanish = Monster.get("Essence of Soy");
+        const monkeyPaw = Item.get("cursed monkey paw");
+
+        // If the banish isn't banished yet
+        // If we have used no wishes
+        // If we have a monkey paw
+        if (
+          !isBanished(monkeyBanish) &&
+          toInt(getProperty("_monkeyPawWishesUsed")) == 0 &&
+          itemAmount(monkeyPaw) > 0
+        ) {
+          // Only replace mafia thumb ring
+          const slot = Slot.all().filter(
+            (s) => equippedItem(s) == Item.get("Mafia Thumb Ring")
+          )[0];
+
+          // If we have a mafia thumb ring slot
+          if (slot != null) {
+            equip(slot, monkeyPaw);
+          }
         }
 
         adventure(1, Location.get("The Electric Lemonade Acid Parade"));

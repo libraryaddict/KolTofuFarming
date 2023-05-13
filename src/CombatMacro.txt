@@ -1,0 +1,48 @@
+if monstername red butler || monstername red snapper || monstername man with the red buttons || monstername red skeleton || monstername red herring || monstername red fox;
+  use glark cable;
+endif;
+
+pickpocket;
+
+if monstername Red Fox;
+  skill shocking lick;
+  abort Something went wrong;
+endif;
+
+if monstername pygmy orderlies;
+   use louder than bomb;
+ endif;
+
+if monstername pygmy bowler; 
+   use divine champagne popper; 
+ endif;
+
+if monstername essence of soy;
+   if hasskill Monkey Slap;
+       skill Monkey Slap;
+    endif;
+
+   use human musk;
+ endif;
+
+if monstername the Essence of Interspecies Respect;
+ use ice house; 
+endif;
+
+if hasskill Fire the Jokester's Gun;
+  skill Fire the Jokester's Gun;
+endif;
+
+if monstername giant sandworm;
+  skill Shocking Lick;
+endif;
+
+if monstername Essence of Tofu || monstername BRICKO || monstername lynyrd || monstername Eldritch Tentacle;
+  attack; repeat;
+endif;
+
+attack;
+
+skill Gelatinous Kick; repeat;
+
+abort Not a monster I'm handling!;
