@@ -17,7 +17,7 @@ if monstername pygmy bowler;
    use divine champagne popper; 
  endif;
 
-if monstername essence of soy;
+if monstername Essence of Interspecies Respect;
    if hasskill Monkey Slap;
        skill Monkey Slap;
     endif;
@@ -25,7 +25,7 @@ if monstername essence of soy;
    use human musk;
  endif;
 
-if monstername the Essence of Interspecies Respect;
+if monstername essence of soy;
  use ice house; 
 endif;
 

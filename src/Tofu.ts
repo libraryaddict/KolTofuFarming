@@ -451,6 +451,7 @@ class Tofu {
     }
 
     this.grabItem(Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
+    this.grabItem(Item.get("Ice House"), 1, 50_000);
 
     retrieveItem(100, Item.get("Third-Hand Lantern"));
     retrieveItem(1000, Item.get("meat paste"));
@@ -1236,7 +1237,7 @@ class Tofu {
     print("Oh god, I forgot I need to vote in the elections today", "blue");
 
     if (availableAmount(Item.get('"I Voted!" sticker')) > 0) {
-      print("Already voted for Trump.. Whew!", "gray");
+      print("Already voted for a random politician.. Whew!", "gray");
       return;
     }
 

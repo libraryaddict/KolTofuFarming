@@ -6,49 +6,9 @@ svn checkout https://github.com/libraryaddict/TofuFarming/branches/release/
 
 The script has some basic configuration, but expects you to have several things setup. At the very least, you should be in Gel Noob path with all essential perms.
 
-You should be using the familiar Unspeakachu, this gives a chance of more "In your cups".
+You should own the familiar Unspeakachu, this gives a chance of more "In your cups".
 
-You should also be using a combat macro.
-
-```text
-pickpocket;
-
-if monstername pygmy orderlies;
-   use louder than bomb;
- endif;
-
-if monstername pygmy bowler; 
-   use divine champagne popper; 
- endif;
-
-if monstername essence of soy;
-   use human musk;
- endif;
-
-if monstername the Essence of Interspecies Respect;
- use ice house; 
-endif;
-
-if monstername red butler || monstername red snapper || monstername man with the red buttons || monstername red skeleton || monstername red herring || monstername red fox;
-  use glark cable;
-endif;
-
-if hasskill Fire the Jokester's Gun;
-  skill Fire the Jokester's Gun;
-endif;
-
-if monstername giant sandworm;
-  skill Shocking Lick;
-endif;
-
-if monstername Essence of Tofu || monstername BRICKO || monstername lynyrd || monstername Eldritch Tentacle;
-  attack; repeat;
-endif;
-
-attack; repeat;
-
-abort Not a monster I'm handling!;
-```
+The combat macro will be set up automatically.
 
 You are also expected to have three outfits created.
 
@@ -70,3 +30,5 @@ When I run low on The Ballad of Richie Thingfinder, use 1 recording of The Balla
 ```
 
 Finally, you will probably need to get a Jokester's Gun. Just for the free kill. And to raise your auto buy limit as sometimes the cheapest batteries are not that cheap.
+
+You are also advised to pick up a monkey paw, this gives us 150 adventures of the effect we desire.
