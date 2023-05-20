@@ -39,7 +39,7 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "main": () => (/* binding */ main)
+  main: () => (/* binding */ main)
 });
 
 ;// CONCATENATED MODULE: external "kolmafia"

@@ -39,13 +39,16 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "main": () => (/* binding */ main)
+  main: () => (/* binding */ main)
 });
 
 ;// CONCATENATED MODULE: external "kolmafia"
 const external_kolmafia_namespaceObject = require("kolmafia");
+;// CONCATENATED MODULE: ./src/CombatMacro.txt
+const CombatMacro_namespaceObject = "if monstername red butler || monstername red snapper || monstername man with the red buttons || monstername red skeleton || monstername red herring || monstername red fox;\n  use glark cable;\nendif;\n\npickpocket;\n\nif monstername Red Fox;\n  skill shocking lick;\n  abort Something went wrong;\nendif;\n\nif monstername pygmy orderlies;\n   use louder than bomb;\n endif;\n\nif monstername pygmy bowler; \n   use divine champagne popper; \n endif;\n\nif monstername Essence of Interspecies Respect;\n   if hasskill Monkey Slap;\n       skill Monkey Slap;\n    endif;\n\n   use human musk;\n endif;\n\nif monstername essence of soy;\n use ice house; \nendif;\n\nif hasskill Fire the Jokester's Gun;\n  skill Fire the Jokester's Gun;\nendif;\n\nif monstername giant sandworm;\n  skill Shocking Lick;\nendif;\n\nif monstername Essence of Tofu || monstername BRICKO || monstername lynyrd || monstername Eldritch Tentacle;\n  attack; repeat;\nendif;\n\nattack;\n\nskill Gelatinous Kick; repeat;\n\nabort Not a monster I'm handling!;";
 ;// CONCATENATED MODULE: ./src/Tofu.ts
-function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _defineProperty(obj, key, value) {key = _toPropertyKey(key);if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toPropertyKey(arg) {var key = _toPrimitive(arg, "string");return typeof key === "symbol" ? key : String(key);}function _toPrimitive(input, hint) {if (typeof input !== "object" || input === null) return input;var prim = input[Symbol.toPrimitive];if (prim !== undefined) {var res = prim.call(input, hint || "default");if (typeof res !== "object") return res;throw new TypeError("@@toPrimitive must return a primitive value.");}return (hint === "string" ? String : Number)(input);}var
+function _createForOfIteratorHelper(o, allowArrayLike) {var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];if (!it) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = it.call(o);}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];return arr2;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);Object.defineProperty(Constructor, "prototype", { writable: false });return Constructor;}function _defineProperty(obj, key, value) {key = _toPropertyKey(key);if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toPropertyKey(arg) {var key = _toPrimitive(arg, "string");return typeof key === "symbol" ? key : String(key);}function _toPrimitive(input, hint) {if (typeof input !== "object" || input === null) return input;var prim = input[Symbol.toPrimitive];if (prim !== undefined) {var res = prim.call(input, hint || "default");if (typeof res !== "object") return res;throw new TypeError("@@toPrimitive must return a primitive value.");}return (hint === "string" ? String : Number)(input);}
+var
 
 Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_defineProperty(this, "adventuresValuedAt",
     4000);_defineProperty(this, "doSideStuff",
@@ -61,7 +64,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     _defineProperty(this, "sellbotSendSome", 0);_defineProperty(this, "skipRubberSpiders",
     false);_defineProperty(this, "freeFights",
     new Map());_defineProperty(this, "preferenceNag",
-    "_nagAboutGelKick");}_createClass(Tofu, [{ key: "addFreeFight", value:
+    "_nagAboutGelKick");_defineProperty(this, "macroName",
+    "TofuMacro");}_createClass(Tofu, [{ key: "addFreeFight", value:
 
     function addFreeFight(fightName) {
       this.freeFights.set(fightName, (this.freeFights.get(fightName) | 0) + 1);
@@ -107,6 +111,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       this.doFarming();
 
       this.setGovermentToday();
+      this.doMonkeyWishes();
 
       turnsSpent = (0,external_kolmafia_namespaceObject.turnsPlayed)() - turnsSpent;
       var finalTofu = (0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("Essential Tofu")) - startedTofu;
@@ -302,7 +307,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.cliExecute)("charpane.php");
       (0,external_kolmafia_namespaceObject.cliExecute)("familiar unspeakachu");
       (0,external_kolmafia_namespaceObject.cliExecute)(this.breakfastScript);
+      this.saveCombatMacro();
 
+      (0,external_kolmafia_namespaceObject.print)("Tofu script is ready to rumble!", "gray");
+    } }, { key: "doMonkeyWishes", value:
+
+    function doMonkeyWishes() {
       if (
       (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_monkeyPawWishesUsed")) < 5 &&
       (0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get("cursed monkey paw")) > 0)
@@ -317,8 +327,6 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
           );
         }
       }
-
-      (0,external_kolmafia_namespaceObject.print)("Tofu script is ready to rumble!", "gray");
     } }, { key: "grabBuffItems", value:
 
     function grabBuffItems() {
@@ -424,6 +432,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       }
 
       this.grabItem(external_kolmafia_namespaceObject.Item.get("Time's Arrow"), 3, this.adventuresValuedAt * 3);
+      this.grabItem(external_kolmafia_namespaceObject.Item.get("Ice House"), 1, 50000);
 
       (0,external_kolmafia_namespaceObject.retrieveItem)(100, external_kolmafia_namespaceObject.Item.get("Third-Hand Lantern"));
       (0,external_kolmafia_namespaceObject.retrieveItem)(1000, external_kolmafia_namespaceObject.Item.get("meat paste"));
@@ -911,6 +920,49 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       (0,external_kolmafia_namespaceObject.cliExecute)("mood execute");
       (0,external_kolmafia_namespaceObject.print)("Today I feel " + mood + "!", "gray");
+    } }, { key: "getMacroId", value:
+
+    function getMacroId() {var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.macroName;
+      var macroMatches = (0,external_kolmafia_namespaceObject.xpath)(
+      (0,external_kolmafia_namespaceObject.visitUrl)("account_combatmacros.php"), "//select[@name=\"macroid\"]/option[text()=\"".concat(
+      name, "\"]/@value")
+      );
+
+      if (macroMatches.length === 0) {
+        (0,external_kolmafia_namespaceObject.visitUrl)("account_combatmacros.php?action=new");
+
+        var newMacroText = (0,external_kolmafia_namespaceObject.visitUrl)("account_combatmacros.php?macroid=0&name=".concat(
+        name, "&macrotext=abort&action=save")
+        );
+
+        return parseInt(
+        (0,external_kolmafia_namespaceObject.xpath)(
+        newMacroText, "//select[@name=\"macroid\"]/option[text()=\"".concat(
+        name, "\"]/@value")
+        )[0],
+        10
+        );
+      } else {
+        return parseInt(macroMatches[0], 10);
+      }
+    } }, { key: "saveCombatMacro", value:
+
+    function saveCombatMacro() {
+      var id = this.getMacroId();
+
+      var macroText = CombatMacro_namespaceObject;
+
+      (0,external_kolmafia_namespaceObject.visitUrl)("account_combatmacros.php?macroid=".concat(
+      id, "&name=").concat((0,external_kolmafia_namespaceObject.urlEncode)(
+      this.macroName
+      ), "&macrotext=").concat((0,external_kolmafia_namespaceObject.urlEncode)(macroText), "&action=save"),
+      true,
+      true
+      );
+
+      (0,external_kolmafia_namespaceObject.visitUrl)("account.php?am=1&action=autoattack&value=".concat(
+      99000000 + id, "&ajax=1")
+      );
     } }, { key: "doFarming", value:
 
     function doFarming() {
@@ -947,6 +999,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         (0,external_kolmafia_namespaceObject.haveEffect)(external_kolmafia_namespaceObject.Effect.get("In Your Cups")) >= 10)
         {
           this.doJokestersGun();
+
           (0,external_kolmafia_namespaceObject.outfit)("Farming");
 
           if (this.doRubberSpider()) {
@@ -965,6 +1018,29 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
           if (this.doVoterFight()) {
             continue;
+          }
+
+          // TODO Check if we have monkey paw, if there is something that needs a banish, the paw has nothing banished, and the paw is banish mode
+          var monkeyBanish = external_kolmafia_namespaceObject.Monster.get("Essence of Soy");
+          var monkeyPaw = external_kolmafia_namespaceObject.Item.get("cursed monkey paw");
+
+          // If the banish isn't banished yet
+          // If we have used no wishes
+          // If we have a monkey paw
+          if (
+          !(0,external_kolmafia_namespaceObject.isBanished)(monkeyBanish) &&
+          (0,external_kolmafia_namespaceObject.toInt)((0,external_kolmafia_namespaceObject.getProperty)("_monkeyPawWishesUsed")) == 0 &&
+          (0,external_kolmafia_namespaceObject.itemAmount)(monkeyPaw) > 0)
+          {
+            // Only replace mafia thumb ring
+            var slot = external_kolmafia_namespaceObject.Slot.all().filter(
+            (s) => (0,external_kolmafia_namespaceObject.equippedItem)(s) == external_kolmafia_namespaceObject.Item.get("Mafia Thumb Ring")
+            )[0];
+
+            // If we have a mafia thumb ring slot
+            if (slot != null) {
+              (0,external_kolmafia_namespaceObject.equip)(slot, monkeyPaw);
+            }
           }
 
           (0,external_kolmafia_namespaceObject.adventure)(1, external_kolmafia_namespaceObject.Location.get("The Electric Lemonade Acid Parade"));
@@ -1142,7 +1218,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       (0,external_kolmafia_namespaceObject.print)("Oh god, I forgot I need to vote in the elections today", "blue");
 
       if ((0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get('"I Voted!" sticker')) > 0) {
-        (0,external_kolmafia_namespaceObject.print)("Already voted for Trump.. Whew!", "gray");
+        (0,external_kolmafia_namespaceObject.print)("Already voted for a random politician.. Whew!", "gray");
         return;
       }
 
