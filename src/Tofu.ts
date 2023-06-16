@@ -1040,7 +1040,7 @@ class Tofu {
         }
 
         // TODO Check if we have monkey paw, if there is something that needs a banish, the paw has nothing banished, and the paw is banish mode
-        const monkeyBanish = Monster.get("Essence of Soy");
+        const monkeyBanish = Monster.get("Essence of Interspecies");
         const monkeyPaw = Item.get("cursed monkey paw");
 
         // If the banish isn't banished yet
