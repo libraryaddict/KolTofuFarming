@@ -20,7 +20,6 @@
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "babel-loader": "^8.3.0",
-    "kol-mallhistory": "0.0.3",
     "typescript": "^4.5.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^5.86.0",
