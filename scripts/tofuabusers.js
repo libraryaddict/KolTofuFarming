@@ -68,16 +68,16 @@ TofuWarning = /*#__PURE__*/_createClass(
 
 
 
-function TofuWarning(jsonObject) {_classCallCheck(this, TofuWarning);_defineProperty(this, "lastWarned", Date.now());_defineProperty(this, "tofu", void 0);_defineProperty(this, "user", void 0);_defineProperty(this, "status", WarningType.NONE);
-  if (jsonObject == null) {
-    return;
-  }
+  function TofuWarning(jsonObject) {_classCallCheck(this, TofuWarning);_defineProperty(this, "lastWarned", Date.now());_defineProperty(this, "tofu", void 0);_defineProperty(this, "user", void 0);_defineProperty(this, "status", WarningType.NONE);
+    if (jsonObject == null) {
+      return;
+    }
 
-  this.tofu = jsonObject.tofu;
-  this.lastWarned = jsonObject.lastWarned;
-  this.user = jsonObject.user;
-  this.status = jsonObject.status;
-});var
+    this.tofu = jsonObject.tofu;
+    this.lastWarned = jsonObject.lastWarned;
+    this.user = jsonObject.user;
+    this.status = jsonObject.status;
+  });var
 
 
 ContactList = /*#__PURE__*/function () {function ContactList() {_classCallCheck(this, ContactList);_defineProperty(this, "ignored", void 0);_defineProperty(this, "contacts", void 0);}_createClass(ContactList, [{ key: "load", value:
@@ -128,9 +128,9 @@ ContactList = /*#__PURE__*/function () {function ContactList() {_classCallCheck(
 
       var users = [];var _iterator = _createForOfIteratorHelper(
 
-        spl),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var s = _step.value;
+          spl),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var s = _step.value;
           var match = s.match(
-          /href=(?:'|")showplayer.php\?who=(\d+)(?:'|") class=nounder><b>([a-zA-Z0-9 ]+)</
+            /href=(?:'|")showplayer.php\?who=(\d+)(?:'|") class=nounder><b>([a-zA-Z0-9 ]+)</
           );
 
           if (match == null) {
@@ -197,7 +197,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
       var obj = JSON.parse(string);var _iterator2 = _createForOfIteratorHelper(
 
-        obj),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var array = _step2.value;
+          obj),_step2;try {for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {var array = _step2.value;
           this.warnings.push(new TofuWarning(array));
         }} catch (err) {_iterator2.e(err);} finally {_iterator2.f();}
     } }, { key: "saveWarnings", value:
@@ -210,7 +210,7 @@ TofuAbusers = /*#__PURE__*/function () {
       var user = purchase.user;
 
       var warning = this.warnings.find(
-      (w) => w.user.toLowerCase() == user.toLowerCase()
+        (w) => w.user.toLowerCase() == user.toLowerCase()
       );
 
       var day = 24 * 60 * 60 * 1000;
@@ -226,7 +226,7 @@ TofuAbusers = /*#__PURE__*/function () {
           var ignored = this.contacts.isIgnored(purchase.userId);
 
           (0,external_kolmafia_namespaceObject.print)("".concat(
-          purchase.user, " should be ignored as per logs! How are they doing this! Skipping.. Are they actually ignored though: ").concat(ignored),
+            purchase.user, " should be ignored as per logs! How are they doing this! Skipping.. Are they actually ignored though: ").concat(ignored),
           "red"
           );
           return;
@@ -241,11 +241,11 @@ TofuAbusers = /*#__PURE__*/function () {
           warning.status = WarningType.NONE;
 
           (0,external_kolmafia_namespaceObject.print)(
-          "Huh. I've warned " +
-          purchase.user +
-          " about this " +
-          Math.round(daysPassed) +
-          " days ago.."
+            "Huh. I've warned " +
+            purchase.user +
+            " about this " +
+            Math.round(daysPassed) +
+            " days ago.."
           );
         } else {
           warning.lastWarned = Date.now();
@@ -265,7 +265,7 @@ TofuAbusers = /*#__PURE__*/function () {
           break;
         case WarningType.FINAL_KMAIL:
           (0,external_kolmafia_namespaceObject.print)("".concat(
-          purchase.user, " is a second time offender. Sent a another kmail.")
+            purchase.user, " is a second time offender. Sent a another kmail.")
           );
           this.sendKmail(purchase.userId, this.getFinalKmail(user));
           break;
@@ -275,7 +275,7 @@ TofuAbusers = /*#__PURE__*/function () {
           break;
         default:{
             (0,external_kolmafia_namespaceObject.print)(
-            "Unable to handle warning " + warning.status + " on " + warning.user
+              "Unable to handle warning " + warning.status + " on " + warning.user
             );
           }
       }
@@ -286,7 +286,7 @@ TofuAbusers = /*#__PURE__*/function () {
     function getPurchases() {
       var purchases = [];var _iterator3 = _createForOfIteratorHelper(
 
-        (0,external_kolmafia_namespaceObject.getShopLog)()),_step3;try {var _loop = function _loop() {var line = _step3.value;
+          (0,external_kolmafia_namespaceObject.getShopLog)()),_step3;try {var _loop = function _loop() {var line = _step3.value;
           var getParsedResult = function getParsedResult(regex) {
             return line.match(regex)[1];
           };
@@ -296,7 +296,7 @@ TofuAbusers = /*#__PURE__*/function () {
           var i = getParsedResult(/ bought \d+ \((.*)\) for \d+ Meat./);
           var name = getParsedResult(/:\d+ (.*) bought \d+ /);
           var dateString = getParsedResult(/(\d+\/\d+\/\d+ \d+:\d+:\d+) /).split(
-          " "
+            " "
           );
 
           var date1 = dateString[0].split("/");
@@ -320,7 +320,7 @@ TofuAbusers = /*#__PURE__*/function () {
     function getPlayerId(name) {
       var buffer = (0,external_kolmafia_namespaceObject.fileToBuffer)("player_names.txt").split("\n");var _iterator4 = _createForOfIteratorHelper(
 
-        buffer),_step4;try {for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {var line = _step4.value;
+          buffer),_step4;try {for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {var line = _step4.value;
           var spl = line.split("\t");
 
           if (spl[0].toLowerCase() != name.toLowerCase()) {
@@ -348,7 +348,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
       var buffer = (0,external_kolmafia_namespaceObject.visitUrl)("ascensionhistory.php?who=" + id);var _iterator5 = _createForOfIteratorHelper(
 
-        buffer.split("</tr>")),_step5;try {for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {var s = _step5.value;
+          buffer.split("</tr>")),_step5;try {for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {var s = _step5.value;
           var match = s.match(/valign=center>(\d+\/\d+\/\d+)&nbsp;/);
 
           if (match == null) {
@@ -378,14 +378,14 @@ TofuAbusers = /*#__PURE__*/function () {
       var tofuCouldveConsumed = 14 * this.maxTofuPerDay;
 
       var allPurchases = this.getPurchases().filter(
-      (p) => p.item == external_kolmafia_namespaceObject.Item.get("Essential Tofu")
+        (p) => p.item == external_kolmafia_namespaceObject.Item.get("Essential Tofu")
       );
 
       //let purchases = allPurchases.filter((p) => p.amount == 3);
 
       var moreProcessing = [];var _iterator6 = _createForOfIteratorHelper(
 
-        allPurchases),_step6;try {var _loop3 = function _loop3() {var purchase = _step6.value;
+          allPurchases),_step6;try {var _loop3 = function _loop3() {var purchase = _step6.value;
           if (processedUsers.includes(purchase.user)) {return "continue";
 
           }
@@ -394,7 +394,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
           var recentCount = allPurchases.
           filter(
-          (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate
+            (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate
           ).
           reduce((v, p) => v + p.amount, 0);
 
@@ -447,19 +447,19 @@ TofuAbusers = /*#__PURE__*/function () {
         var playerId = player.userId;
         var ascendData = _this.getAscensions(playerId);
         var lastMonthAscensions = ascendData.filter(
-        (a) => a > Date.now() - day * 31
+          (a) => a > Date.now() - day * 31
         ).length;
 
         if (lastMonthAscensions > 31) {
           (0,external_kolmafia_namespaceObject.print)(
-          "Now adding " +
-          player.user +
-          " (#" +
-          playerId +
-          ") to tofu whitelist. They'd ascended in the last month " +
-          lastMonthAscensions +
-          " times",
-          "blue"
+            "Now adding " +
+            player.user +
+            " (#" +
+            playerId +
+            ") to tofu whitelist. They'd ascended in the last month " +
+            lastMonthAscensions +
+            " times",
+            "blue"
           );
           _this.setIgnored(playerId.toString());return "continue";
 
@@ -478,7 +478,7 @@ TofuAbusers = /*#__PURE__*/function () {
         }
         var recentCount = allPurchases.
         filter(
-        (p) => p.user == player.user && p.date >= cutOffStillAbusingDate
+          (p) => p.user == player.user && p.date >= cutOffStillAbusingDate
         ).
         reduce((v, p) => v + p.amount, 0);
 
@@ -495,7 +495,7 @@ TofuAbusers = /*#__PURE__*/function () {
 
     function isWorthWarning(purchase) {
       var warning = this.warnings.find(
-      (p) => p.user.toLowerCase() == purchase.user.toLowerCase()
+        (p) => p.user.toLowerCase() == purchase.user.toLowerCase()
       );
 
       if (warning == null || true) {
@@ -523,7 +523,7 @@ TofuAbusers = /*#__PURE__*/function () {
     } }, { key: "processBaddies", value:
 
     function processBaddies() {var _iterator7 = _createForOfIteratorHelper(
-        this.getBaddies()),_step7;try {for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {var purchase = _step7.value;
+          this.getBaddies()),_step7;try {for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {var purchase = _step7.value;
           var maxUses = this.maxTofuPerDay * (purchase.ascensions + 14);
           var wentOverBy = purchase.purchased - maxUses;
 
@@ -532,12 +532,12 @@ TofuAbusers = /*#__PURE__*/function () {
           }
 
           (0,external_kolmafia_namespaceObject.print)("".concat(
-          purchase.user, ". Ascensions: ").concat(purchase.ascensions, ", Brought: ").concat(
-          purchase.purchased, ", Eaten: ").concat(
+            purchase.user, ". Ascensions: ").concat(purchase.ascensions, ", Brought: ").concat(
+            purchase.purchased, ", Eaten: ").concat(
 
-          purchase.ascensions + 14, ", Allowed to buy: ").concat(
-          maxUses, ", Went over by: ").concat(
-          purchase.purchased - maxUses, "."),
+            purchase.ascensions + 14, ", Allowed to buy: ").concat(
+            maxUses, ", Went over by: ").concat(
+            purchase.purchased - maxUses, "."),
 
           "blue"
           );
