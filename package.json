@@ -25,6 +25,8 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1"
+    "kol-mallhistory": "0.0.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7"
   },
   "dependencies": {
     "babel-plugin-polyfill-corejs3": "^0.2.5",
