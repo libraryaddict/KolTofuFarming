@@ -386,49 +386,49 @@ TofuAbusers = /*#__PURE__*/function () {
       var moreProcessing = [];var _iterator6 = _createForOfIteratorHelper(
 
           allPurchases),_step6;try {var _loop3 = function _loop3() {var purchase = _step6.value;
-          if (processedUsers.includes(purchase.user)) {return "continue";
+            if (processedUsers.includes(purchase.user)) {return 0; // continue
 
-          }
+            }
 
-          processedUsers.push(purchase.user);
+            processedUsers.push(purchase.user);
 
-          var recentCount = allPurchases.
-          filter(
-            (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate
-          ).
-          reduce((v, p) => v + p.amount, 0);
+            var recentCount = allPurchases.
+            filter(
+              (p) => p.user == purchase.user && p.date >= cutOffStillAbusingDate
+            ).
+            reduce((v, p) => v + p.amount, 0);
 
-          // If they're not doing abusive limits in the last few days, they're probably good.
-          if (recentCount < _this.maxTofuPerDay * daysAbuse) {
+            // If they're not doing abusive limits in the last few days, they're probably good.
+            if (recentCount < _this.maxTofuPerDay * daysAbuse) {
 
-            //continue;
-          }
-          var count = allPurchases.
-          filter((p) => p.user == purchase.user).
-          reduce((v, p) => v + p.amount, 0);
+              //continue;
+            }
+            var count = allPurchases.
+            filter((p) => p.user == purchase.user).
+            reduce((v, p) => v + p.amount, 0);
 
-          if (count < tofuCouldveConsumed) {return "continue";
+            if (count < tofuCouldveConsumed) {return 0; // continue
 
-          }
+            }
 
-          var playerId = _this.getPlayerId(purchase.user);
+            var playerId = _this.getPlayerId(purchase.user);
 
-          if (_this.isIgnored(playerId.toString())) {return "continue";
+            if (_this.isIgnored(playerId.toString())) {return 0; // continue
 
-          }
+            }
 
-          var player = new TofuPurchase();
-          player.user = purchase.user;
-          player.userId = playerId;
-          player.lastPurchase = purchase.date;
-          player.purchased = count;
+            var player = new TofuPurchase();
+            player.user = purchase.user;
+            player.userId = playerId;
+            player.lastPurchase = purchase.date;
+            player.purchased = count;
 
-          if (!_this.isWorthWarning(player)) {return "continue";
+            if (!_this.isWorthWarning(player)) {return 0; // continue
 
-          }
+            }
 
-          moreProcessing.push(player);
-        };for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {var _ret2 = _loop3();if (_ret2 === "continue") continue;}} catch (err) {_iterator6.e(err);} finally {_iterator6.f();}
+            moreProcessing.push(player);
+          },_ret;for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {_ret = _loop3();if (_ret === 0) continue;}} catch (err) {_iterator6.e(err);} finally {_iterator6.f();}
 
       (0,external_kolmafia_namespaceObject.print)(moreProcessing.length + " customers need further processing..");
 
@@ -461,7 +461,7 @@ TofuAbusers = /*#__PURE__*/function () {
             " times",
             "blue"
           );
-          _this.setIgnored(playerId.toString());return "continue";
+          _this.setIgnored(playerId.toString());return 1; // continue
 
         }
 
@@ -488,7 +488,7 @@ TofuAbusers = /*#__PURE__*/function () {
           //  continue;
         }
         toHandle.push(player);
-      };for (var _i = 0, _moreProcessing = moreProcessing; _i < _moreProcessing.length; _i++) {var _ret = _loop2();if (_ret === "continue") continue;}
+      };for (var _i = 0, _moreProcessing = moreProcessing; _i < _moreProcessing.length; _i++) {if (_loop2()) continue;}
 
       return toHandle;
     } }, { key: "isWorthWarning", value:

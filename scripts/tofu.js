@@ -58,7 +58,8 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
     "ASSistant");_defineProperty(this, "pricePerTofu",
     5000);_defineProperty(this, "mallLimit",
     3);_defineProperty(this, "dynMallLimit",
-    1000);_defineProperty(this, "breakfastScript",
+    1000);_defineProperty(this, "onlyAddNoReprice",
+    false);_defineProperty(this, "breakfastScript",
     "breakfast");_defineProperty(this, "sellbotOverflow",
     100000000); // When we have more than this amount of tofu in our store, we send the rest to sellbot
     _defineProperty(this, "sellbotSendSome", 0);_defineProperty(this, "skipRubberSpiders",
@@ -89,6 +90,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if (!this.doQuickCheck()) {
         (0,external_kolmafia_namespaceObject.print)("Cannot continue when you can't meet basic requirements!");
+
         return;
       }
 
@@ -177,10 +179,12 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
             propertyName, ". Defaulted to: ").concat(defaultValue),
           "gray"]
           );
+
           return defaultValue;
         }
 
         lines.push(["Setting Found: ".concat(propertyName, ". Value: ").concat(prop), "#666666"]);
+
         return prop;
       };
 
@@ -214,6 +218,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
       );
       this.dynMallLimit = (0,external_kolmafia_namespaceObject.toInt)(
         load("tofuLimitPerXTofuStocked", this.dynMallLimit.toString())
+      );
+      this.onlyAddNoReprice = (0,external_kolmafia_namespaceObject.toBoolean)(
+        load("tofuOnlyAddNoRepriceMall", this.onlyAddNoReprice.toString())
       );
 
       lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
@@ -384,6 +391,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
     function grabItem(item, amount, price) {
       var required = amount - (0,external_kolmafia_namespaceObject.availableAmount)(item);
+
       if (required <= 0) {
         return;
       }
@@ -546,6 +554,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         }
 
         amount -= (0,external_kolmafia_namespaceObject.buy)(cheapest, amount, price);
+
         return true;
       };
 
@@ -662,6 +671,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if (!(0,external_kolmafia_namespaceObject.isOnline)("CookieBot")) {
         (0,external_kolmafia_namespaceObject.setProperty)("_skipRubberSpiders", "true");
+
         return false;
       }
 
@@ -675,6 +685,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         "gray"
       );
       (0,external_kolmafia_namespaceObject.waitq)(15);
+
       return true;
     } }, { key: "doFreeFights", value:
 
@@ -1174,6 +1185,7 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if (!this.isFarmingDay()) {
         (0,external_kolmafia_namespaceObject.print)("Oi! We're not fighting this worm without some +item!");
+
         return;
       }
 
@@ -1219,11 +1231,13 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
       if ((0,external_kolmafia_namespaceObject.availableAmount)(external_kolmafia_namespaceObject.Item.get('"I Voted!" sticker')) > 0) {
         (0,external_kolmafia_namespaceObject.print)("Already voted for a random politician.. Whew!", "gray");
+
         return;
       }
 
       if ((0,external_kolmafia_namespaceObject.itemAmount)(external_kolmafia_namespaceObject.Item.get("Absentee Voter Ballot")) == 0) {
         (0,external_kolmafia_namespaceObject.print)("Can't vote unfortunately..", "gray");
+
         return;
       }
 
@@ -1360,7 +1374,9 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
         to_sell -= toSend;
       }
 
-      var ourLimit = Math.max(
+      var ourLimit = this.onlyAddNoReprice ?
+      (0,external_kolmafia_namespaceObject.shopLimit)(tofu) :
+      Math.max(
         1,
         Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
       );
@@ -1410,6 +1426,11 @@ Tofu = /*#__PURE__*/function () {function Tofu() {_classCallCheck(this, Tofu);_d
 
     function getShopPrice() {
       var tofu = external_kolmafia_namespaceObject.Item.get("Essential Tofu");
+
+      if (this.onlyAddNoReprice) {
+        return (0,external_kolmafia_namespaceObject.shopAmount)(tofu) > 0 ? (0,external_kolmafia_namespaceObject.shopPrice)(tofu) : 999999999;
+      }
+
       var amountIHave = (0,external_kolmafia_namespaceObject.shopAmount)(tofu) + (0,external_kolmafia_namespaceObject.itemAmount)(tofu);
 
       if (amountIHave < 800) {
