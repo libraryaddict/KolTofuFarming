@@ -65,7 +65,7 @@ import {
   propertyHasDefault,
   isBanished,
   xpath,
-  urlEncode,
+  urlEncode
 } from "kolmafia";
 import combatMacroText from "./CombatMacro.txt";
 
@@ -78,6 +78,7 @@ class Tofu {
   private pricePerTofu: number = 5000;
   private mallLimit: number = 3;
   private dynMallLimit: number = 1000;
+  private onlyAddNoReprice: boolean = false;
   private breakfastScript: string = "breakfast";
   private sellbotOverflow: number = 100_000_000; // When we have more than this amount of tofu in our store, we send the rest to sellbot
   private sellbotSendSome: number = 0;
@@ -108,6 +109,7 @@ class Tofu {
 
     if (!this.doQuickCheck()) {
       print("Cannot continue when you can't meet basic requirements!");
+
       return;
     }
 
@@ -194,12 +196,14 @@ class Tofu {
       if (prop == null || prop == "") {
         lines.push([
           `Setting Missing: ${propertyName}. Defaulted to: ${defaultValue}`,
-          "gray",
+          "gray"
         ]);
+
         return defaultValue;
       }
 
       lines.push([`Setting Found: ${propertyName}. Value: ${prop}`, "#666666"]);
+
       return prop;
     };
 
@@ -234,6 +238,9 @@ class Tofu {
     this.dynMallLimit = toInt(
       load("tofuLimitPerXTofuStocked", this.dynMallLimit.toString())
     );
+    this.onlyAddNoReprice = toBoolean(
+      load("tofuOnlyAddNoRepriceMall", this.onlyAddNoReprice.toString())
+    );
 
     lines.sort((v1, v2) => v1[0].localeCompare(v2[0]));
 
@@ -257,7 +264,7 @@ class Tofu {
       "Mr. Cheeng's Spectacles",
       "Xiblaxian holo-wrist-puter",
       "Carnivorous potted plant",
-      "potato alarm clock",
+      "potato alarm clock"
     ]
       .map((i) => Item.get(i))
       .filter((i) => i != Item.none && availableAmount(i) == 0);
@@ -403,6 +410,7 @@ class Tofu {
 
   grabItem(item: Item, amount: number, price: number) {
     const required = amount - availableAmount(item);
+
     if (required <= 0) {
       return;
     }
@@ -528,7 +536,7 @@ class Tofu {
       "Chocolate saucepan",
       "chocolate seal-clubbing club",
       "chocolate stolen accordion",
-      "chocolate turtle totem",
+      "chocolate turtle totem"
     ].map((s) => Item.get(s));
   }
 
@@ -565,6 +573,7 @@ class Tofu {
       }
 
       amount -= buy(cheapest, amount, price);
+
       return true;
     };
 
@@ -681,6 +690,7 @@ class Tofu {
 
     if (!isOnline("CookieBot")) {
       setProperty("_skipRubberSpiders", "true");
+
       return false;
     }
 
@@ -694,6 +704,7 @@ class Tofu {
       "gray"
     );
     waitq(15);
+
     return true;
   }
 
@@ -844,7 +855,7 @@ class Tofu {
     for (const wandererHoliday of [
       "El Dia De Los Muertos Borrachos",
       "Feast of Boris",
-      "Talk Like a Pirate Day",
+      "Talk Like a Pirate Day"
     ]) {
       if (!holiday().toLowerCase().includes(wandererHoliday.toLowerCase())) {
         continue;
@@ -1193,6 +1204,7 @@ class Tofu {
 
     if (!this.isFarmingDay()) {
       print("Oi! We're not fighting this worm without some +item!");
+
       return;
     }
 
@@ -1238,36 +1250,38 @@ class Tofu {
 
     if (availableAmount(Item.get('"I Voted!" sticker')) > 0) {
       print("Already voted for a random politician.. Whew!", "gray");
+
       return;
     }
 
     if (itemAmount(Item.get("Absentee Voter Ballot")) == 0) {
       print("Can't vote unfortunately..", "gray");
+
       return;
     }
 
     const voterValueTable = [
       {
         monster: Monster.get("terrible mutant"),
-        value: mallPrice(Item.get("glob of undifferentiated tissue")) + 10,
+        value: mallPrice(Item.get("glob of undifferentiated tissue")) + 10
       },
       {
         monster: Monster.get("angry ghost"),
-        value: mallPrice(Item.get("ghostly ectoplasm")) * 1.11,
+        value: mallPrice(Item.get("ghostly ectoplasm")) * 1.11
       },
       {
         monster: Monster.get("government bureaucrat"),
         value:
-          mallPrice(Item.get("absentee voter ballot")) * 0.05 + 75 * 0.25 + 50,
+          mallPrice(Item.get("absentee voter ballot")) * 0.05 + 75 * 0.25 + 50
       },
       {
         monster: Monster.get("annoyed snake"),
-        value: 25 * 0.5 + 25,
+        value: 25 * 0.5 + 25
       },
       {
         monster: Monster.get("slime blob"),
-        value: 20 * 0.4 + 50 * 0.2 + 250 * 0.01,
-      },
+        value: 20 * 0.4 + 50 * 0.2 + 250 * 0.01
+      }
     ];
 
     try {
@@ -1289,7 +1303,7 @@ class Tofu {
       ["+3 Stats Per Fight", 4],
       ["+4 Moxie Stats Per Fight", 3],
       ["+4 Muscle Stats Per Fight", 2],
-      [`+4 Mysticality Stats Per Fight`, 1],
+      [`+4 Mysticality Stats Per Fight`, 1]
     ]);
 
     const monsterVote =
@@ -1302,23 +1316,23 @@ class Tofu {
       [
         0,
         initPriority.get(getProperty("_voteLocal1")) ||
-          (getProperty("_voteLocal1").indexOf("-") === -1 ? 1 : -1),
+          (getProperty("_voteLocal1").indexOf("-") === -1 ? 1 : -1)
       ],
       [
         1,
         initPriority.get(getProperty("_voteLocal2")) ||
-          (getProperty("_voteLocal2").indexOf("-") === -1 ? 1 : -1),
+          (getProperty("_voteLocal2").indexOf("-") === -1 ? 1 : -1)
       ],
       [
         2,
         initPriority.get(getProperty("_voteLocal3")) ||
-          (getProperty("_voteLocal3").indexOf("-") === -1 ? 1 : -1),
+          (getProperty("_voteLocal3").indexOf("-") === -1 ? 1 : -1)
       ],
       [
         3,
         initPriority.get(getProperty("_voteLocal4")) ||
-          (getProperty("_voteLocal4").indexOf("-") === -1 ? 1 : -1),
-      ],
+          (getProperty("_voteLocal4").indexOf("-") === -1 ? 1 : -1)
+      ]
     ];
 
     const bestVotes = voteLocalPriorityArr.sort((a, b) => b[1] - a[1]);
@@ -1379,10 +1393,12 @@ class Tofu {
       to_sell -= toSend;
     }
 
-    const ourLimit = Math.max(
-      1,
-      Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
-    );
+    const ourLimit = this.onlyAddNoReprice
+      ? shopLimit(tofu)
+      : Math.max(
+          1,
+          Math.min(this.mallLimit, Math.floor(to_sell / this.dynMallLimit))
+        );
 
     if (to_sell > 0) {
       if (this.sendToMallMulti) {
@@ -1429,6 +1445,11 @@ class Tofu {
 
   getShopPrice(): number {
     const tofu = Item.get("Essential Tofu");
+
+    if (this.onlyAddNoReprice) {
+      return shopAmount(tofu) > 0 ? shopPrice(tofu) : 999_999_999;
+    }
+
     const amountIHave = shopAmount(tofu) + itemAmount(tofu);
 
     if (amountIHave < 800) {

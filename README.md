@@ -1,7 +1,7 @@
 This is a script for Essential Tofu farming in Kingdom of Loathing.
 
 ```text
-svn checkout https://github.com/libraryaddict/TofuFarming/branches/release/
+git checkout libraryaddict/TofuFarming release
 ```
 
 The script has some basic configuration, but expects you to have several things setup. At the very least, you should be in Gel Noob path with all essential perms.
@@ -18,8 +18,7 @@ Voter. This must have a "I voted" sticker in the outfit.
 
 Rollover. There's only one outfit that benefits from rollover, the "Gladiatorial Glad Rags"
 
-
-You will also need to setup a mood "acidparade"
+You will also need to setup a mood "acidparade". You can either have your buffset already setup, or use the below.
 
 ```text
 When I run low on Heart of Lavender, use 1 lavender candy heart
